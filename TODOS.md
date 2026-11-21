@@ -1,6 +1,6 @@
 # Task List — mysite-3.0
 
-**Status:** Phase 3 complete (visual QA passed with fixes folded in) — awaiting owner's whole-Phase-3 review; Phase 4 starts on owner's go
+**Status:** Phase 3 complete (12/12, QA green) — owner go for Phase 4 given 2026-11-21; 4.1 (deploy script) done; awaiting owner's call on the www→apex 301 mechanism (A/B) before live AWS changes
 **Conventions:** each task names its owner persona; phases are ordered by dependency; check boxes off as things land. Decisions live in `docs/HOSTING.md` (D1–D11) and `docs/DESIGN.md` — this file tracks *work*, not *decisions*.
 
 ---
@@ -38,7 +38,11 @@
 
 ## Phase 4 — Infra & cutover (all `ops`, follows HOSTING §6)
 
-- [ ] **4.1** `deploy/deploy.sh` — CI-ready: non-interactive, idempotent, meaningful exit codes; build → two-tier sync → invalidate → verify (§9 checklist).
+**Owner go-ahead: 2026-11-21.** Live state re-verified same day: both dists Deployed; ACM cert `43e7d0e9` (us-east-1) already covers `alexander-wang.net` + `*.alexander-wang.net`; no versioning on either bucket; apex A → legacy `d30bl45vk665e7` (Z2FDTNDATAQYW2), www A → `d1oevywpg7h4uc`.
+
+**Open decision (owner):** www→apex 301 mechanism — **A:** no 301, both hostnames 200, canonical tags do the SEO job (recommended — static, no runtime) · **B:** ~15-line Lambda@Edge viewer-request 301 (true redirect; runtime exception, contradicts D9). `deploy.sh` has a `WWW_MODE=canonical|redirect` knob for either.
+
+- [x] **4.1** `deploy/deploy.sh` — CI-ready: non-interactive, idempotent, meaningful exit codes (10–50); build → archive staging → `s3 sync --delete` (bucket = exact mirror of dist) → two-tier header passes (self-copy: no-cache entry files / immutable hashed assets) → invalidate `/*` + wait for Completed → edge verify (§9 checklist incl. content-type + security headers). ✅ (edge verification proven on first deploy)
 - [ ] **4.2** CloudFront: add apex alias + cert coverage, `www` → apex 301 behavior, response-headers policy (HSTS, nosniff, referrer).
 - [ ] **4.3** Enable S3 versioning; confirm `404.html` error document.
 - [ ] **4.4** Build the 2.0 archive → `/old/` (`PUBLIC_URL=/old` + router basename, copy `index.html` to the ~5 route paths).

@@ -4,3 +4,4 @@ dist/
 # KaTeX CSS + fonts for the dev server, generated from node_modules by
 # scripts/vendor-katex.mjs (postinstall). Never committed.
 public/katex/
+old-archive/
