@@ -348,7 +348,16 @@ a:focus-visible {
 
 /* ---------- 4. Hero — home only: a section, not a screen (§4) ---------- */
 .hero {
-  padding-block: var(--space-9); /* 96px top and bottom */
+  /* Top padding shrinks on desktop so the large portrait can take most of
+     the viewport without pushing the text below the fold (owner, 2026-11-21). */
+  padding-top: var(--space-6);
+  padding-bottom: var(--space-9);
+}
+
+@media (min-width: 641px) {
+  .hero {
+    padding-top: clamp(40px, 12vh, 120px);
+  }
 }
 
 /* Hero: portrait left, name/role/bio right (owner, 2026-11-21). */
@@ -361,8 +370,9 @@ a:focus-visible {
 .hero-portrait {
   display: block;
   flex-shrink: 0;
-  width: 132px;
-  height: 132px;
+  /* Desktop: most of the viewport height (owner, 2026-11-21). */
+  width: min(72vh, 60vw, 560px);
+  height: min(72vh, 60vw, 560px);
   border-radius: 50%;
   border: 1px solid var(--border);
 }
@@ -371,11 +381,18 @@ a:focus-visible {
   min-width: 0;
 }
 
-/* Mobile: portrait and text stack, centered. */
+/* Mobile: portrait stacks above the bio, sized to fit the narrow screen. */
 @media (max-width: 640px) {
+  .hero {
+    padding-top: var(--space-6);
+  }
   .hero-inner {
     flex-direction: column;
     text-align: center;
+  }
+  .hero-portrait {
+    width: min(70vw, 280px);
+    height: min(70vw, 280px);
   }
 }
 
