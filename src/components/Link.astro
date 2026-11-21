@@ -1,0 +1,24 @@
+---
+// Link: plain <a> for internal targets; external http(s) gets the DESIGN §7
+// arrow (↗) plus target/rel. Shared by nav, footer, hero, and rows.
+interface Props {
+  href: string;
+  label: string;
+  class?: string;
+}
+
+const { href, label, class: cls = '' } = Astro.props;
+const external = /^https?:\/\//i.test(href);
+---
+<a class={cls} href={href} {...external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}>
+  {label}
+  {
+    external && (
+      <span class="ext-arrow" aria-hidden="true">
+        <svg viewBox="0 0 12 12" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path d="M3.5 8.5L8.5 3.5M4.5 3.5h4v4" />
+        </svg>
+      </span>
+    )
+  }
+</a>

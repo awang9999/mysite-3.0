@@ -1,0 +1,23 @@
+---
+// Home — hero (DESIGN §4): a normal section, 96px top and bottom padding,
+// name as h1, muted role line, owner-approved link set (Résumé · GitHub ·
+// Blog, DESIGN §11). All copy from content/home.md.
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import Link from '../components/Link.astro';
+import { site } from '../lib/data';
+
+const [home] = await getCollection('sitePages', (entry) => entry.id === 'home');
+const { name, role, links } = home.data;
+---
+<Layout title={site.title} description={site.description}>
+  <section class="container hero">
+    <h1>{name}</h1>
+    <p class="hero-role">{role}</p>
+    <p class="hero-links">
+      {
+        (links ?? []).map((link) => <Link href={link.href} label={link.label} />)
+      }
+    </p>
+  </section>
+</Layout>

@@ -1,0 +1,21 @@
+---
+// About — page header (h1 + lead, 64px gap) then the prose from
+// content/about.md, rendered by the markdown pipeline.
+import { getCollection, render } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { site, navLabelFor } from '../lib/data';
+
+const [about] = await getCollection('sitePages', (entry) => entry.id === 'about');
+const { Content } = await render(about);
+---
+<Layout title={`${navLabelFor('/about')} — ${site.title}`}>
+  <div class="container page-top">
+    <header class="page-header">
+      <h1>{about.data.title}</h1>
+      {about.data.lead && <p class="lead">{about.data.lead}</p>}
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </div>
+</Layout>

@@ -1,0 +1,38 @@
+---
+// Blog post — one real URL per post (D3). Math is rendered to KaTeX HTML
+// at build time by the markdown pipeline (D11); no runtime script.
+// The KaTeX stylesheet is the dev-served /katex/katex.min.css; the
+// postbuild step (scripts/finalize-katex.mjs) rewrites this href to the
+// trimmed, content-hashed /assets copy and removes the full dev copy.
+import { getCollection, render } from 'astro:content';
+import Layout from '../../layouts/Layout.astro';
+import { site } from '../../lib/data';
+import { formatDate } from '../../lib/format';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.data.slug },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+---
+<Layout title={`${post.data.title} — ${site.title}`} description={post.data.summary}>
+  <Fragment slot="head">
+    <link rel="stylesheet" href="/katex/katex.min.css" />
+  </Fragment>
+  <article class="container page-top">
+    <header class="page-header">
+      <h1>{post.data.title}</h1>
+      <p class="post-meta">
+        {formatDate(post.data.date.toISOString().slice(0, 10))} · {post.data.readingTime} min read
+      </p>
+    </header>
+    <div class="prose">
+      <Content />
+    </div>
+  </article>
+</Layout>

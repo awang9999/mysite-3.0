@@ -1,0 +1,15 @@
+---
+// Footer (DESIGN §4): hairline top border, content-width container,
+// 32/64px padding. Left: copyright. Right: Résumé · GitHub · /old/.
+// Data comes from content/site.yaml.
+import { site } from '../lib/data';
+import Link from './Link.astro';
+---
+<footer class="footer">
+  <div class="container footer-inner">
+    <p class="copyright">{site.footer.copyright}</p>
+    <nav class="footer-links" aria-label="Footer">
+      {site.footer.links.map((item) => <Link href={item.href} label={item.label} />)}
+    </nav>
+  </div>
+</footer>

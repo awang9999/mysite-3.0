@@ -1,0 +1,17 @@
+---
+// 404 (DESIGN §4): 96px top, "404" as h1, the site's one dry sentence (the
+// single joke, owned by content/404.md), then Go home — the site's only
+// filled button.
+import { getCollection } from 'astro:content';
+import Layout from '../layouts/Layout.astro';
+import { site } from '../lib/data';
+
+const [notFound] = await getCollection('sitePages', (entry) => entry.id === '404');
+---
+<Layout title={`${notFound.data.title} — ${site.title}`}>
+  <div class="container notfound">
+    <h1>{notFound.data.title}</h1>
+    <p class="lead">{notFound.data.line}</p>
+    <a class="btn" href="/">Go home</a>
+  </div>
+</Layout>

@@ -1,0 +1,22 @@
+---
+// Nav (DESIGN §4): static, hairline bottom border, content-width container.
+// Left: text wordmark. Right: About · Experience · Projects · Blog · Résumé.
+// Current page → --accent/500. Mobile: wraps to two centered lines, no
+// hamburger. Data comes from content/site.yaml — no copy hardcoded here.
+import { site } from '../lib/data';
+
+const path = Astro.url.pathname;
+const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
+---
+<header class="nav">
+  <div class="container nav-inner">
+    <a class="wordmark" href="/">{site.title}</a>
+    <nav class="nav-links" aria-label="Main">
+      {
+        site.nav.map((item) => (
+          <a href={item.href} {...isActive(item.href) ? { 'aria-current': 'page' } : {}}>{item.label}</a>
+        ))
+      }
+    </nav>
+  </div>
+</header>

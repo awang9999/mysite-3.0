@@ -1,6 +1,6 @@
 # Task List — mysite-3.0
 
-**Status:** Active — Phase 1 complete, next up: 2.1 (stack decision)
+**Status:** Active — Phase 2 complete, next up: Phase 3 (per-page polish + visual passes)
 **Conventions:** each task names its owner persona; phases are ordered by dependency; check boxes off as things land. Decisions live in `docs/HOSTING.md` (D1–D11) and `docs/DESIGN.md` — this file tracks *work*, not *decisions*.
 
 ---
@@ -15,8 +15,8 @@
 ## Phase 2 — Scaffolding (the parked stack decision un-parks here)
 
 - [x] **2.1 Pick the SSG stack** — owner + `builder`: must satisfy HOSTING D3/D11/§10 — multi-page static output, real URLs, no SPA, near-zero runtime JS, build-time KaTeX, `dev`/`build`/`preview` scripts. ✅ 2026-11-21 — **Astro 7** (D12) + **build-time KaTeX** (D11, chosen over LaTeX→SVG / MathJax-static).
-- [ ] **2.2 Project scaffold** — `builder`: init project, layout shell (nav + footer), all routes (`/`, `/about`, `/experience`, `/projects`, `/blog`, `/blog/<slug>`, 404), and working `dev` / `build` / `preview` per HOSTING §10.
-- [ ] **2.3 Design system into code** — `builder`: implement DESIGN.md tokens (typography, color, spacing, dark mode) as the base stylesheet every page inherits.
+- [x] **2.2 Project scaffold** — `builder`: init project, layout shell (nav + footer), all routes (`/`, `/about`, `/experience`, `/projects`, `/blog`, `/blog/<slug>`, 404), and working `dev` / `build` / `preview` per HOSTING §10. ✅ 2026-11-21 — Astro 7.4 at repo root; all 9 routes build; **zero `<script>` tags** in output; copy wired from `content/` via content collections (single source of truth, nothing duplicated). KaTeX: `remark-math` + `rehype-katex` (html output) at build time — `@astrojs/katex` does not exist in the npm registry, so the equivalent pipeline is direct. Post-build finalizer (`scripts/finalize-katex.mjs`, needs `pip install fonttools`) subsets KaTeX faces to the glyphs the posts actually use, trims the CSS, content-hashes to `dist/_astro/`. Dev-time KaTeX copy vendored to `public/katex/` (`npm run vendor:katex`, on install; gitignored). Resume PDF copied from 2.0 as `/resume.pdf`.
+- [x] **2.3 Design system into code** — `builder`: implement DESIGN.md tokens (typography, color, spacing, dark mode) as the base stylesheet every page inherits. ✅ 2026-11-21 — every §3–§7 token in `src/styles/global.css` as custom properties (warm-paper/rust light + dark palettes, 6-size type scale, 9-step spacing, 3 radii, hairline row pattern, link/`<details>`/focus states, dark mode via `prefers-color-scheme` + `color-scheme` meta). Manrope variable WOFF2 self-hosted (`latin` 24.4 KB + `latin-ext` 15.2 KB, `font-display:swap`, wght 200–800 axis verified); system mono for code. Math gets `role="img"` + TeX `aria-label` (html-only KaTeX output ships no MathML/alt).
 
 ## Phase 3 — Pages (pattern per page: `builder` implements → `visual-tester` checks responsive/dark/readability → owner looks)
 
@@ -50,4 +50,4 @@
 
 ## Blocked / parked
 
-- (none — 2.1 is the active next step; all its inputs from Phase 1 are in hand)
+- (none — Phase 3 page-by-page polish is next: 3.1–3.7 pages are already implemented and functional via 2.2/2.3, so 3.x is the visual/finishing pass — per-page `visual-tester` runs, then 3.8 meta/favicon/robots + `/old/` footer link)

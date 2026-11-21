@@ -1,0 +1,579 @@
+/* ==========================================================================
+   mysite-3.0 — base stylesheet
+   Implements docs/DESIGN.md v1 in full: tokens (§1–§3), layout (§4), motion
+   (§5), the row pattern (§6–§7), dark mode (§8). Every color in the codebase
+   is a token — no raw hex outside the two token blocks (§1, §8).
+   ========================================================================== */
+
+/* ---------- 1. Palette — tokens (§1) ---------- */
+:root {
+  --bg: #faf9f6;        /* warm paper */
+  --surface: #f0ede6;   /* recessed surface: code, display math, inline code */
+  --fg: #21201c;        /* primary text */
+  --fg-muted: #5f5c55;  /* leads, meta, dates, footer, list sub-lines */
+  --border: #e3e0d6;    /* hairlines: nav bottom, list rows, footer top */
+  --accent: #a6421e;    /* links + interactive states only */
+
+  /* ---------- 3. Type scale — exactly 6 sizes (§3) ---------- */
+  --text-xs: 0.8125rem;  /* 13px — dates, meta, footer, tags */
+  --text-sm: 0.9375rem;  /* 15px — nav, buttons, list meta lines */
+  --text-base: 1.125rem; /* 18px — body text (all prose) */
+  --text-md: 1.375rem;   /* 22px — h3, list row titles */
+  --text-lg: 1.75rem;    /* 28px — h2 */
+  --text-xl: clamp(2.25rem, 1.5rem + 2.5vw, 3rem); /* 36–48px — h1, one size site-wide */
+
+  /* ---------- 3. Spacing scale — 4px base, 9 steps (§3) ---------- */
+  --space-1: 0.25rem; /* 4px  — micro gaps */
+  --space-2: 0.5rem;  /* 8px  — h1 → lead line */
+  --space-3: 0.75rem; /* 12px — inline code padding, tag gaps */
+  --space-4: 1rem;    /* 16px — related elements, row padding */
+  --space-5: 1.5rem;  /* 24px — nav link gap, code block margin */
+  --space-6: 2rem;    /* 32px — footer top padding, mobile h2 top */
+  --space-7: 3rem;    /* 48px — h2 top margin, section gap (mobile) */
+  --space-8: 4rem;    /* 64px — page top padding, featured → archive */
+  --space-9: 6rem;    /* 96px — major rhythm, page bottom, hero padding */
+
+  /* ---------- 3. Radii — the only ones that exist (§3) ---------- */
+  --radius-sm: 4px; /* inline code */
+  --radius-md: 6px; /* buttons */
+  --radius-lg: 8px; /* code blocks, display-math blocks */
+
+  /* ---------- 4. Widths (§4) ---------- */
+  --content-width: 40rem; /* 640px — all prose pages + home hero */
+  --wide-width: 48rem;    /* 768px — /projects only */
+  --gutter: 20px;         /* mobile */
+}
+
+@media (min-width: 641px) {
+  :root {
+    --gutter: 32px; /* desktop */
+  }
+}
+
+/* ---------- 8. Dark mode — token override only, no JS (§8) ---------- */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --bg: #171614;     /* warm near-black */
+    --surface: #211f1a;
+    --fg: #eceae3;
+    --fg-muted: #a8a49a;
+    --border: #2f2d26;
+    --accent: #e07a4f;
+  }
+}
+
+/* ---------- 2. Typeface — Manrope variable, self-hosted (§2) ----------
+   One @font-face per subset (latin-ext first so its unicode-range wins the
+   overlapping code points, matching Google's ordering). font-display: swap. */
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../assets/fonts/manrope-latin-ext.woff2') format('woff2');
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF,
+    U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020,
+    U+20A0-20AB, U+20AD-20C4, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+@font-face {
+  font-family: 'Manrope';
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url('../assets/fonts/manrope-latin.woff2') format('woff2');
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA,
+    U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193,
+    U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+/* ---------- Base ---------- */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: 'Manrope', system-ui, -apple-system, sans-serif;
+  font-size: var(--text-base);
+  line-height: 1.65;
+  font-weight: 400;
+  font-synthesis: none;
+}
+
+main {
+  padding-bottom: var(--space-9); /* page bottom padding — §3 */
+}
+
+/* ---------- Containers (§4) ---------- */
+.container {
+  width: 100%;
+  max-width: var(--content-width);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.container--wide {
+  max-width: var(--wide-width); /* /projects only — §4 */
+}
+
+.page-top {
+  padding-top: var(--space-8); /* page top padding — §3 */
+}
+
+/* ---------- 7. Headings (§7) — weight and size do the hierarchy ---------- */
+h1 {
+  margin: 0 0 var(--space-2);
+  font-size: var(--text-xl);
+  line-height: 1.15;
+  font-weight: 700;
+  letter-spacing: -0.015em;
+  color: var(--fg);
+}
+
+h2 {
+  margin: var(--space-6) 0 var(--space-3); /* mobile 32/12 — §4 */
+  font-size: var(--text-lg);
+  line-height: 1.3;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: var(--fg);
+}
+
+@media (min-width: 641px) {
+  h2 {
+    margin: var(--space-7) 0 var(--space-4); /* desktop 48/16 — §4 */
+  }
+}
+
+h3 {
+  margin: var(--space-6) 0 var(--space-2); /* 32/8 — §4 */
+  font-size: var(--text-md);
+  line-height: 1.4;
+  font-weight: 500;
+  letter-spacing: 0;
+  color: var(--fg);
+}
+
+p {
+  margin: 0 0 var(--space-4); /* paragraphs 16px apart, no indent — §4 */
+}
+
+/* ---------- 7. Links (§7) — accent, no underline at rest ---------- */
+a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-decoration-color: transparent; /* underline fades in on hover — §5 #1 */
+  text-underline-offset: 3px;
+  transition: text-decoration-color 150ms ease-out, color 150ms ease-out;
+}
+
+a:hover,
+a:focus-visible {
+  text-decoration-color: currentColor;
+}
+
+/* External-link arrow (§7): only icon besides the details chevron. */
+.ext-arrow {
+  display: inline-block;
+  width: 0.7em;
+  height: 0.7em;
+  margin-left: 0.15em;
+  vertical-align: baseline;
+  position: relative;
+  top: 0.1em;
+}
+
+.ext-arrow svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+/* ---------- 7. Buttons — one style, used sparingly (§7) ---------- */
+.btn {
+  display: inline-block;
+  background: var(--fg);
+  color: var(--bg);
+  padding: var(--space-2) var(--space-4); /* 8px 16px */
+  border: 0;
+  border-radius: var(--radius-md);
+  font-family: inherit;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  font-weight: 500;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background 150ms ease-out; /* §5 #3 */
+}
+
+.btn:hover {
+  background: var(--fg-muted);
+  color: var(--bg);
+}
+
+/* ---------- Focus & selection (§7) ---------- */
+:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--accent);
+  color: var(--bg);
+}
+
+/* ---------- 4. Nav — static, wraps on mobile, no hamburger (§4) ---------- */
+.nav {
+  border-bottom: 1px solid var(--border);
+}
+
+.nav-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-4) 0;
+  padding-block: var(--space-4); /* 16px vertical */
+}
+
+@media (max-width: 640px) {
+  .nav-inner {
+    flex-direction: column;
+    align-items: center; /* two centered lines, 16px gap — §4 */
+  }
+}
+
+.wordmark {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--fg);
+  text-decoration: none;
+}
+
+.wordmark:hover {
+  color: var(--fg);
+  text-decoration: underline;
+  text-decoration-color: currentColor;
+  text-underline-offset: 3px;
+}
+
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-5); /* 24px nav link gap — §3 */
+}
+
+.nav-links a {
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  font-weight: 400;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 150ms ease-out;
+}
+
+.nav-links a:hover {
+  color: var(--fg);
+}
+
+.nav-links a[aria-current='page'] {
+  color: var(--accent);
+  font-weight: 500;
+}
+
+/* ---------- 4. Footer (§4) ---------- */
+.footer {
+  border-top: 1px solid var(--border);
+}
+
+.footer-inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2) 0;
+  padding-block: var(--space-6) var(--space-8); /* 32px / 64px */
+}
+
+.copyright {
+  margin: 0;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.footer-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: var(--space-5);
+}
+
+.footer-links a {
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--fg-muted);
+  text-decoration: none;
+  transition: color 150ms ease-out;
+}
+
+.footer-links a:hover {
+  color: var(--accent);
+}
+
+/* ---------- 4. Hero — home only: a section, not a screen (§4) ---------- */
+.hero {
+  padding-block: var(--space-9); /* 96px top and bottom */
+}
+
+.hero h1 {
+  margin-bottom: var(--space-2);
+}
+
+.hero-role {
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+}
+
+.hero-links {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-5); /* 24px between links */
+}
+
+/* ---------- 4. Page header — identical on every subpage (§4) ---------- */
+.page-header {
+  margin-bottom: var(--space-8); /* the 64px gap IS the divider */
+}
+
+.page-header h1 {
+  margin-bottom: 0;
+}
+
+.page-header .lead {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--fg-muted);
+}
+
+.page-header .post-meta {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* ---------- 6–7. List rows — the site's one structural device ----------
+   Hairline rows: border-top on all but the first, 16px vertical padding. */
+.rows {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.rows > li + li {
+  border-top: 1px solid var(--border);
+}
+
+.row {
+  padding-block: var(--space-4);
+}
+
+.row-title {
+  margin: 0;
+  font-size: var(--text-md);
+  line-height: 1.4;
+  font-weight: 500; /* row titles are lists, not sections — §7 */
+}
+
+.row-title a {
+  font-weight: 500;
+}
+
+.row-meta {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+.row-body {
+  margin: var(--space-2) 0 0;
+  font-size: var(--text-base);
+  line-height: 1.65;
+  color: var(--fg-muted);
+}
+
+.row-tags {
+  margin: var(--space-1) 0 0;
+  font-size: var(--text-xs);
+  line-height: 1.5;
+  color: var(--fg-muted);
+}
+
+/* Secondary links on a row: the first link rides the title, the rest sit
+   beside it, separated by the same " · " rhythm as plain text. */
+.row-alt-links {
+  display: inline;
+  font-size: var(--text-sm);
+  font-weight: 400;
+}
+
+/* Experience entries (§7): title "Role · Company", dates, bullets.
+   No timeline rail — the date range is text. */
+.row-bullets {
+  margin: var(--space-2) 0 0;
+  padding-left: 1.2em;
+  list-style: disc;
+}
+
+.row-bullets li {
+  margin-bottom: var(--space-1);
+  color: var(--fg);
+}
+
+.row-bullets li:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 6. Archive — native <details>, zero JS (§6) ---------- */
+.archive {
+  margin-top: var(--space-8); /* featured → archive: 64px — §4 */
+}
+
+.archive summary {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  padding: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+  font-weight: 500;
+  color: var(--accent);
+  cursor: pointer;
+  list-style: none;
+}
+
+.archive summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive summary:hover {
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+
+.archive .chev {
+  flex-shrink: 0;
+  transition: transform 150ms ease-out; /* §5 #2 — transform only */
+}
+
+.archive[open] .chev {
+  transform: rotate(90deg);
+}
+
+.archive .rows {
+  margin-top: var(--space-4);
+}
+
+/* ---------- 7. Code & math (§7) — one recessed surface ---------- */
+code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+}
+
+/* Inline code */
+p code,
+li code,
+.row-title code {
+  background: var(--surface);
+  border-radius: var(--radius-sm);
+  padding: 1px 5px;
+  font-size: 0.9em;
+}
+
+/* Code blocks */
+pre {
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4);
+  overflow-x: auto;
+  margin: var(--space-5) 0;
+}
+
+pre code {
+  background: none;
+  padding: 0;
+  font-size: var(--text-sm);
+  line-height: 1.5;
+}
+
+/* Display math (KaTeX, build-time per D11): the same recessed treatment.
+   Scoped under main so it wins over the vendor KaTeX sheet regardless of
+   link order. Inline math keeps no background — §7. */
+main .katex-display {
+  display: block; /* it's a span in the markup */
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  padding: var(--space-4) var(--space-5); /* 16px 24px */
+  overflow-x: auto; /* long equations scroll at 360px */
+  margin: var(--space-5) 0; /* 24px vertical */
+}
+
+/* KaTeX sets .katex { font-size: 1.21em } relative to the container — the
+   display surface inherits body size (18px), which reads correctly. */
+main .katex-display > .katex {
+  text-align: center;
+}
+
+/* ---------- Prose (blog posts, about) ---------- */
+.prose ul {
+  margin: 0 0 var(--space-4);
+  padding-left: 1.2em;
+  list-style: disc;
+}
+
+.prose li {
+  margin-bottom: var(--space-1);
+}
+
+.prose li:last-child {
+  margin-bottom: 0;
+}
+
+/* ---------- 4. 404 page (§4) ---------- */
+.notfound {
+  padding-top: var(--space-9);
+  text-align: center;
+}
+
+.notfound h1 {
+  margin-bottom: var(--space-2);
+}
+
+.notfound .lead {
+  margin: 0 0 var(--space-5);
+  font-size: var(--text-base);
+  color: var(--fg-muted);
+}
+
+/* ---------- 5. Motion — global rule (§5) ---------- */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition: none !important;
+    animation: none !important;
+  }
+}
