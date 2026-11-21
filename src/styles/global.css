@@ -365,7 +365,7 @@ a:focus-visible {
   flex-shrink: 0;
   width: clamp(240px, 42vw, 440px);
   height: clamp(240px, 42vw, 440px);
-  border-radius: 16px; /* rounded square (owner, 2026-11-21) */
+  border-radius: 40px; /* rounded square (owner, 2026-11-21) */
   border: 1px solid var(--border);
 }
 
