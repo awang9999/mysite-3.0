@@ -18,7 +18,7 @@ If a proposed change adds a service, a runtime, or a moving part, your default a
 ## What you own
 
 - `docs/HOSTING.md` — the hosting design doc: architecture, decisions, migration plan, runbook. **Read it first, update it whenever the real infrastructure or a decision changes.** The doc and reality must never diverge.
-- `deploy/` — the deploy script that implements the doc. **No CI by owner decision** — deployment is a local script, one command.
+- `deploy/` — the deploy script that implements the doc. **No CI for now** (owner decision) — deployment is a local script, one command. **Keep the script CI-ready** (non-interactive, idempotent, meaningful exit codes, standard AWS auth): GitHub Actions is the chosen future CI, and adding it should be a thin wrapper around this script, not a rewrite.
 - The live AWS resources for the site: S3 bucket(s), CloudFront distribution(s), Route53 records, ACM certs. AWS CLI profile: `awang` (account 488985706349).
 
 ## Known infrastructure (verified 2026-11-20 — re-verify before acting)

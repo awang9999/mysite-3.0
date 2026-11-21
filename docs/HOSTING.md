@@ -77,7 +77,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | D1 | ✅ **CONFIRMED** Single bucket (`www.alexander-wang.net`, reused) + single CloudFront distribution serving both apex and www | Eliminates the legacy two-bucket/two-distribution split; one place to configure headers, cert, cache |
 | D2 | ✅ **CONFIRMED (2026-11-20)** Canonical host: **apex** `alexander-wang.net`; `www` 301-redirects to apex | Shorter, cleaner URLs. Implemented at the edge (CloudFront per-alias redirect on the www behavior) — no S3 or app involvement. |
 | D3 | Multi-page static output (MPP), real URLs, `404.html`, **no SPA** | Hosting stays trivially simple; SEO and deep-linking work with zero config; cache is fully effective |
-| D4 | ✅ **CONFIRMED** Deploy = **a single local script** (`deploy/deploy.sh`), **no CI at all** — CircleCI fully retired | Owner preference: a personal site doesn't need a CI pipeline. One command does build → two-tier sync → invalidate → verify. Replaces CircleCI (paid per seat, and its pipeline never even invalidated the CDN). |
+| D4 | ✅ **CONFIRMED** Deploy = **a single local script** (`deploy/deploy.sh`), **no CI for now** — CircleCI fully retired. **Door left open for GitHub Actions later.** | Owner preference: a personal site doesn't need a CI pipeline today. One command does build → two-tier sync → invalidate → verify. Replaces CircleCI (paid per seat, and its pipeline never even invalidated the CDN). The script is written **CI-ready**: non-interactive, idempotent, meaningful exit codes, AWS auth via standard profile/env — so adding a GitHub Actions workflow later is a thin wrapper (job runs the same script with OIDC-issued credentials), not a rewrite. |
 | D5 | Two-tier cache: hashed assets `immutable, max-age=31536000`; HTML `no-cache, no-store, must-revalidate` | Same strategy that works today: assets cache forever (content-hashed names), HTML always revalidates so new deploys are visible after invalidation |
 | D6 | Private origin: bucket stays private, CloudFront accesses it via OAI (existing `E3PV3Z1GIPWEQ0`) or a new OAC | Direct `https://www.alexander-wang.net.s3…` access returns 403; only the edge can read content. Never public-read S3 |
 | D7 | ✅ **CONFIRMED** Security headers at the edge via a CloudFront *response headers policy*: `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` | One config point, applies to every object. HSTS = header instructing browsers to always use HTTPS for this domain (blocks protocol-downgrade attacks); enabled with a moderate max-age at cutover, preload list later. |
@@ -95,7 +95,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | `/assets/*` (JS/CSS/fonts/images — content-hashed names) | `public, max-age=31536000, immutable` | A given hash never changes; cache for a year at edge and in browsers |
 | `*.html`, `manifest.json`, `robots.txt`, `favicon*` | `no-cache, no-store, must-revalidate` | Entry points must always revalidate so new deploys land immediately |
 
-**Deploy sequence (one command, run by `deploy/deploy.sh` — no CI):**
+**Deploy sequence (one command, run by `deploy/deploy.sh` — no CI for now; if GitHub Actions is added later, its deploy job simply runs this same script with OIDC credentials):**
 
 1. `npm ci && npm run build` → static output (HTML + hashed assets; blog markdown → HTML with KaTeX rendered at build time)
 2. `aws s3 sync` assets → bucket (`--delete --exact-timestamps`, long cache)
