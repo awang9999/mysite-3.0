@@ -29,7 +29,7 @@
 - [x] **3.7 404 page** ✅ 2026-11-21 — noindex, centered, single filled button
 - [x] **3.8 Finishing pass** — meta tags, favicon, robots.txt, manifest, footer link to `/old/` ✅ 2026-11-21 — canonical per page, theme-aware SVG favicon, robots allow-all, minimal manifest, `/old/` footer link
 
-- [x] **3.9 Home: portrait + short bio** — owner request (2026-11-21): 2.0's `picture3.jpg` optimized to 320 px / 29 KB, circular crop + hairline border, 2-sentence bio (orchestrator-drafted, pending owner review) ✅
+- [x] **3.9 Home: portrait + short bio** — owner request (2026-11-21): 2.0's `picture3.jpg` at native 1000 px (154 KB; re-exported after an earlier 320 px downscale blurred when enlarged), rounded-square 40 px radius, left of name/role/bio in an even 50/50 hero (home container 928 px), 2-sentence bio (orchestrator-drafted, pending owner review) ✅
 - [x] **3.10 Transfer the 2.0 logo** — owner request (2026-11-21): `monogram.svg` in the nav (24 px beside the text wordmark) + favicon (tightened viewBox) ✅
 - [x] **3.11 Color scheme** — owner found warm paper/rust "a little too warm"; chose **A: cool paper + ink blue** (2026-11-21). Tokens swapped in global.css + DESIGN §1; all 12 contrast pairs re-verified ≥4.5:1 (AA). ✅
 
