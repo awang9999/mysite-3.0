@@ -10,6 +10,10 @@ The third iteration of my personal website: **clean and straight to the point, w
 - **Projects** — curated featured set, expandable into the full archive
 - **Blog** — index + posts
 
+## Task list
+
+**[`TODOS.md`](TODOS.md)** — the phased work plan with per-task owners. This is where we track progress.
+
 ## The agent team
 
 This repo is developed by a small team of agentic personas in `.pi/agents/`, each with one job:
