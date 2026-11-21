@@ -32,6 +32,7 @@ export const sitePages = defineCollection({
     .object({
       name: z.string().optional(),
       role: z.string().optional(),
+      bio: z.string().optional(),
       links: z.array(link).optional(),
       // 404.md writes `title: 404` (YAML parses it as a number) — coerce,
       // don't reformat the owner-approved file.

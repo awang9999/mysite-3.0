@@ -29,6 +29,10 @@
 - [x] **3.7 404 page** ✅ 2026-11-21 — noindex, centered, single filled button
 - [x] **3.8 Finishing pass** — meta tags, favicon, robots.txt, manifest, footer link to `/old/` ✅ 2026-11-21 — canonical per page, theme-aware SVG favicon, robots allow-all, minimal manifest, `/old/` footer link
 
+- [x] **3.9 Home: portrait + short bio** — owner request (2026-11-21): 2.0's `picture3.jpg` optimized to 320 px / 29 KB, circular crop + hairline border, 2-sentence bio (orchestrator-drafted, pending owner review) ✅
+- [x] **3.10 Transfer the 2.0 logo** — owner request (2026-11-21): `monogram.svg` in the nav (24 px beside the text wordmark) + favicon (tightened viewBox) ✅
+- [ ] **3.11 Color scheme review** — owner finds warm paper/rust "a little too warm"; options presented (A: cool paper + ink blue — recommended · B: white + deep teal · C: accent-free mono). Waiting on owner's pick; the swap is token-only.
+
 **Visual QA (2026-11-21, 36 runs: 9 pages × 2 viewports × 2 schemes):** all pass. Fixes folded in: D-1 leads, m-3 measure 576→640 px (gutter outside content width); spec amendments: m-4 3-line nav wrap at 360 px (2 lines geometrically impossible), m-5/m-6 owner-approved copy wins (bullets, 1–3 line descriptions), D-2 §10 budgets measured on the wire (math pages exempt from the raw-HTML line; wire worst case 96 KB). m-7 (KaTeX CSS on all pages) was a QA false positive — it's scoped to the 3 posts.
 
 ## Phase 4 — Infra & cutover (all `ops`, follows HOSTING §6)

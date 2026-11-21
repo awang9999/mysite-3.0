@@ -4,13 +4,17 @@
 // Current page → --accent/500. Mobile: wraps to two centered lines, no
 // hamburger. Data comes from content/site.yaml — no copy hardcoded here.
 import { site } from '../lib/data';
+import monogram from '../assets/monogram.svg';
 
 const path = Astro.url.pathname;
 const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
 ---
 <header class="nav">
   <div class="container nav-inner">
-    <a class="wordmark" href="/">{site.title}</a>
+    <a class="wordmark" href="/">
+      <img class="wordmark-mark" src={monogram.src} width="24" height="24" alt="" aria-hidden="true" />
+      {site.title}
+    </a>
     <nav class="nav-links" aria-label="Main">
       {
         site.nav.map((item) => (

@@ -259,11 +259,18 @@ a:focus-visible {
 }
 
 .wordmark {
+  display: inline-flex;
+  align-items: center;
   font-size: var(--text-sm);
   line-height: 1.5;
   font-weight: 500;
   color: var(--fg);
   text-decoration: none;
+}
+
+.wordmark-mark {
+  margin-right: var(--space-3);
+  flex-shrink: 0;
 }
 
 .wordmark:hover {
@@ -343,12 +350,27 @@ a:focus-visible {
   padding-block: var(--space-9); /* 96px top and bottom */
 }
 
+.hero-portrait {
+  display: block;
+  width: 88px;
+  height: 88px;
+  border-radius: 50%; /* circle echoes the monogram badge — one visual language */
+  border: 1px solid var(--border);
+  margin: 0 0 var(--space-6);
+}
+
 .hero h1 {
   margin-bottom: var(--space-2);
 }
 
-.hero-role {
+.hero-bio {
   margin: 0 0 var(--space-5);
+  font-size: var(--text-base);
+  max-width: 46ch;
+}
+
+.hero-role {
+  margin: 0 0 var(--space-3);
   font-size: var(--text-base);
   color: var(--fg-muted);
 }

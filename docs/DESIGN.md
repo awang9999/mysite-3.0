@@ -144,13 +144,13 @@ content
 ### Hero (home only)
 
 - A normal section, **not** full-viewport: 96 px top padding, name as h1 (`--text-xl`), role line (`--text-base`, `--fg-muted`), then 2–4 inline links (GitHub, Résumé, Email, Blog — exact set is owner's, see §11) as accent links with 24 px gap, 96 px bottom padding.
-- Mostly text and whitespace: no video, no image, no 100 vh, no chevron, no background treatment.
+- Mostly text and whitespace: no video, no 100 vh, no chevron, no background treatment. One image is allowed: the hero portrait (owner, 2026-11-21).
 - Rationale: 2.0's 100 vh video hero + 50 px scroll chevron is the defining sin of the old site; a 48 px name on a wall of whitespace reads as confident, not empty.
 
 ### Nav
 
 - Static (not sticky), `--content-width` container, 16 px vertical padding; hairline bottom border (`--border`) — the only chrome rule on the page besides the footer's.
-- Left: text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`) — no logo image; 2.0's `title.svg` is decoration, and text is cheaper, sharper, and themeable.
+- Left: monogram badge (2.0's `monogram.svg`, transferred 2026-11-21, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`) — the badge is the site's only image mark; the wordmark stays text.
 - Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**).
 - Mobile (≤ 640 px): wraps onto centered lines — wordmark first, then the links, 16 px gap; two lines when they fit, three at 360 px (the five links need ~330 px of their own width). **No hamburger.** Rationale: a hamburger is JS + state + a11y work for five short links; wrapping is zero-JS and always visible. *(Amended 2026-11-21 after visual QA: the original “two lines” target was geometrically impossible at 360 px.)*
 - Not sticky: the pages are short; blog posts are the only long pages and they end with a link back to /blog. Rationale: sticky chrome is a mobile-app habit that boxes the top of every screen.
@@ -304,14 +304,14 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 3. **No icon fonts** — 2.0's Font Awesome; icons exist only as inline SVG and only where functional (external-link arrow, details chevron).
 4. **No `<hr>` or dividers where spacing works** — hairlines exist only as nav/footer chrome and list-row borders; 2.0 had an `<hr>` after nearly every section heading.
 5. **No single-page hash-scroll navigation** — real pages, real URLs (HOSTING D3).
-6. **No image logo or wordmark** — text only.
+6. **No image logo** — the only image mark on the site is the 2.0 monogram badge (owner, 2026-11-21); the wordmark stays text.
 7. **No cards with shadows, or any `box-shadow`, anywhere.**
 8. **No gradient backgrounds, decorative color blocks, or the inverted dark-hero/light-body trick** (2.0's hero was a dark block over a light page).
 9. **No full-viewport hero** (`min-height: 100vh`) — the hero is a section, not a screen.
 10. **No sticky nav, scrollspy, or hamburger menu** — the nav wraps on mobile.
 11. **No font CDNs or any third-party script/style** — self-host everything; the only external resources on the live site are outbound links.
 12. **No decorative borders, underlines, or color on headings.**
-13. **No image-heavy layouts** — any image must justify its bytes (≤ 100 KB each, WebP/AVIF, lazy-loaded); v1 targets **zero images**.
+13. **No image-heavy layouts** — any image must justify its bytes (≤ 100 KB each); v1 ships exactly one image: the home portrait (29 KB, 320 px).
 14. **No more than 6 type sizes, no values outside the spacing scale, no second accent color.**
 
 ---
@@ -321,6 +321,7 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 - Fonts: 24.5 KB Manrope (latin) + 15.2 KB (latin-ext, optional but default yes) + KaTeX faces ≤ ~50 KB after subsetting.
 - CSS: single stylesheet, target ≤ 15 KB minified.
 - JS: **0 KB** in v1 (the `<details>` pattern needs none).
+- Image: one portrait, ≤ ~50 KB (320 px JPEG; 29 KB as shipped 2026-11-21). All other pages: zero images.
 - Per-page HTML: ≤ 20 KB (non-math pages). Math pages are exempt: server-rendered KaTeX DOM is span-verbose (chapter 1 ≈ 242 KB raw) but compresses ~10× over the wire.
 - Total per page (wire, gzip-compressed — CloudFront compresses HTML/CSS by default), target: **≤ ~150 KB** before any image. Measured 2026-11-21: non-math ≈ 45–46 KB, math ≈ 96 KB worst case.
 - Rationale: the site should hit the edge in one round trip and paint before a 3G upload of the old hero video would finish one frame.
@@ -335,3 +336,5 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 4. **Page leads on all four subpages** (visual QA, 2026-11-21): /experience, /projects, /blog now carry a lead line like /about; copy drafted by the orchestrator, pending owner review.
 5. **Budgets measured on the wire** (visual QA, 2026-11-21): §10 totals apply to gzip-compressed transfer sizes; raw KaTeX HTML is exempt per the math-page note.
 6. **Bullets in experience entries; 1–3 line featured descriptions** (visual QA, 2026-11-21): owner-approved content wins over the original pattern wording; §6/§7 amended accordingly.
+7. **Home portrait + 2.0 monogram** (owner, 2026-11-21): circular 88 px portrait + short bio on home (the one allowed image); 2.0's `monogram.svg` transferred to the nav (24 px beside the text wordmark) and the favicon (tightened viewBox).
+8. **Color scheme under review** (owner, 2026-11-21): the warm paper/rust palette reads "a little too warm"; options presented (A cool paper + ink blue — recommended, B white + deep teal, C accent-free mono). Pending owner choice; token swap only.

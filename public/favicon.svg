@@ -1,10 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
-  <!-- Monogram "A" — the site's one rust accent (DESIGN §1). Light token
-       #A6421E, dark token #E07A4F via prefers-color-scheme (both schemes
-       from day one, §8). Text only, no raster (DESIGN §9.6/§9.13). -->
-  <style>
-    .m { stroke: #a6421e; }
-    @media (prefers-color-scheme: dark) { .m { stroke: #e07a4f; } }
-  </style>
-  <path class="m" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M7 27 L16 5 L25 27 M10.1 19.5 H21.9"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="8 8 48 48">
+  <!-- 2.0 monogram badge (owner request, 2026-11-21): white circle, black
+       AW. viewBox tightened to the circle so it fills the tab icon. -->
+  <path d="M8.646 8.56c11.133-11.133 36.099-11.133 47.232 0 11.117 11.117 11.117 36.049 0 47.167-11.133 11.133-36.099 11.133-47.232 0-11.117-11.117-11.117-36.049 0-47.167z" fill="#fff"/>
+  <path d="M31.205 2.352h2.517l12.587 30.293h-3.157l-4.608-11.819H26.256l-4.523 11.819h-3.2zm7.339 18.475L32.442 5.851l-6.187 14.976zM30.203 44.02l1.895-4.645 1.774 4.645h0l5.803 13.696L50.64 30.878h3.243L41.04 61.172h-2.645l-6.357-14.976-6.4 14.976h-2.603l-12.8-30.293h3.2l11.008 26.837z"/>
 </svg>
