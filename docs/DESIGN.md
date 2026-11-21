@@ -151,8 +151,8 @@ content
 
 - Static (not sticky), `--content-width` container, 16 px vertical padding; hairline bottom border (`--border`) — the only chrome rule on the page besides the footer's.
 - Left: monogram (2.0's `monogram.svg`, transferred 2026-11-21; white badge removed 2026-11-21 — bare letterforms in `--accent`, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`). The favicon keeps a small accent disc behind the letterforms so it reads on any tab background.
-- Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**).
-- Mobile (≤ 640 px): wraps onto centered lines — wordmark first, then the links, 16 px gap; two lines when they fit, three at 360 px (the five links need ~330 px of their own width). **No hamburger.** Rationale: a hamburger is JS + state + a11y work for five short links; wrapping is zero-JS and always visible. *(Amended 2026-11-21 after visual QA: the original “two lines” target was geometrically impossible at 360 px.)*
+- Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**) + **theme toggle** — a 32 px icon button (hairline border, `--radius-md`, icon in `--fg-muted`, hover `--fg`). The icon shows the theme you'd switch TO: moon in light, sun in dark.
+- Mobile (≤ 640 px): **hamburger** (owner, 2026-11-21 — supersedes the v1 zero-JS wrap): one header row — wordmark left, theme toggle + hamburger right. The links open as a centered vertical panel below the row (16 px gap, 16/24 px padding); the icon swaps to a close X while open. The button is a real `<button>` with `aria-expanded`/`aria-controls`; the menu closes on link click, Escape, or outside click. Rationale: the owner asked for it; the a11y surface is small and fully handled in the ~1 KB `ui.ts` module (§10).
 - Not sticky: the pages are short; blog posts are the only long pages and they end with a link back to /blog. Rationale: sticky chrome is a mobile-app habit that boxes the top of every screen.
 
 ### Footer
@@ -288,7 +288,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 
 ## 8. Dark mode
 
-- Pure CSS: tokens defined on `:root`, overridden inside `@media (prefers-color-scheme: dark)`. **No JS toggle in v1** — a toggle is script + state + a11y work for a personal site (seed decision, confirmed).
+- **Priority:** an explicit `<html data-theme='light|dark'>` (set by the theme toggle, owner 2026-11-21; persisted in `localStorage`) wins over the OS `prefers-color-scheme`. With no `data-theme` the site still follows the OS with **no JS at all** — the pure-CSS default is preserved. A pre-paint inline snippet in `<head>` restores the saved choice so there is no flash of the wrong scheme; the toggle logic lives in the small `ui.ts` module (§10). *(Supersedes the v1 “no JS toggle” seed decision — owner, 2026-11-21.)*
 - Both schemes are designed from day one: no raw hex anywhere except the two token blocks.
 - No shadows anywhere in either scheme — shadows don't survive a dark-mode translation, which is one more reason this design has zero of them (2.0's card stack relied on them).
 - Rationale: the OS preference is the only preference a personal site needs; tokens make "both from day one" a build-time guarantee, not a v2 promise.
@@ -308,10 +308,10 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 7. **No cards with shadows, or any `box-shadow`, anywhere.**
 8. **No gradient backgrounds, decorative color blocks, or the inverted dark-hero/light-body trick** (2.0's hero was a dark block over a light page).
 9. **No full-viewport hero** (`min-height: 100vh`) — the hero is a section, not a screen.
-10. **No sticky nav, scrollspy, or hamburger menu** — the nav wraps on mobile.
+10. **No sticky nav or scrollspy.** Hamburger: allowed on mobile only (owner, 2026-11-21) — see §4; it is a real `<button>` with full a11y state, not a sticky-chrome app pattern.
 11. **No font CDNs or any third-party script/style** — self-host everything; the only external resources on the live site are outbound links.
 12. **No decorative borders, underlines, or color on headings.**
-13. **No image-heavy layouts** — any image must justify its bytes (≤ 100 KB each); v1 ships exactly one image: the home portrait (29 KB, 320 px).
+13. **No image-heavy layouts** — any image must justify its bytes; v1 ships exactly one image: the home portrait. *(Exception to the ≤ 100 KB line, owner 2026-11-21: the portrait is served at its native 1000 px / 154 KB so it stays crisp at large display sizes — the earlier 320 px / 29 KB downscale blurred when enlarged.)*
 14. **No more than 6 type sizes, no values outside the spacing scale, no second accent color.**
 
 ---
@@ -320,8 +320,8 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 
 - Fonts: 24.5 KB Manrope (latin) + 15.2 KB (latin-ext, optional but default yes) + KaTeX faces ≤ ~50 KB after subsetting.
 - CSS: single stylesheet, target ≤ 15 KB minified.
-- JS: **0 KB** in v1 (the `<details>` pattern needs none).
-- Image: one portrait, ≤ ~50 KB (320 px JPEG; 29 KB as shipped 2026-11-21). All other pages: zero images.
+- JS: **~1 KB min** (owner, 2026-11-21): `src/scripts/ui.ts` — theme toggle + mobile hamburger, vanilla, no dependencies — plus a ~200 B pre-paint theme snippet in `<head>`. No islands, no framework, no hydration; the `<details>` archive needs no JS and still doesn't. This is the entire JS on the site.
+- Image: one portrait, 1000 px JPEG (154 KB as shipped 2026-11-21, see §9.13). All other pages: zero images.
 - Per-page HTML: ≤ 20 KB (non-math pages). Math pages are exempt: server-rendered KaTeX DOM is span-verbose (chapter 1 ≈ 242 KB raw) but compresses ~10× over the wire.
 - Total per page (wire, gzip-compressed — CloudFront compresses HTML/CSS by default), target: **≤ ~150 KB** before any image. Measured 2026-11-21: non-math ≈ 45–46 KB, math ≈ 96 KB worst case.
 - Rationale: the site should hit the edge in one round trip and paint before a 3G upload of the old hero video would finish one frame.
@@ -338,3 +338,5 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 6. **Bullets in experience entries; 1–3 line featured descriptions** (visual QA, 2026-11-21): owner-approved content wins over the original pattern wording; §6/§7 amended accordingly.
 7. **Home portrait + 2.0 monogram** (owner, 2026-11-21; layout + badge amended same day): portrait to the **left** of name/role/bio on home — rounded square, 40 px radius, full-res 1000 px source (the one allowed image); 2.0's `monogram.svg` in the nav as **bare letterforms in `--accent`** (white badge removed — it read as a white disc on the light page) and in the favicon on a small accent disc. The nav mark is **inlined SVG, not `<img>`** — an SVG loaded via `<img>` renders in its own document, where `currentColor` is always black (the mark was invisible on the dark theme until inlined).
 8. **Color scheme: cool paper + ink blue** (owner chose A, 2026-11-21): the warm paper/rust v1 palette was retired as "a little too warm"; §1 tokens swapped (contrast re-verified, all pairs ≥4.5:1). Token-only change — no layout/type impact.
+9. **Theme toggle** (owner, 2026-11-21): manual light/dark in the nav (32 px icon button; icon = the theme you'd switch to). Saved choice beats OS preference; OS preference is the JS-free default; choice persists in `localStorage` and is restored pre-paint (no flash).
+10. **Mobile hamburger** (owner, 2026-11-21): ≤ 640 px the five links collapse behind a hamburger (real `<button>`, `aria-expanded`/`aria-controls`); they open as a centered panel and close on link click, Escape, or outside click. Replaces the v1 zero-JS wrap.

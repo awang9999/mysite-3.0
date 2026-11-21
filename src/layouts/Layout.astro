@@ -1,6 +1,8 @@
 ---
 // Layout shell (DESIGN §4): nav + main + footer on every page.
-// Zero JS: no islands, no scripts, no hydration (DESIGN §10).
+// JS budget (DESIGN §10): one small module (src/scripts/ui.ts — theme toggle
+// + mobile hamburger, owner 2026-11-21) plus the pre-paint theme snippet
+// below. No islands, no frameworks, no hydration.
 import '../styles/global.css';
 import Nav from '../components/Nav.astro';
 import Footer from '../components/Footer.astro';
@@ -21,6 +23,14 @@ const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
   <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <script is:inline>
+      // Theme (DESIGN §8): restore the saved choice before first paint so
+      // there is no flash of the wrong scheme. Companion to ui.ts.
+      try {
+        var t = localStorage.getItem('theme');
+        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+      } catch (e) {}
+    </script>
     <meta name="color-scheme" content="light dark" />
     {noindex && <meta name="robots" content="noindex" />}
     <meta name="description" content={description} />
@@ -36,5 +46,6 @@ const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
       <slot />
     </main>
     <Footer />
+    <script src="../scripts/ui.ts"></script>
   </body>
 </html>

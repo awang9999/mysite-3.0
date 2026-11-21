@@ -13,6 +13,7 @@
   --fg-muted: #5a6270;  /* leads, meta, dates, footer, list sub-lines */
   --border: #dfe2e8;    /* hairlines: nav bottom, list rows, footer top */
   --accent: #1f5fa8;    /* links + interactive states only */
+  color-scheme: light;
 
   /* ---------- 3. Type scale — exactly 6 sizes (§3) ---------- */
   --text-xs: 0.8125rem;  /* 13px — dates, meta, footer, tags */
@@ -51,10 +52,26 @@
   }
 }
 
-/* ---------- 8. Dark mode — token override only, no JS (§8) ---------- */
+/* ---------- 8. Dark mode (§8) ----------
+   Priority: an explicit <html data-theme='light|dark'> (theme toggle, owner
+   2026-11-21; persisted in localStorage and restored pre-paint by an inline
+   head snippet) beats the OS preference; with no data-theme the site simply
+   follows prefers-color-scheme, JS or not. The dark tokens therefore appear
+   twice — once per trigger — with identical values. */
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --bg: #13161b;     /* cool near-black */
+  --surface: #1b1f26;
+  --fg: #e8eaed;
+  --fg-muted: #9aa3b0;
+  --border: #2a303a;
+  --accent: #7aa5e8;
+}
+
 @media (prefers-color-scheme: dark) {
-  :root {
-    --bg: #13161b;     /* cool near-black */
+  :root:not([data-theme='light']) {
+    color-scheme: dark;
+    --bg: #13161b;
     --surface: #1b1f26;
     --fg: #e8eaed;
     --fg-muted: #9aa3b0;
@@ -231,7 +248,10 @@ a:focus-visible {
   color: var(--bg);
 }
 
-/* ---------- 4. Nav — static, wraps on mobile, no hamburger (§4) ---------- */
+/* ---------- 4. Nav (§4) ----------
+   Desktop: wordmark left; links + theme toggle right. Mobile (≤ 640 px):
+   wordmark + toggle + hamburger; the links open as a centered panel
+   (owner, 2026-11-21 — replaced the zero-JS wrap). */
 .nav {
   border-bottom: 1px solid var(--border);
 }
@@ -239,23 +259,116 @@ a:focus-visible {
 .nav-inner {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: var(--space-4) 0;
+  align-items: center;
+  gap: var(--space-5);
   padding-block: var(--space-4); /* 16px vertical */
 }
 
+/* Icon buttons: theme toggle (all sizes) + hamburger (mobile only). */
+.icon-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 32px;
+  height: 32px;
+  padding: 0;
+  flex-shrink: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+  background: none;
+  color: var(--fg-muted);
+  cursor: pointer;
+  transition: color 150ms ease-out, border-color 150ms ease-out;
+}
+
+.icon-btn:hover {
+  color: var(--fg);
+  border-color: var(--fg-muted);
+}
+
+.icon-btn:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* Theme toggle: the icon shows the theme you'd switch TO (moon in light,
+   sun in dark). Mirrors the §8 token priority: explicit data-theme wins,
+   otherwise the OS preference decides. */
+.theme-toggle .icon-sun {
+  display: none;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-sun {
+  display: block;
+}
+
+:root[data-theme='dark'] .theme-toggle .icon-moon {
+  display: none;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .theme-toggle .icon-sun {
+    display: block;
+  }
+
+  :root:not([data-theme='light']) .theme-toggle .icon-moon {
+    display: none;
+  }
+}
+
+/* Hamburger: hidden on desktop; icon swaps to a close X while open. */
+.nav-burger {
+  display: none;
+}
+
+.nav-burger .icon-close {
+  display: none;
+}
+
+.nav[data-open='true'] .nav-burger .icon-burger {
+  display: none;
+}
+
+.nav[data-open='true'] .nav-burger .icon-close {
+  display: block;
+}
+
+/* Mobile: one header row (wordmark | toggle | burger); the links drop below
+   as a centered panel while open. */
 @media (max-width: 640px) {
   .nav-inner {
-    flex-direction: column;
-    align-items: center; /* two centered lines, 16px gap — §4 */
+    display: grid;
+    grid-template-columns: 1fr auto auto;
+    grid-template-areas: 'wordmark toggle burger';
+    column-gap: var(--space-3);
+    padding-block: var(--space-3);
+  }
+
+  .wordmark {
+    grid-area: wordmark;
+  }
+
+  .theme-toggle {
+    grid-area: toggle;
+  }
+
+  .nav-burger {
+    grid-area: burger;
+    display: inline-flex;
   }
 
   .nav-links {
-    /* 12px on mobile: at 360px the five 24px-gapped links overflow the 320px
-       content width and wrap to a third line. DESIGN §4's two-centered-lines
-       rule governs; 12px is on the spacing scale (§3). */
-    gap: var(--space-3);
+    display: none;
+    grid-column: 1 / -1;
+    margin-left: 0;
+    flex-direction: column;
+    align-items: center;
+    gap: var(--space-4);
+    padding-block: var(--space-4) var(--space-5);
+  }
+
+  .nav[data-open='true'] .nav-links {
+    display: flex;
   }
 }
 
@@ -285,7 +398,8 @@ a:focus-visible {
 .nav-links {
   display: flex;
   flex-wrap: wrap;
-  align-items: baseline;
+  align-items: center;
+  margin-left: auto; /* wordmark left, links + toggle right */
   gap: var(--space-5); /* 24px nav link gap — §3 */
 }
 
