@@ -3,6 +3,8 @@
 # Keep in sync with each post's frontmatter (title, date, summary, readingTime).
 # readingTime is in minutes, recomputed from final word count at ~200 wpm.
 
+lead: "Occasional posts on math and machine learning, starting with the matrix calculus series."
+
 posts:
   - slug: matrix-calculus-preface
     title: Matrix Calculus — Preface

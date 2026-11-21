@@ -33,6 +33,7 @@ export interface ExperienceEntry {
 }
 
 export interface ExperienceFile {
+  lead?: string;
   entries: ExperienceEntry[];
 }
 
@@ -53,6 +54,7 @@ export interface ArchivedProject {
 }
 
 export interface ProjectsFile {
+  lead?: string;
   featured: FeaturedProject[];
   archive: ArchivedProject[];
 }
@@ -68,6 +70,7 @@ export interface BlogIndexPost {
 }
 
 export interface BlogIndexFile {
+  lead?: string;
   posts: BlogIndexPost[];
 }
 

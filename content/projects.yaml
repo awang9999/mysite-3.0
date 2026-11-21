@@ -4,6 +4,8 @@
 # Featured = the projects the editor vouches for: public, substantive, and the work I'd point a visitor to.
 # Archive = everything else that still exists: one line each, nothing deleted, nothing hidden.
 
+lead: "What I've built that's still live — the ones I'd point you to, plus the rest."
+
 featured:
   - name: Hearts
     hook: "A single-player Hearts card game — from idea to hosted web app in a few hours, built with Kiro."

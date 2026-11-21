@@ -1,6 +1,6 @@
 # Task List — mysite-3.0
 
-**Status:** Active — Phase 2 complete, next up: Phase 3 (per-page polish + visual passes)
+**Status:** Phase 3 complete (visual QA passed with fixes folded in) — awaiting owner's whole-Phase-3 review; Phase 4 starts on owner's go
 **Conventions:** each task names its owner persona; phases are ordered by dependency; check boxes off as things land. Decisions live in `docs/HOSTING.md` (D1–D11) and `docs/DESIGN.md` — this file tracks *work*, not *decisions*.
 
 ---
@@ -20,14 +20,16 @@
 
 ## Phase 3 — Pages (pattern per page: `builder` implements → `visual-tester` checks responsive/dark/readability → owner looks)
 
-- [ ] **3.1 Home / hero**
-- [ ] **3.2 About**
-- [ ] **3.3 Experience**
-- [ ] **3.4 Projects** (featured set + expandable archive)
-- [ ] **3.5 Blog index + post template** (KaTeX rendered at build time)
-- [ ] **3.6 Render the three migrated posts**
-- [ ] **3.7 404 page**
-- [ ] **3.8 Finishing pass** — meta tags, favicon, robots.txt, manifest, footer link to `/old/`
+- [x] **3.1 Home / hero** ✅ 2026-11-21
+- [x] **3.2 About** ✅ 2026-11-21
+- [x] **3.3 Experience** ✅ 2026-11-21 — lead line added (owner review: copy is orchestrator-drafted)
+- [x] **3.4 Projects** (featured set + expandable archive) ✅ 2026-11-21 — lead line added; `<details>` archive click+keyboard verified
+- [x] **3.5 Blog index + post template** (KaTeX rendered at build time) ✅ 2026-11-21 — lead line added
+- [x] **3.6 Render the three migrated posts** ✅ 2026-11-21 — 44 display eqs render, no overflow at 360 px
+- [x] **3.7 404 page** ✅ 2026-11-21 — noindex, centered, single filled button
+- [x] **3.8 Finishing pass** — meta tags, favicon, robots.txt, manifest, footer link to `/old/` ✅ 2026-11-21 — canonical per page, theme-aware SVG favicon, robots allow-all, minimal manifest, `/old/` footer link
+
+**Visual QA (2026-11-21, 36 runs: 9 pages × 2 viewports × 2 schemes):** all pass. Fixes folded in: D-1 leads, m-3 measure 576→640 px (gutter outside content width); spec amendments: m-4 3-line nav wrap at 360 px (2 lines geometrically impossible), m-5/m-6 owner-approved copy wins (bullets, 1–3 line descriptions), D-2 §10 budgets measured on the wire (math pages exempt from the raw-HTML line; wire worst case 96 KB). m-7 (KaTeX CSS on all pages) was a QA false positive — it's scoped to the 3 posts.
 
 ## Phase 4 — Infra & cutover (all `ops`, follows HOSTING §6)
 

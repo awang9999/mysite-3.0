@@ -15,6 +15,7 @@ const altLinks = (links: { label: string; href: string }[] | undefined) =>
   <div class="container container--wide page-top">
     <header class="page-header">
       <h1>{navLabelFor('/projects')}</h1>
+      {projects.lead && <p class="lead">{projects.lead}</p>}
     </header>
 
     <ul class="rows">

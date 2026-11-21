@@ -152,7 +152,7 @@ content
 - Static (not sticky), `--content-width` container, 16 px vertical padding; hairline bottom border (`--border`) — the only chrome rule on the page besides the footer's.
 - Left: text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`) — no logo image; 2.0's `title.svg` is decoration, and text is cheaper, sharper, and themeable.
 - Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**).
-- Mobile (≤ 640 px): wraps to two centered lines (wordmark line 1, links line 2, 16 px gap) — **no hamburger**. Rationale: a hamburger is JS + state + a11y work for five short links; wrapping is zero-JS and always visible.
+- Mobile (≤ 640 px): wraps onto centered lines — wordmark first, then the links, 16 px gap; two lines when they fit, three at 360 px (the five links need ~330 px of their own width). **No hamburger.** Rationale: a hamburger is JS + state + a11y work for five short links; wrapping is zero-JS and always visible. *(Amended 2026-11-21 after visual QA: the original “two lines” target was geometrically impossible at 360 px.)*
 - Not sticky: the pages are short; blog posts are the only long pages and they end with a link back to /blog. Rationale: sticky chrome is a mobile-app habit that boxes the top of every screen.
 
 ### Footer
@@ -207,7 +207,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 - 3 projects (owner-approved 2026-11-21: Hearts, MathSearch, ProjectX 2021), single column, newest/most-relevant first.
 - Each project is a row:
   1. **Line 1:** project name (`--text-md`, 500) — linked, accent on hover, external arrow if off-site
-  2. **Line 2:** one-line description (`--text-base`, `--fg-muted`)
+  2. **Line 2:** 1–3 line description (`--text-base`, `--fg-muted`) *(amended 2026-11-21: owner-approved copy runs 1–3 lines)*
   3. **Line 3 (optional):** tech tags (`--text-xs`, `--fg-muted`, plain text separated by ` · ` — **no pill badges**)
 - Rows separated by a 1 px `--border` hairline (border-top on all but the first), 16 px vertical padding.
 - No image cards. Rationale: 2.0's screenshot cards were ornament + payload; a text row *is* the project, and the link carries the proof. Zero image bytes, faster read, and it matches the blog index so the site has one list language.
@@ -263,7 +263,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 
 ### Experience entries
 
-- One row per role: title line "**Role** · Company" (`--text-md`/500), meta line date range (`--text-xs`, `--fg-muted`), body 2–3 sentences (`--text-base`).
+- One row per role: title line "**Role** · Company" (`--text-md`/500), meta line date range (`--text-xs`, `--fg-muted`), body 2–3 sentences or 1–3 short bullets (`--text-base`). *(amended 2026-11-21: owner-approved copy uses bullets)*
 - No timeline rail, dots, or connector line. Rationale: the timeline rail is a résumé-template cliché; date ranges as text are unambiguous, print well, and cost nothing.
 
 ### Blog index
@@ -321,8 +321,8 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 - Fonts: 24.5 KB Manrope (latin) + 15.2 KB (latin-ext, optional but default yes) + KaTeX faces ≤ ~50 KB after subsetting.
 - CSS: single stylesheet, target ≤ 15 KB minified.
 - JS: **0 KB** in v1 (the `<details>` pattern needs none).
-- Per-page HTML: ≤ 20 KB.
-- Total per page, target: **≤ ~150 KB** before any image.
+- Per-page HTML: ≤ 20 KB (non-math pages). Math pages are exempt: server-rendered KaTeX DOM is span-verbose (chapter 1 ≈ 242 KB raw) but compresses ~10× over the wire.
+- Total per page (wire, gzip-compressed — CloudFront compresses HTML/CSS by default), target: **≤ ~150 KB** before any image. Measured 2026-11-21: non-math ≈ 45–46 KB, math ≈ 96 KB worst case.
 - Rationale: the site should hit the edge in one round trip and paint before a 3G upload of the old hero video would finish one frame.
 
 ---
@@ -331,3 +331,7 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 
 1. **Hero link set** (owner, 2026-11-21): Résumé · GitHub · Blog. Email lives on the about page, not the hero.
 2. **Featured project count + order** (owner, 2026-11-21): 3 — Hearts, MathSearch, ProjectX 2021.
+3. **Container geometry** (visual QA, 2026-11-21): the gutter sits *outside* the content width — text measure is exactly 640 px (768 px on /projects); implemented as `max-width: calc(width + 2 × gutter)`.
+4. **Page leads on all four subpages** (visual QA, 2026-11-21): /experience, /projects, /blog now carry a lead line like /about; copy drafted by the orchestrator, pending owner review.
+5. **Budgets measured on the wire** (visual QA, 2026-11-21): §10 totals apply to gzip-compressed transfer sizes; raw KaTeX HTML is exempt per the math-page note.
+6. **Bullets in experience entries; 1–3 line featured descriptions** (visual QA, 2026-11-21): owner-approved content wins over the original pattern wording; §6/§7 amended accordingly.

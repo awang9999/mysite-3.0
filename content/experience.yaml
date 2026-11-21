@@ -3,6 +3,8 @@
 # body = 1–3 concrete bullets. No timeline rail.
 # Dates are display strings (the builder renders them as-is).
 
+lead: "The roles, newest first — what each one was actually about."
+
 entries:
   - role: Software Engineer II
     company: Amazon (AWS HealthOmics)

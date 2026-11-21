@@ -115,13 +115,13 @@ main {
 /* ---------- Containers (§4) ---------- */
 .container {
   width: 100%;
-  max-width: var(--content-width);
+  max-width: calc(var(--content-width) + 2 * var(--gutter)); /* gutter outside the 640 px measure (§4) */
   margin-inline: auto;
   padding-inline: var(--gutter);
 }
 
 .container--wide {
-  max-width: var(--wide-width); /* /projects only — §4 */
+  max-width: calc(var(--wide-width) + 2 * var(--gutter)); /* /projects only — §4 */
 }
 
 .page-top {
