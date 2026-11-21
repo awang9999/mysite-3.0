@@ -39,7 +39,8 @@
   --radius-lg: 8px; /* code blocks, display-math blocks */
 
   /* ---------- 4. Widths (§4) ---------- */
-  --content-width: 40rem; /* 640px — all prose pages + home hero */
+  --content-width: 40rem; /* 640px — prose pages (about, experience, blog) */
+  --home-width: 58rem; /* 928px — home hero: portrait + text, each ~50% */
   --wide-width: 48rem;    /* 768px — /projects only */
   --gutter: 20px;         /* mobile */
 }
@@ -348,43 +349,36 @@ a:focus-visible {
 
 /* ---------- 4. Hero — home only: a section, not a screen (§4) ---------- */
 .hero {
-  /* Top padding shrinks on desktop so the large portrait can take most of
-     the viewport without pushing the text below the fold (owner, 2026-11-21). */
-  padding-top: var(--space-6);
-  padding-bottom: var(--space-9);
+  max-width: var(--home-width); /* wider than prose pages: room for the portrait */
+  padding-block: var(--space-9);
 }
 
-@media (min-width: 641px) {
-  .hero {
-    padding-top: clamp(40px, 12vh, 120px);
-  }
-}
-
-/* Hero: portrait left, name/role/bio right (owner, 2026-11-21). */
+/* Hero: portrait left, name/role/bio right — each ~50% of the content (owner, 2026-11-21). */
 .hero-inner {
   display: flex;
   align-items: center;
-  gap: var(--space-6); /* 32px between portrait and text */
+  gap: var(--space-7); /* 48px gutter */
 }
 
 .hero-portrait {
   display: block;
   flex-shrink: 0;
-  /* Desktop: most of the viewport height (owner, 2026-11-21). */
-  width: min(72vh, 60vw, 560px);
-  height: min(72vh, 60vw, 560px);
+  width: clamp(240px, 42vw, 440px);
+  height: clamp(240px, 42vw, 440px);
   border-radius: 50%;
   border: 1px solid var(--border);
 }
 
 .hero-copy {
+  flex: 1 1 50%;
   min-width: 0;
+  max-width: 46ch; /* keep the bio on a comfortable measure */
 }
 
-/* Mobile: portrait stacks above the bio, sized to fit the narrow screen. */
+/* Mobile: portrait stacks above the bio, centered (owner, 2026-11-21). */
 @media (max-width: 640px) {
   .hero {
-    padding-top: var(--space-6);
+    padding-block: var(--space-6);
   }
   .hero-inner {
     flex-direction: column;
@@ -393,6 +387,9 @@ a:focus-visible {
   .hero-portrait {
     width: min(70vw, 280px);
     height: min(70vw, 280px);
+  }
+  .hero-copy {
+    max-width: none;
   }
 }
 
