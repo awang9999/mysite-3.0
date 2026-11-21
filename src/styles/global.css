@@ -333,6 +333,17 @@ a:focus-visible {
   display: block;
 }
 
+/* Base (desktop) links rule must come BEFORE the mobile media query: equal
+   specificity, so a later base rule would win at mobile widths (QA 2026-11-21:
+   links stayed visible in the closed menu). */
+.nav-links {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  margin-left: auto; /* wordmark left, links + toggle right */
+  gap: var(--space-5); /* 24px nav link gap — §3 */
+}
+
 /* Mobile: one header row (wordmark | toggle | burger); the links drop below
    as a centered panel while open. */
 @media (max-width: 640px) {
@@ -393,14 +404,6 @@ a:focus-visible {
   text-decoration: underline;
   text-decoration-color: currentColor;
   text-underline-offset: 3px;
-}
-
-.nav-links {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
-  margin-left: auto; /* wordmark left, links + toggle right */
-  gap: var(--space-5); /* 24px nav link gap — §3 */
 }
 
 .nav-links a {
