@@ -1,6 +1,6 @@
 # Task List — mysite-3.0
 
-**Status:** Draft for owner sign-off (2026-11-21)
+**Status:** Active — Phase 1 complete, next up: 2.1 (stack decision)
 **Conventions:** each task names its owner persona; phases are ordered by dependency; check boxes off as things land. Decisions live in `docs/HOSTING.md` (D1–D11) and `docs/DESIGN.md` — this file tracks *work*, not *decisions*.
 
 ---
@@ -49,4 +49,4 @@
 
 ## Blocked / parked
 
-- Stack choice (2.1) — parked by owner; everything in Phase 1 proceeds without it.
+- (none — 2.1 is the active next step; all its inputs from Phase 1 are in hand)
