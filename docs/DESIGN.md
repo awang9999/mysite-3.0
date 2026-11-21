@@ -204,7 +204,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 
 ### Featured set (top of /projects)
 
-- 3–4 projects (editor curates in 1.2, owner approves in 1.4), single column, newest/most-relevant first.
+- 3 projects (owner-approved 2026-11-21: Hearts, MathSearch, ProjectX 2021), single column, newest/most-relevant first.
 - Each project is a row:
   1. **Line 1:** project name (`--text-md`, 500) — linked, accent on hover, external arrow if off-site
   2. **Line 2:** one-line description (`--text-base`, `--fg-muted`)
@@ -327,7 +327,7 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 
 ---
 
-## 11. Open items (max 2)
+## 11. Resolved items
 
-1. **Hero link set** — which 2–4 of GitHub / Résumé / Email / Blog appear under the hero name (owner, with editor copy — 1.4).
-2. **Featured project count + order** — 3 or 4, and which (editor proposes in 1.2, owner approves in 1.4); the pattern holds either way.
+1. **Hero link set** (owner, 2026-11-21): Résumé · GitHub · Blog. Email lives on the about page, not the hero.
+2. **Featured project count + order** (owner, 2026-11-21): 3 — Hearts, MathSearch, ProjectX 2021.

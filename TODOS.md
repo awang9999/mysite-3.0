@@ -8,9 +8,9 @@
 ## Phase 1 — Foundations (no stack required, can start immediately)
 
 - [x] **1.1 Design system v1** — `art-director`: finalize `docs/DESIGN.md`. Palette + self-hosted typeface, type scale, spacing scale, dark-mode tokens, page layout rules, motion rules (default: none), and the concrete pattern for "curated + expandable projects." ✅ 2026-11-21 — warm paper + rust accent, self-hosted Manrope variable, 6-size type / 9-step spacing scales, row-based lists, native `<details>` archive, zero JS / zero images in v1, ~150 KB per page.
-- [ ] **1.2 Content skeleton** — `editor`: create `content/` with conventions doc. Hero line, about, experience entries, projects (featured set + archive), blog index. Mine 2.0 for facts; `<!-- VERIFY -->` comments on anything uncertain.
-- [ ] **1.3 Migrate matrix-calculus series** — `editor`: re-port the 3 posts as markdown with KaTeX math. Content first, no visual/image parity with 2.0 (D11).
-- [ ] **1.4 Owner review pass** — owner: review design tokens + all copy, resolve VERIFY comments, approve project curation (featured list + order).
+- [x] **1.2 Content skeleton** — `editor`: create `content/` with conventions doc. Hero line, about, experience entries, projects (featured set + archive), blog index. Mine 2.0 for facts; `<!-- VERIFY -->` comments on anything uncertain. ✅ 2026-11-21 — 11 files, 8 experience entries, 3 featured + 2 archive, 9 VERIFY comments outstanding.
+- [x] **1.3 Migrate matrix-calculus series** — `editor`: re-port the 3 posts as markdown with KaTeX math. Content first, no visual/image parity with 2.0 (D11). ✅ 2026-11-21 — 44 display-math blocks verified 1:1; 5 math errors from 2.0 corrected in the port.
+- [x] **1.4 Owner review pass** — owner: review design tokens + all copy, resolve VERIFY comments, approve project curation (featured list + order). ✅ 2026-11-21 — hero links: Résumé · GitHub · Blog; featured = 3 (Hearts, MathSearch, ProjectX); Mountain View + "back since 2024" + Hearts 2025 confirmed; twitter/instagram dropped; "second part" promise cut; 5→6 math-correction VERIFYs kept as provenance NOTES.
 
 ## Phase 2 — Scaffolding (the parked stack decision un-parks here)
 

@@ -1,0 +1,59 @@
+# Projects — curated featured set + archive (DESIGN §6).
+# Featured row: name (linked) / one-line hook / optional body / tags. 3–4 items, newest or most relevant first.
+# Archive row: same shape, one-line description, year in the meta line. Native <details>, no JS.
+# Featured = the projects the editor vouches for: public, substantive, and the work I'd point a visitor to.
+# Archive = everything else that still exists: one line each, nothing deleted, nothing hidden.
+
+featured:
+  - name: Hearts
+    hook: "A single-player Hearts card game — from idea to hosted web app in a few hours, built with Kiro."
+    body: "A friend's grandparents were tired of ads in the Hearts games they could find, so I built a clean one. TypeScript, AWS, prompt to production in an afternoon."
+    tags: [TypeScript, AWS, Kiro]
+    links:
+      - label: GitHub
+        href: https://github.com/awang9999/hearts-game
+        external: true
+    year: 2025 # confirmed by owner 2026-11-21
+
+  - name: MathSearch
+    hook: "A search engine for equations — find a formula in academic PDFs and textbooks by image."
+    body: "Led 14 Cornell Data Science students building the prototype: YOLOv7 for equation detection, a siamese network for matching, and a React frontend on AWS."
+    tags: [ML, AWS, React]
+    links:
+      - label: GitHub
+        href: https://github.com/CornellDataScience/MathSearch
+        external: true
+    year: 2022
+
+  - name: ProjectX 2021
+    hook: "First place in the Epidemiology category of UofT's undergraduate research competition."
+    body: "Led six students from Cornell studying how misinformation spread on social media during the pandemic: a BERT detector plus a virality model. Presented at the 2022 UofT AI conference."
+    tags: [NLP, BERT]
+    links:
+      - label: arXiv
+        href: https://arxiv.org/abs/2207.01483
+        external: true
+      - label: GitHub
+        href: https://github.com/CornellDataScience/ProjectX-2021
+        external: true
+    year: 2021
+
+archive:
+  - name: Neural Network Training Sensitivity
+    line: "A study of how similar fine-tuned neural networks stay, that ended as a pruning algorithm shrinking OPT-1.3B by 20% with little perplexity loss."
+    year: 2024
+    links:
+      - label: arXiv
+        href: https://arxiv.org/abs/2406.00061
+        external: true
+      - label: GitHub
+        href: https://github.com/awang9999/nn-sensitivity-research
+        external: true
+
+  - name: Personal Website (v2)
+    line: "My first end-to-end CI/CD project — React, CircleCI, AWS S3, CloudFront, Route53."
+    year: 2022
+    links:
+      - label: GitHub
+        href: https://github.com/awang9999/mysite-2.0
+        external: true

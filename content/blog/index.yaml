@@ -1,0 +1,29 @@
+# Blog index — the source of truth for the /blog page (DESIGN §7: rows, newest first).
+# Display order: newest date first; posts sharing a date keep reading order within their series.
+# Keep in sync with each post's frontmatter (title, date, summary, readingTime).
+# readingTime is in minutes, recomputed from final word count at ~200 wpm.
+
+posts:
+  - slug: matrix-calculus-preface
+    title: Matrix Calculus — Preface
+    date: 2023-03-21
+    summary: "Matrix calculus has no home in the standard curriculum — this series builds it from multivariable calculus, aimed at machine learning."
+    readingTime: 3
+    series: Matrix Calculus
+    part: 0
+
+  - slug: matrix-calculus-chapter-1
+    title: Matrix Calculus — Preliminaries
+    date: 2023-03-21
+    summary: "The derivative, re-expressed as the best linear approximation — the foundation the rest of the series builds on."
+    readingTime: 10
+    series: Matrix Calculus
+    part: 1
+
+  - slug: matrix-calculus-chapter-2
+    title: Matrix Calculus — The Total Derivative
+    date: 2023-03-21
+    summary: "The total derivative: its definition, the Jacobian, the gradient, and the chain rule as plain matrix multiplication."
+    readingTime: 9
+    series: Matrix Calculus
+    part: 2

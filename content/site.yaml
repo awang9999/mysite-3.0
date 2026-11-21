@@ -1,0 +1,38 @@
+# Site metadata — global data the builder reads for every page.
+title: Alexander Wang
+description: Software Engineer II at AWS HealthOmics. Math, machine learning, and the occasional blog post.
+author: Alexander Wang
+email: alexander.wang2001@gmail.com
+resume:
+  href: /resume.pdf
+  # TODO(builder/ops): copy alexander_wang_resume.pdf (from mysite-2.0 public/files/) into the
+  # build output as /resume.pdf. Verify the PDF is current before cutover — last updated Jul 2026.
+
+nav:
+  - label: About
+    href: /about
+  - label: Experience
+    href: /experience
+  - label: Projects
+    href: /projects
+  - label: Blog
+    href: /blog
+  - label: Résumé
+    href: /resume.pdf
+
+footer:
+  copyright: © 2026 Alexander Wang
+  links:
+    - label: Résumé
+      href: /resume.pdf
+    - label: GitHub
+      href: https://github.com/awang9999
+      external: true
+    - label: Old site
+      href: /old/
+
+# Social accounts. Owner decision 2026-11-21: no twitter/instagram (stale/unused) — removed.
+# DESIGN: no icon row in the footer; these are metadata for links where relevant.
+socials:
+  github: https://github.com/awang9999
+  linkedin: https://www.linkedin.com/in/awang9999/
