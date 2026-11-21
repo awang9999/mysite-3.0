@@ -39,7 +39,7 @@ Shared rules live in the docs, not in chat:
 
 ## Stack
 
-TBD — planning phase. Hosting constraints that already pin the choice: **static multi-page output, real URLs, no SPA, near-zero runtime JS** (see `docs/HOSTING.md` §4, D3). Blog math (KaTeX) is **rendered at build time** from markdown (D11). Deployment is a local script — no CI (D4).
+**Astro 7** (D12) — markdown-first SSG: plain multi-page HTML, zero JS by default, real URLs (D3), content-hashed assets (D5), built-in `dev` / `build` / preview (§10). Blog math is **KaTeX rendered at build time** (D11). Deployment is a local script — no CI (D4).
 
 ## Old site
 

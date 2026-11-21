@@ -14,7 +14,7 @@
 
 ## Phase 2 — Scaffolding (the parked stack decision un-parks here)
 
-- [ ] **2.1 Pick the SSG stack** — owner + `builder`: must satisfy HOSTING D3/D11/§10 — multi-page static output, real URLs, no SPA, near-zero runtime JS, build-time KaTeX, `dev`/`build`/`preview` scripts. Small decision; everything in Phase 1 gives it concrete inputs (content volume, math, design tokens).
+- [x] **2.1 Pick the SSG stack** — owner + `builder`: must satisfy HOSTING D3/D11/§10 — multi-page static output, real URLs, no SPA, near-zero runtime JS, build-time KaTeX, `dev`/`build`/`preview` scripts. ✅ 2026-11-21 — **Astro 7** (D12) + **build-time KaTeX** (D11, chosen over LaTeX→SVG / MathJax-static).
 - [ ] **2.2 Project scaffold** — `builder`: init project, layout shell (nav + footer), all routes (`/`, `/about`, `/experience`, `/projects`, `/blog`, `/blog/<slug>`, 404), and working `dev` / `build` / `preview` per HOSTING §10.
 - [ ] **2.3 Design system into code** — `builder`: implement DESIGN.md tokens (typography, color, spacing, dark mode) as the base stylesheet every page inherits.
 

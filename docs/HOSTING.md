@@ -84,7 +84,8 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | D8 | Enable **S3 versioning** | ~free at this scale; gives point-in-time rollback of a bad deploy without touching the live site |
 | D9 | No WAF, no Lambda@Edge, no image-optimization service | YAGNI for a personal site with no secrets and build-time image optimization. Revisit only if a concrete need appears |
 | D10 | ✅ **CONFIRMED** Old 2.0 site **archived at `/old/`** on the same bucket, linked from the 3.0 footer, removed later at the owner's word | No new infrastructure: rebuild 2.0 with `PUBLIC_URL=/old` (+ one-line router `basename="/old"`), sync to `s3://…/old/`. Only ~5 routes, so deep links work by copying `index.html` to those paths. Temporary by design. |
-| D11 | ✅ **CONFIRMED** Blog math (KaTeX, incl. the matrix-calculus series) is **markdown-rendered at build time** — output is plain HTML + KaTeX CSS; no runtime math JS | Owner writes markdown; the build handles math. No visual parity with 2.0 required (images/styling are free rein). |
+| D11 | ✅ **CONFIRMED** Blog math is **rendered at build time by KaTeX** — output is plain HTML + KaTeX CSS/fonts; no runtime math JS. Renderer chosen over **LaTeX→SVG** (a TeX distribution is too heavy a build dependency; the series already renders in KaTeX on 2.0, so compatibility is proven) and **MathJax-static** (heavier payload, awkward setup). Safety valve: per-equation SVG fallback if a future post needs a LaTeX package KaTeX lacks | Owner writes markdown; the build handles math. No visual parity with 2.0 required (images/styling are free rein). |
+| D12 | ✅ **CONFIRMED (2026-11-21)** SSG stack: **Astro** (v7) | Every HOSTING/DESIGN constraint maps to a stock Astro feature: MPP real URLs (D3), zero JS by default (DESIGN §10), typed Content Collections for the `content/` frontmatter, `@astrojs/katex` (D11), built-in content-hashed assets (D5), built-in `dev`/`build`/preview (§10). Alternatives considered: Eleventy 3 (assemble hashing + KaTeX yourself), Hugo (Go-template friction + content remap). |
 
 ## 5. Caching & deploy mechanics
 
@@ -133,7 +134,7 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 | ACM | $0 |
 | **Total** | **~$0.50–1/month** |
 
-## 8. Decisions log (all resolved 2026-11-20)
+## 8. Decisions log (all resolved 2026-11-21)
 
 1. Canonical host: **apex** — www 301-redirects (D2)
 2. Bucket: **reuse** `www.alexander-wang.net` (D1)
@@ -141,6 +142,8 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 4. Blog math: **migrate the KaTeX matrix-calculus series as markdown, rendered at build time**; no visual parity with 2.0 required (D11)
 5. HSTS: **enable at cutover**, preload list later (D7)
 6. Archive: **old 2.0 site reachable at `/old/` for a while**, then removed (D10)
+7. SSG stack: **Astro** (D12)
+8. Math renderer: **KaTeX at build time** — chosen over LaTeX→SVG and MathJax-static; per-equation SVG fallback as escape hatch (D11)
 
 ## 9. Verification checklist (per deploy, automated by the deploy script)
 
