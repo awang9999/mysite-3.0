@@ -1,7 +1,7 @@
 # Hosting Design — mysite-3.0
 
-**Status:** Draft v1 · **Owner:** `ops` agent · **Last verified against live AWS state:** 2026-11-20
-**Confirmed by owner:** canonical host is the apex (2026-11-20) — see D2
+**Status:** v1 — all owner decisions locked (2026-11-20)
+**Owner:** `ops` agent · **Last verified against live AWS state:** 2026-11-20
 
 ---
 
@@ -58,7 +58,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
                        │   • two-tier cache headers (see §5)         │
                        └─────────────────────────────────────────────┘
 
-  Deploy: GitHub Actions on push to main
+  Deploy: local script (deploy/deploy.sh) — no CI (owner decision)
           build → s3 sync (two-tier) → CloudFront invalidate /* → verify
 ```
 
@@ -74,15 +74,17 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 
 | # | Decision | Rationale |
 |---|---|---|
-| D1 | Single bucket + single CloudFront distribution serving both apex and www | Eliminates the legacy two-bucket/two-distribution split; one place to configure headers, cert, cache |
+| D1 | ✅ **CONFIRMED** Single bucket (`www.alexander-wang.net`, reused) + single CloudFront distribution serving both apex and www | Eliminates the legacy two-bucket/two-distribution split; one place to configure headers, cert, cache |
 | D2 | ✅ **CONFIRMED (2026-11-20)** Canonical host: **apex** `alexander-wang.net`; `www` 301-redirects to apex | Shorter, cleaner URLs. Implemented at the edge (CloudFront per-alias redirect on the www behavior) — no S3 or app involvement. |
 | D3 | Multi-page static output (MPP), real URLs, `404.html`, **no SPA** | Hosting stays trivially simple; SEO and deep-linking work with zero config; cache is fully effective |
-| D4 | Deploy via **GitHub Actions on push to `main`** (repo already lives on GitHub) | Free, zero extra account to maintain, replaces CircleCI (paid per seat, and its pipeline never invalidated the CDN). Manual `deploy/` script kept as an escape hatch |
+| D4 | ✅ **CONFIRMED** Deploy = **a single local script** (`deploy/deploy.sh`), **no CI at all** — CircleCI fully retired | Owner preference: a personal site doesn't need a CI pipeline. One command does build → two-tier sync → invalidate → verify. Replaces CircleCI (paid per seat, and its pipeline never even invalidated the CDN). |
 | D5 | Two-tier cache: hashed assets `immutable, max-age=31536000`; HTML `no-cache, no-store, must-revalidate` | Same strategy that works today: assets cache forever (content-hashed names), HTML always revalidates so new deploys are visible after invalidation |
 | D6 | Private origin: bucket stays private, CloudFront accesses it via OAI (existing `E3PV3Z1GIPWEQ0`) or a new OAC | Direct `https://www.alexander-wang.net.s3…` access returns 403; only the edge can read content. Never public-read S3 |
-| D7 | Security headers at the edge via a CloudFront *response headers policy*: `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` | One config point, applies to every object, no per-object work |
+| D7 | ✅ **CONFIRMED** Security headers at the edge via a CloudFront *response headers policy*: `Strict-Transport-Security`, `X-Content-Type-Options: nosniff`, `Referrer-Policy: strict-origin-when-cross-origin` | One config point, applies to every object. HSTS = header instructing browsers to always use HTTPS for this domain (blocks protocol-downgrade attacks); enabled with a moderate max-age at cutover, preload list later. |
 | D8 | Enable **S3 versioning** | ~free at this scale; gives point-in-time rollback of a bad deploy without touching the live site |
 | D9 | No WAF, no Lambda@Edge, no image-optimization service | YAGNI for a personal site with no secrets and build-time image optimization. Revisit only if a concrete need appears |
+| D10 | ✅ **CONFIRMED** Old 2.0 site **archived at `/old/`** on the same bucket, linked from the 3.0 footer, removed later at the owner's word | No new infrastructure: rebuild 2.0 with `PUBLIC_URL=/old` (+ one-line router `basename="/old"`), sync to `s3://…/old/`. Only ~5 routes, so deep links work by copying `index.html` to those paths. Temporary by design. |
+| D11 | ✅ **CONFIRMED** Blog math (KaTeX, incl. the matrix-calculus series) is **markdown-rendered at build time** — output is plain HTML + KaTeX CSS; no runtime math JS | Owner writes markdown; the build handles math. No visual parity with 2.0 required (images/styling are free rein). |
 
 ## 5. Caching & deploy mechanics
 
@@ -93,9 +95,9 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | `/assets/*` (JS/CSS/fonts/images — content-hashed names) | `public, max-age=31536000, immutable` | A given hash never changes; cache for a year at edge and in browsers |
 | `*.html`, `manifest.json`, `robots.txt`, `favicon*` | `no-cache, no-store, must-revalidate` | Entry points must always revalidate so new deploys land immediately |
 
-**Deploy sequence (GitHub Actions job `deploy`):**
+**Deploy sequence (one command, run by `deploy/deploy.sh` — no CI):**
 
-1. `npm ci && npm run build` → static output (HTML + hashed assets)
+1. `npm ci && npm run build` → static output (HTML + hashed assets; blog markdown → HTML with KaTeX rendered at build time)
 2. `aws s3 sync` assets → bucket (`--delete --exact-timestamps`, long cache)
 3. `aws s3 sync` HTML → bucket (`no-cache` headers)
 4. `aws s3` copy `404.html` (or ensure it's present with the right headers)
@@ -111,10 +113,12 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 1. **Build & verify 3.0 locally** (done in the normal dev loop).
 2. **Configure the target state on the existing www distribution (`E91NPMQZ9M9NQ`):** add the apex alias + ACM cert coverage, add the www→apex 301 behavior, attach the response-headers policy. (Apex cert: confirm the existing ACM cert covers both names; if not, request it — takes minutes.)
 3. **Enable S3 versioning** on `www.alexander-wang.net`.
-4. **Deploy the 3.0 build** to `www.alexander-wang.net` via the new GitHub Actions workflow. **This replaces the live site on `www`** — the cutover moment.
-5. **Flip DNS:** point the apex alias A record at `d1oevywpg7h4uc.cloudfront.net` (replacing `d30bl45vk665e7`). Alias records propagate within seconds to minutes.
-6. **Verify:** apex serves 3.0, www 301s to apex, 404s work, direct bucket URLs 403, cache headers correct.
-7. **Decommission (after a soak period):** delete legacy distribution `E96YWX7J3SY11`, empty + delete legacy bucket `alexander-wang.net`, delete the CircleCI project, retire the old `deploy.sh` in mysite-2.0.
+4. **Prepare the 2.0 archive (D10):** in mysite-2.0, add router `basename="/old"`, rebuild with `PUBLIC_URL=/old`, copy `index.html` to its ~5 route paths (so deep links like `/old/blog` work), sync the build to `s3://www.alexander-wang.net/old/`.
+5. **Deploy the 3.0 build** to the bucket root via `deploy/deploy.sh`. **This replaces the live site on `www`** — the cutover moment (www → 3.0, `/old/` → 2.0).
+6. **Flip DNS:** point the apex alias A record at `d1oevywpg7h4uc.cloudfront.net` (replacing `d30bl45vk665e7`). Alias records propagate within seconds to minutes.
+7. **Verify:** apex serves 3.0, www 301s to apex, `/old/` serves 2.0, 404s work, direct bucket URLs 403, cache headers correct.
+8. **Decommission (after a soak period):** delete legacy distribution `E96YWX7J3SY11`, empty + delete legacy bucket `alexander-wang.net`, delete the CircleCI project, retire the old `deploy.sh` in mysite-2.0.
+9. **Later, at the owner's word:** remove `/old/` from the bucket and drop the footer link.
 
 **Risk notes:** step 4 replaces www content before step 5 flips apex — for the gap between them, apex still shows 2.0 and www shows 3.0. Both work; no broken state. If anything is wrong, revert step 4 via S3 versioning and step 5 by re-pointing the alias.
 
@@ -126,16 +130,17 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 | S3 storage + requests (~50 MB, low traffic) | ~$0.01 |
 | CloudFront data transfer (free-tier-eligible at this scale) | ~$0 |
 | CloudFront invalidations (< 50/month, limit 1,000) | $0 |
-| GitHub Actions (2,000 free min/month on private repo; deploys use ~2 min) | $0 |
 | ACM | $0 |
 | **Total** | **~$0.50–1/month** |
 
-## 8. Open questions (need owner)
+## 8. Decisions log (all resolved 2026-11-20)
 
-1. **Bucket:** reuse `www.alexander-wang.net` (recommended) or create a fresh bucket for a clean break?
-2. **CircleCI:** confirm retirement (recommended) — does any other project still use that account?
-3. **Blog math:** the 2.0 blog has a KaTeX-based matrix-calculus series. If those posts come over, math must render **at build time** (keeps runtime JS near zero). Affects the stack/content pipeline, not hosting — parked until the content plan is set.
-4. **HSTS preload:** enable HSTS at cutover (recommended); add to the HSTS preload list later once headers are verified in the wild.
+1. Canonical host: **apex** — www 301-redirects (D2)
+2. Bucket: **reuse** `www.alexander-wang.net` (D1)
+3. CI: **retire CircleCI entirely; deploy = local script** (D4)
+4. Blog math: **migrate the KaTeX matrix-calculus series as markdown, rendered at build time**; no visual parity with 2.0 required (D11)
+5. HSTS: **enable at cutover**, preload list later (D7)
+6. Archive: **old 2.0 site reachable at `/old/` for a while**, then removed (D10)
 
 ## 9. Verification checklist (per deploy, automated in CI)
 

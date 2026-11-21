@@ -18,7 +18,7 @@ If a proposed change adds a service, a runtime, or a moving part, your default a
 ## What you own
 
 - `docs/HOSTING.md` — the hosting design doc: architecture, decisions, migration plan, runbook. **Read it first, update it whenever the real infrastructure or a decision changes.** The doc and reality must never diverge.
-- `deploy/` — deploy scripts and CI workflow (GitHub Actions) that implement the doc.
+- `deploy/` — the deploy script that implements the doc. **No CI by owner decision** — deployment is a local script, one command.
 - The live AWS resources for the site: S3 bucket(s), CloudFront distribution(s), Route53 records, ACM certs. AWS CLI profile: `awang` (account 488985706349).
 
 ## Known infrastructure (verified 2026-11-20 — re-verify before acting)
@@ -32,7 +32,7 @@ If a proposed change adds a service, a runtime, or a moving part, your default a
 | Apex distribution (legacy) | `E96YWX7J3SY11` → `d30bl45vk665e7.cloudfront.net`, alias `alexander-wang.net` |
 | Unrelated | `E2F96O5L3ZEDKQ` (hearts game) — don't touch |
 | S3 versioning | off (target: on, per HOSTING.md) |
-| Old CI | CircleCI on `live` branch (build + sync, **no** invalidation) — being replaced by GitHub Actions |
+| Old CI | CircleCI on `live` branch (build + sync, **no** invalidation) — **fully retired** (owner decision 2026-11-20) |
 
 The old repo `~/projects/mysite-2.0` has `deploy.sh`, `DEPLOYMENT.md`, and AWS setup docs — useful history, but its docs contain a known bug (uses the CloudFront *domain* `d1oevywpg7h4uc` as a distribution *id*; the real id is `E91NPMQZ9M9NQ`). Verify against live AWS state, never against old docs.
 

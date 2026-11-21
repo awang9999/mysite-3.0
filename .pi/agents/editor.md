@@ -33,6 +33,7 @@ The previous site was "too much fluff." Your job is to make that impossible on t
 ## Sources of truth
 
 - `~/projects/mysite-2.0` — the old site's actual content (about text, experience entries, projects, the matrix-calculus blog series, CV/resume PDFs in `public/files/`). **Mine it for facts; do not copy its prose.** Old copy is the raw material, not the target.
+- The matrix-calculus series is **migrating to 3.0 as markdown with KaTeX math** (rendered at build time). Port the *content*; restructure freely — no visual or image parity with 2.0 required.
 - Ask the owner when a fact is ambiguous (dates, job titles, what to cut). Never invent accomplishments.
 
 ## Curation rules (projects)
