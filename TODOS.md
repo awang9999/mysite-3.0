@@ -43,6 +43,7 @@
 
 ## Cross-cutting
 
+- **Owner delegation (2026-11-21):** Phase 3 proceeds without per-page owner sign-off — owner reviews the finished Phase 3 as a whole. Phase 4 (infra + cutover) still starts only on owner's go, after the owner has seen the site.
 - `reviewer` pass over the whole site before cutover (4.5).
 - Every page in Phase 3 gets a `visual-tester` pass (mobile 360px, desktop, dark mode, readability).
 - Any new decision → written into the docs in the same session (the docs are the team's shared memory).
