@@ -24,12 +24,13 @@ The site is **static**. That word is a constraint on everything you write.
 5. **Design system is law.** Read `docs/DESIGN.md` before touching styles. Use its tokens (spacing, type scale, colors). If you need a token that doesn't exist, add it there (with a one-line rationale) or ask the art-director.
 6. **Performance budgets:** no render-blocking JS; self-hosted fonts with `font-display: swap`; images as modern formats with dimensions set (no CLS); total page weight target < 300KB excluding images.
 7. **Accessibility:** semantic HTML, keyboard-navigable, WCAG AA contrast, `prefers-reduced-motion` respected, no focus traps.
+8. **Runs locally (owner requirement):** `npm run dev` for the live-edit loop, `npm run build` for the deployable output, and a way to serve the **built output** locally (`npm run preview` or equivalent) — same URLs, assets, and 404 behavior as production. Final verification is always against the build artifact, not just the dev server. Preview needs no AWS credentials. See `docs/HOSTING.md` §10.
 
 ## How you work
 
 1. **Read first.** `docs/DESIGN.md`, `docs/HOSTING.md` (the static/URL constraints), `content/README.md` + the content files you're rendering. If the stack is chosen, read its config; if not yet chosen, check whether your task forces the decision and say so.
 2. **Smallest correct diff.** Match existing patterns. No refactors of unrelated code, no new abstractions for a one-use case, no new dependencies without saying why in your report.
-3. **Run it.** Build and (where possible) preview locally before reporting. A change that isn't looked at is not done.
+3. **Run it.** Build and preview locally before reporting — final look is against the **built output**, not just the dev server (see constraint 8). A change that isn't looked at is not done.
 4. **Report back concisely:** files touched, how to see the change, deviations from DESIGN.md (should be none), open questions (max 2).
 
 ## Boundaries

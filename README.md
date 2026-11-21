@@ -27,6 +27,12 @@ Shared rules live in the docs, not in chat:
 - `docs/DESIGN.md` — the design system (seeded; art-director owns it)
 - `content/` — all site content as data (editor owns it)
 
+## Workflow
+
+1. Develop with a local dev loop
+2. **Preview the built output locally** (no AWS credentials — required before every deploy, see `docs/HOSTING.md` §10)
+3. `./deploy/deploy.sh` → build, sync to S3, invalidate CloudFront, verify
+
 ## Stack
 
 TBD — planning phase. Hosting constraints that already pin the choice: **static multi-page output, real URLs, no SPA, near-zero runtime JS** (see `docs/HOSTING.md` §4, D3). Blog math (KaTeX) is **rendered at build time** from markdown (D11). Deployment is a local script — no CI (D4).

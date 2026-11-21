@@ -142,7 +142,7 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 5. HSTS: **enable at cutover**, preload list later (D7)
 6. Archive: **old 2.0 site reachable at `/old/` for a while**, then removed (D10)
 
-## 9. Verification checklist (per deploy, automated in CI)
+## 9. Verification checklist (per deploy, automated by the deploy script)
 
 - [ ] `curl -sI` homepage: `200`, `Content-Type: text/html`, `Cache-Control: no-cache…`
 - [ ] A hashed asset: `Cache-Control: public, max-age=31536000, immutable`
@@ -150,4 +150,14 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 - [ ] Unknown path: `404` with the custom `404.html`
 - [ ] `HSTS`, `X-Content-Type-Options`, `Referrer-Policy` headers present
 - [ ] Direct S3 object URL (via OAI-less request): `403`
-- [ ] Invalidation status `Completed` before the workflow exits
+- [ ] Invalidation status `Completed` before the script exits
+
+## 10. Local development & preview (owner requirement)
+
+The site must be runnable locally at all times — the owner previews locally **before every deploy**.
+
+- `npm run dev` — live-edit loop while working (hot reload)
+- `npm run build` — produces exactly what gets deployed
+- `npm run preview` (or equivalent) — serves the **built output** locally: same URLs, same hashed assets, same `404` behavior. The final pre-deploy check must be against the build artifact, not just the dev server — a dev-only preview can mask asset-path, routing, and 404 problems.
+
+Preview must need **no AWS credentials** and never touch live infrastructure.
