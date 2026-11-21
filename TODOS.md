@@ -52,4 +52,4 @@
 
 ## Blocked / parked
 
-- (none — Phase 3 page-by-page polish is next: 3.1–3.7 pages are already implemented and functional via 2.2/2.3, so 3.x is the visual/finishing pass — per-page `visual-tester` runs, then 3.8 meta/favicon/robots + `/old/` footer link)
+- (none — Phase 4 waits on the owner's whole-Phase-3 review)
