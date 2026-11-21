@@ -13,10 +13,14 @@ const { name, role, bio, links } = home.data;
 ---
 <Layout title={site.title} description={site.description}>
   <section class="container hero">
-    <img class="hero-portrait" src={portrait.src} width="88" height="88" alt="Portrait of Alexander Wang" />
-    <h1>{name}</h1>
-    <p class="hero-role">{role}</p>
-    {bio && <p class="hero-bio">{bio}</p>}
+    <div class="hero-inner">
+      <img class="hero-portrait" src={portrait.src} width="132" height="132" alt="Portrait of Alexander Wang" />
+      <div class="hero-copy">
+        <h1>{name}</h1>
+        <p class="hero-role">{role}</p>
+        {bio && <p class="hero-bio">{bio}</p>}
+      </div>
+    </div>
     <p class="hero-links">
       {
         (links ?? []).map((link) => <Link href={link.href} label={link.label} />)

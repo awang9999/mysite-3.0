@@ -271,6 +271,7 @@ a:focus-visible {
 .wordmark-mark {
   margin-right: var(--space-3);
   flex-shrink: 0;
+  color: var(--accent); /* bare letterforms (no badge) — accent reads as the mark */
 }
 
 .wordmark:hover {
@@ -350,13 +351,32 @@ a:focus-visible {
   padding-block: var(--space-9); /* 96px top and bottom */
 }
 
+/* Hero: portrait left, name/role/bio right (owner, 2026-11-21). */
+.hero-inner {
+  display: flex;
+  align-items: center;
+  gap: var(--space-6); /* 32px between portrait and text */
+}
+
 .hero-portrait {
   display: block;
-  width: 88px;
-  height: 88px;
-  border-radius: 50%; /* circle echoes the monogram badge — one visual language */
+  flex-shrink: 0;
+  width: 132px;
+  height: 132px;
+  border-radius: 50%;
   border: 1px solid var(--border);
-  margin: 0 0 var(--space-6);
+}
+
+.hero-copy {
+  min-width: 0;
+}
+
+/* Mobile: portrait and text stack, centered. */
+@media (max-width: 640px) {
+  .hero-inner {
+    flex-direction: column;
+    text-align: center;
+  }
 }
 
 .hero h1 {

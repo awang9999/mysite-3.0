@@ -150,7 +150,7 @@ content
 ### Nav
 
 - Static (not sticky), `--content-width` container, 16 px vertical padding; hairline bottom border (`--border`) — the only chrome rule on the page besides the footer's.
-- Left: monogram badge (2.0's `monogram.svg`, transferred 2026-11-21, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`) — the badge is the site's only image mark; the wordmark stays text.
+- Left: monogram (2.0's `monogram.svg`, transferred 2026-11-21; white badge removed 2026-11-21 — bare letterforms in `--accent`, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`). The favicon keeps a small accent disc behind the letterforms so it reads on any tab background.
 - Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**).
 - Mobile (≤ 640 px): wraps onto centered lines — wordmark first, then the links, 16 px gap; two lines when they fit, three at 360 px (the five links need ~330 px of their own width). **No hamburger.** Rationale: a hamburger is JS + state + a11y work for five short links; wrapping is zero-JS and always visible. *(Amended 2026-11-21 after visual QA: the original “two lines” target was geometrically impossible at 360 px.)*
 - Not sticky: the pages are short; blog posts are the only long pages and they end with a link back to /blog. Rationale: sticky chrome is a mobile-app habit that boxes the top of every screen.
@@ -336,5 +336,5 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 4. **Page leads on all four subpages** (visual QA, 2026-11-21): /experience, /projects, /blog now carry a lead line like /about; copy drafted by the orchestrator, pending owner review.
 5. **Budgets measured on the wire** (visual QA, 2026-11-21): §10 totals apply to gzip-compressed transfer sizes; raw KaTeX HTML is exempt per the math-page note.
 6. **Bullets in experience entries; 1–3 line featured descriptions** (visual QA, 2026-11-21): owner-approved content wins over the original pattern wording; §6/§7 amended accordingly.
-7. **Home portrait + 2.0 monogram** (owner, 2026-11-21): circular 88 px portrait + short bio on home (the one allowed image); 2.0's `monogram.svg` transferred to the nav (24 px beside the text wordmark) and the favicon (tightened viewBox).
+7. **Home portrait + 2.0 monogram** (owner, 2026-11-21; layout + badge amended same day): circular 132 px portrait to the **left** of name/role/bio on home, short bio (the one allowed image); 2.0's `monogram.svg` in the nav as **bare letterforms in `--accent`** (white badge removed — it read as a white disc on the light page) and in the favicon on a small accent disc.
 8. **Color scheme: cool paper + ink blue** (owner chose A, 2026-11-21): the warm paper/rust v1 palette was retired as "a little too warm"; §1 tokens swapped (contrast re-verified, all pairs ≥4.5:1). Token-only change — no layout/type impact.
