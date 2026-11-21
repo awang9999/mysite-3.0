@@ -1,6 +1,6 @@
 # Task List — mysite-3.0
 
-**Status:** Phase 3 complete (12/12, QA green) — owner go for Phase 4 given 2026-11-21; 4.1 (deploy script) done; awaiting owner's call on the www→apex 301 mechanism (A/B) before live AWS changes
+**Status:** Phase 3 complete (12/12, QA green). Phase 4: 4.1 done; 4.2–4.6 all **scripted and syntax-verified, not run** (owner: scripts first, no live changes, DNS flip explicitly deferred). Default mode: A (no 301, canonical tags). To execute: `./deploy/cutover.sh`
 **Conventions:** each task names its owner persona; phases are ordered by dependency; check boxes off as things land. Decisions live in `docs/HOSTING.md` (D1–D11) and `docs/DESIGN.md` — this file tracks *work*, not *decisions*.
 
 ---
@@ -40,14 +40,14 @@
 
 **Owner go-ahead: 2026-11-21.** Live state re-verified same day: both dists Deployed; ACM cert `43e7d0e9` (us-east-1) already covers `alexander-wang.net` + `*.alexander-wang.net`; no versioning on either bucket; apex A → legacy `d30bl45vk665e7` (Z2FDTNDATAQYW2), www A → `d1oevywpg7h4uc`.
 
-**Open decision (owner):** www→apex 301 mechanism — **A:** no 301, both hostnames 200, canonical tags do the SEO job (recommended — static, no runtime) · **B:** ~15-line Lambda@Edge viewer-request 301 (true redirect; runtime exception, contradicts D9). `deploy.sh` has a `WWW_MODE=canonical|redirect` knob for either.
+**301 mechanism — cost question resolved (owner, 2026-11-21):** A is cheaper — strictly $0 (alias only, no new billable resource); B is ~$0 only inside the Lambda free tier (1M req + 400k GB-s/mo) and is a runtime exception against D9. Scripts default to **A** (both hostnames 200 + canonical tags); `WWW_MODE=redirect` keeps B one env var away. **Owner directive: all scripts written, nothing run — DNS flip explicitly not yet.**
 
 - [x] **4.1** `deploy/deploy.sh` — CI-ready: non-interactive, idempotent, meaningful exit codes (10–50); build → archive staging → `s3 sync --delete` (bucket = exact mirror of dist) → two-tier header passes (self-copy: no-cache entry files / immutable hashed assets) → invalidate `/*` + wait for Completed → edge verify (§9 checklist incl. content-type + security headers). ✅ (edge verification proven on first deploy)
-- [ ] **4.2** CloudFront: add apex alias + cert coverage, `www` → apex 301 behavior, response-headers policy (HSTS, nosniff, referrer).
-- [ ] **4.3** Enable S3 versioning; confirm `404.html` error document.
-- [ ] **4.4** Build the 2.0 archive → `/old/` (`PUBLIC_URL=/old` + router basename, copy `index.html` to the ~5 route paths).
-- [ ] **4.5** Cutover (HOSTING §6 steps 5–7) + full verification (§9).
-- [ ] **4.6** Decommission: CircleCI project, legacy dist `E96YWX7J3SY11`, legacy bucket `alexander-wang.net`, old `deploy.sh`.
+- [~] **4.2** CloudFront config — **scripted, not run:** `deploy/cfn-configure.sh` (headers policy HSTS/nosniff/referrer, apex alias, 404 → `/404.html` custom error response — the CloudFront-native mechanism for a private S3 origin; waits for Deployed; idempotent).
+- [~] **4.3** S3 versioning — **scripted, not run:** `deploy/s3-versioning.sh` (idempotent, name-locked to the main bucket).
+- [~] **4.4** 2.0 archive — **scripted, not run:** `deploy/archive-2.0.sh` (temporary `basename="/old"` + `PUBLIC_URL=/old` build of the working tree, deep-link `index.html` copies for the 6 SPA routes, source edit reverted after; 26 MB hero video kept by default, `ARCHIVE_EXCLUDE_VIDEO=1` to drop).
+- [~] **4.5** Cutover + verification — **scripted, not run:** `deploy/dns-flip.sh` (typed confirm, idempotent, waits for Route53 SUCCESS, `REVERT=1` rollback) + `deploy/verify-live.sh` (9 checks: 3.0 on apex, headers, 404, canonical, www mode, `/old/`, direct-S3 403) + `deploy/cutover.sh` orchestrator (gated, `--dry-run`, resumable). **DNS flip explicitly deferred by owner.**
+- [~] **4.6** Decommission — **scripted, not run:** `deploy/decommission.sh` (soak check vs Route53 history, default 7 days, type-to-confirm per step; legacy dist → legacy bucket → CircleCI).
 - [ ] **4.7** *(later, owner's word)* Remove `/old/` and the footer link.
 
 ---

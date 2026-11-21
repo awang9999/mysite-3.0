@@ -45,16 +45,18 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
                        ┌──────────────────────▼──────────────────────┐
                        │        CloudFront (ONE distribution)        │
                        │  • aliases: apex + www                      │
-                       │  • www behavior → 301 redirect to apex      │
+                       │  • both hostnames serve 200 (no static      │
+                       │    host-based 301 exists in CloudFront)     │
                        │  • ACM cert, TLS ≥ 1.2, HSTS                │
                        │  • response-headers policy (security hdrs)  │
-                       │  • origin request: OAC → private bucket     │
+                       │  • 404 → 404.html custom error response     │
+                       │  • origin request: OAI → private bucket     │
                        └──────────────────────┬──────────────────────┘
                                               │
                        ┌──────────────────────▼──────────────────────┐
                        │   S3  www.alexander-wang.net  (private)     │
                        │   • versioning ON (rollback)                │
-                       │   • 404.html error document                 │
+                       │   • 404.html object (CloudFront serves it)  │
                        │   • two-tier cache headers (see §5)         │
                        └─────────────────────────────────────────────┘
 
@@ -75,7 +77,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | # | Decision | Rationale |
 |---|---|---|
 | D1 | ✅ **CONFIRMED** Single bucket (`www.alexander-wang.net`, reused) + single CloudFront distribution serving both apex and www | Eliminates the legacy two-bucket/two-distribution split; one place to configure headers, cert, cache |
-| D2 | ✅ **CONFIRMED (2026-11-20)** Canonical host: **apex** `alexander-wang.net`; `www` 301-redirects to apex | Shorter, cleaner URLs. Implemented at the edge (CloudFront per-alias redirect on the www behavior) — no S3 or app involvement. |
+| D2 | ✅ **CONFIRMED (2026-11-20), mechanism amended (2026-11-21)** Canonical host: **apex** `alexander-wang.net`; `www` **serves 200, canonical tags point at apex** | Shorter, cleaner URLs. **Amendment:** a static www→apex 301 is impossible in CloudFront (behaviors branch on path, not host — both names arrive with identical paths); the only 301 route is a Lambda@Edge, which D9 excludes. So: one distribution serves both aliases (200); every page's `<link rel="canonical">` targets apex. `deploy.sh` keeps a `WWW_MODE=redirect` verification path if a Lambda@Edge 301 is ever wanted. |
 | D3 | Multi-page static output (MPP), real URLs, `404.html`, **no SPA** | Hosting stays trivially simple; SEO and deep-linking work with zero config; cache is fully effective |
 | D4 | ✅ **CONFIRMED** Deploy = **a single local script** (`deploy/deploy.sh`), **no CI for now** — CircleCI fully retired. **Door left open for GitHub Actions later.** | Owner preference: a personal site doesn't need a CI pipeline today. One command does build → two-tier sync → invalidate → verify. Replaces CircleCI (paid per seat, and its pipeline never even invalidated the CDN). The script is written **CI-ready**: non-interactive, idempotent, meaningful exit codes, AWS auth via standard profile/env — so adding a GitHub Actions workflow later is a thin wrapper (job runs the same script with OIDC-issued credentials), not a rewrite. |
 | D5 | Two-tier cache: hashed assets `immutable, max-age=31536000`; HTML `no-cache, no-store, must-revalidate` | Same strategy that works today: assets cache forever (content-hashed names), HTML always revalidates so new deploys are visible after invalidation |
@@ -112,12 +114,12 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 Ordered so the live site keeps working at every step; no DNS outage expected (alias records flip atomically per-record).
 
 1. **Build & verify 3.0 locally** (done in the normal dev loop).
-2. **Configure the target state on the existing www distribution (`E91NPMQZ9M9NQ`):** add the apex alias + ACM cert coverage, add the www→apex 301 behavior, attach the response-headers policy. (Apex cert: confirm the existing ACM cert covers both names; if not, request it — takes minutes.)
+2. **Configure the target state on the existing www distribution (`E91NPMQZ9M9NQ`):** add the apex alias (cert `43e7d0e9` already covers both names — verified 2026-11-21), attach the response-headers policy (HSTS, nosniff, referrer), add the 404 → `404.html` custom error response. No www 301 behavior — it does not exist in static CloudFront (D2 amendment); both aliases serve 200 and canonical tags do the SEO job.
 3. **Enable S3 versioning** on `www.alexander-wang.net`.
 4. **Prepare the 2.0 archive (D10):** in mysite-2.0, add router `basename="/old"`, rebuild with `PUBLIC_URL=/old`, copy `index.html` to its ~5 route paths (so deep links like `/old/blog` work), sync the build to `s3://www.alexander-wang.net/old/`.
 5. **Deploy the 3.0 build** to the bucket root via `deploy/deploy.sh`. **This replaces the live site on `www`** — the cutover moment (www → 3.0, `/old/` → 2.0).
 6. **Flip DNS:** point the apex alias A record at `d1oevywpg7h4uc.cloudfront.net` (replacing `d30bl45vk665e7`). Alias records propagate within seconds to minutes.
-7. **Verify:** apex serves 3.0, www 301s to apex, `/old/` serves 2.0, 404s work, direct bucket URLs 403, cache headers correct.
+7. **Verify:** apex serves 3.0, www serves 200 (canonical mode; 301 only if `WWW_MODE=redirect`), `/old/` serves 2.0, 404s work, direct bucket URLs 403, cache headers correct.
 8. **Decommission (after a soak period):** delete legacy distribution `E96YWX7J3SY11`, empty + delete legacy bucket `alexander-wang.net`, delete the CircleCI project, retire the old `deploy.sh` in mysite-2.0.
 9. **Later, at the owner's word:** remove `/old/` from the bucket and drop the footer link.
 
@@ -136,7 +138,7 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 
 ## 8. Decisions log (all resolved 2026-11-21)
 
-1. Canonical host: **apex** — www 301-redirects (D2)
+1. Canonical host: **apex** — www serves 200, canonical tags → apex (D2 amendment)
 2. Bucket: **reuse** `www.alexander-wang.net` (D1)
 3. CI: **retire CircleCI entirely; deploy = local script** (D4)
 4. Blog math: **migrate the KaTeX matrix-calculus series as markdown, rendered at build time**; no visual parity with 2.0 required (D11)
@@ -149,7 +151,7 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 
 - [ ] `curl -sI` homepage: `200`, `Content-Type: text/html`, `Cache-Control: no-cache…`
 - [ ] A hashed asset: `Cache-Control: public, max-age=31536000, immutable`
-- [ ] `www` host: `301` → same path on apex
+- [ ] `www` host: `200` + apex canonical tag (or `301` → apex if `WWW_MODE=redirect`)
 - [ ] Unknown path: `404` with the custom `404.html`
 - [ ] `HSTS`, `X-Content-Type-Options`, `Referrer-Policy` headers present
 - [ ] Direct S3 object URL (via OAI-less request): `403`
