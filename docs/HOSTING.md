@@ -1,7 +1,7 @@
 # Hosting Design — mysite-3.0
 
-**Status:** Draft v1 — awaiting owner sign-off on open questions (§8)
-**Owner:** `ops` agent · **Last verified against live AWS state:** 2026-11-20
+**Status:** Draft v1 · **Owner:** `ops` agent · **Last verified against live AWS state:** 2026-11-20
+**Confirmed by owner:** canonical host is the apex (2026-11-20) — see D2
 
 ---
 
@@ -75,7 +75,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | # | Decision | Rationale |
 |---|---|---|
 | D1 | Single bucket + single CloudFront distribution serving both apex and www | Eliminates the legacy two-bucket/two-distribution split; one place to configure headers, cert, cache |
-| D2 | Canonical host: **apex** `alexander-wang.net`; `www` 301-redirects to apex | Shorter, cleaner URLs. Implemented at the edge (CloudFront per-alias redirect on the www behavior) — no S3 or app involvement. *If owner prefers www canonical, the redirect flips; nothing else changes.* |
+| D2 | ✅ **CONFIRMED (2026-11-20)** Canonical host: **apex** `alexander-wang.net`; `www` 301-redirects to apex | Shorter, cleaner URLs. Implemented at the edge (CloudFront per-alias redirect on the www behavior) — no S3 or app involvement. |
 | D3 | Multi-page static output (MPP), real URLs, `404.html`, **no SPA** | Hosting stays trivially simple; SEO and deep-linking work with zero config; cache is fully effective |
 | D4 | Deploy via **GitHub Actions on push to `main`** (repo already lives on GitHub) | Free, zero extra account to maintain, replaces CircleCI (paid per seat, and its pipeline never invalidated the CDN). Manual `deploy/` script kept as an escape hatch |
 | D5 | Two-tier cache: hashed assets `immutable, max-age=31536000`; HTML `no-cache, no-store, must-revalidate` | Same strategy that works today: assets cache forever (content-hashed names), HTML always revalidates so new deploys are visible after invalidation |
@@ -132,11 +132,10 @@ Ordered so the live site keeps working at every step; no DNS outage expected (al
 
 ## 8. Open questions (need owner)
 
-1. **Canonical host:** apex (recommended, D2) or keep www canonical and redirect apex?
-2. **Bucket:** reuse `www.alexander-wang.net` (recommended) or create a fresh bucket for a clean break?
-3. **CircleCI:** confirm retirement (recommended) — does any other project still use that account?
-4. **Blog math:** the 2.0 blog has a KaTeX-based matrix-calculus series. If those posts come over, math must render **at build time** (keeps runtime JS near zero). Affects the stack/content pipeline, not hosting — parked until the content plan is set.
-5. **HSTS preload:** enable HSTS at cutover (recommended); add to the HSTS preload list later once headers are verified in the wild.
+1. **Bucket:** reuse `www.alexander-wang.net` (recommended) or create a fresh bucket for a clean break?
+2. **CircleCI:** confirm retirement (recommended) — does any other project still use that account?
+3. **Blog math:** the 2.0 blog has a KaTeX-based matrix-calculus series. If those posts come over, math must render **at build time** (keeps runtime JS near zero). Affects the stack/content pipeline, not hosting — parked until the content plan is set.
+4. **HSTS preload:** enable HSTS at cutover (recommended); add to the HSTS preload list later once headers are verified in the wild.
 
 ## 9. Verification checklist (per deploy, automated in CI)
 
