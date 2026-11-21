@@ -7,12 +7,12 @@
 
 /* ---------- 1. Palette — tokens (§1) ---------- */
 :root {
-  --bg: #faf9f6;        /* warm paper */
-  --surface: #f0ede6;   /* recessed surface: code, display math, inline code */
-  --fg: #21201c;        /* primary text */
-  --fg-muted: #5f5c55;  /* leads, meta, dates, footer, list sub-lines */
-  --border: #e3e0d6;    /* hairlines: nav bottom, list rows, footer top */
-  --accent: #a6421e;    /* links + interactive states only */
+  --bg: #f7f8fa;        /* cool paper */
+  --surface: #eef0f3;   /* recessed surface: code, display math, inline code */
+  --fg: #1a1e24;        /* primary text */
+  --fg-muted: #5a6270;  /* leads, meta, dates, footer, list sub-lines */
+  --border: #dfe2e8;    /* hairlines: nav bottom, list rows, footer top */
+  --accent: #1f5fa8;    /* links + interactive states only */
 
   /* ---------- 3. Type scale — exactly 6 sizes (§3) ---------- */
   --text-xs: 0.8125rem;  /* 13px — dates, meta, footer, tags */
@@ -53,12 +53,12 @@
 /* ---------- 8. Dark mode — token override only, no JS (§8) ---------- */
 @media (prefers-color-scheme: dark) {
   :root {
-    --bg: #171614;     /* warm near-black */
-    --surface: #211f1a;
-    --fg: #eceae3;
-    --fg-muted: #a8a49a;
-    --border: #2f2d26;
-    --accent: #e07a4f;
+    --bg: #13161b;     /* cool near-black */
+    --surface: #1b1f26;
+    --fg: #e8eaed;
+    --fg-muted: #9aa3b0;
+    --border: #2a303a;
+    --accent: #7aa5e8;
   }
 }
 

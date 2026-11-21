@@ -10,37 +10,37 @@ Every page must feel **easy**, never **designed**. Subtlety is the brand.
 
 ## 1. Palette
 
-Warm neutral base + **one rust accent**. The accent appears only in links and interactive states — never as a fill, background, or large surface. Two schemes (light/dark) share the same token names; every color in the codebase is referenced through a token, never a raw hex.
+Cool neutral base + **one ink-blue accent** (owner decision, 2026-11-21 — the original warm paper/rust palette read "a little too warm"). The accent appears only in links and interactive states — never as a fill, background, or large surface. Two schemes (light/dark) share the same token names; every color in the codebase is referenced through a token, never a raw hex.
 
 ### Tokens
 
 | Token | Light | Dark | Job |
 |---|---|---|---|
-| `--bg` | `#FAF9F6` | `#171614` | Page background — warm paper / warm near-black |
-| `--surface` | `#F0EDE6` | `#211F1A` | Recessed surface: code blocks, display math, inline code |
-| `--fg` | `#21201C` | `#ECEAE3` | Primary text |
-| `--fg-muted` | `#5F5C55` | `#A8A49A` | Leads, meta, dates, footer, list sub-lines |
-| `--border` | `#E3E0D6` | `#2F2D26` | Hairlines only: nav bottom, list rows, footer top |
-| `--accent` | `#A6421E` | `#E07A4F` | Links + interactive states (hover, active nav, focus) |
+| `--bg` | `#F7F8FA` | `#13161B` | Page background — cool paper / cool near-black |
+| `--surface` | `#EEF0F3` | `#1B1F26` | Recessed surface: code blocks, display math, inline code |
+| `--fg` | `#1A1E24` | `#E8EAED` | Primary text |
+| `--fg-muted` | `#5A6270` | `#9AA3B0` | Leads, meta, dates, footer, list sub-lines |
+| `--border` | `#DFE2E8` | `#2A303A` | Hairlines only: nav bottom, list rows, footer top |
+| `--accent` | `#1F5FA8` | `#7AA5E8` | Links + interactive states (hover, active nav, focus) |
 
 **Rationale**
 
-- Warm paper `#FAF9F6`, not `#FFF` — pure white is harsh and makes the accent vibrate; warm near-black `#171614`, not `#000` — pure black causes light-text vibration and OLED banding. Rationale: the base should read as *paper and lamp light*, matching the "comfortable to read" north star.
-- Rust, not blue: 2.0's Nord palette is blue-gray, and the seed rules out blue-grays; rust is warm (matches the base), editorial, and reads as "ink" rather than "SaaS dashboard".
-- The dark accent is a lighter value, not a tint of the light one — it must stay ≥4.5:1 on near-black without going neon.
-- Warm grays over blue-grays because the whole site leans editorial; blue-gray reads corporate and is what we're replacing.
+- Cool paper `#F7F8FA`, not `#FFF` — pure white is harsh and makes the accent vibrate; cool near-black `#13161B`, not `#000` — pure black causes light-text vibration and OLED banding. The base should read as *paper and lamp light*, matching the "comfortable to read" north star.
+- Ink blue `#1F5FA8`, chosen by the owner (2026-11-21) over deep teal and accent-free mono: calm and professional for a software engineer's site; it pairs cleanly with the black-on-white 2.0 monogram. It is a saturated-but-deep blue — "ink", not "SaaS dashboard" (2.0's Nord blue-gray is still what we're replacing; this is a deliberate, single-hue accent, not a gray-blue scheme).
+- The dark accent `#7AA5E8` is a lighter value, not a tint of the light one — it must stay ≥4.5:1 on near-black without going neon.
+- Grays carry a cool cast to sit with the blue accent; warm grays would muddify it.
 
-### Contrast (WCAG 2.1, computed 2026-11-21 — all pairs pass AA for *normal* text, ≥4.5:1)
+### Contrast (WCAG 2.1, computed 2026-11-21 — all pairs pass AA for *normal* text, ≥4.5:1; re-computed for the cool palette same day)
 
 | Pair | Light | Dark |
 |---|---|---|
-| `--fg` on `--bg` (body text) | **15.5:1** | **15.0:1** |
-| `--fg` on `--surface` (code/math) | 13.9:1 | 13.7:1 |
-| `--fg-muted` on `--bg` | 6.3:1 | 7.3:1 |
-| `--fg-muted` on `--surface` | 5.7:1 | 6.6:1 |
-| `--accent` on `--bg` (links) | 5.8:1 | 6.1:1 |
-| `--accent` on `--surface` | 5.3:1 | 5.5:1 |
-| Button: `--bg` on `--fg` (inverted) | 15.5:1 | 15.0:1 |
+| `--fg` on `--bg` (body text) | **15.7:1** | **15.0:1** |
+| `--fg` on `--surface` (code/math) | 14.7:1 | 13.7:1 |
+| `--fg-muted` on `--bg` | 5.8:1 | 7.1:1 |
+| `--fg-muted` on `--surface` | 5.4:1 | 6.5:1 |
+| `--accent` on `--bg` (links) | 6.1:1 | 7.2:1 |
+| `--accent` on `--surface` | 5.6:1 | 6.6:1 |
+| Button: `--bg` on `--fg` (inverted) | 15.7:1 | 15.0:1 |
 
 No large-text-only pairs exist. Rationale: links are normal-sized text, so the accent must clear 4.5:1 on both schemes — verified, not assumed.
 
@@ -337,4 +337,4 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 5. **Budgets measured on the wire** (visual QA, 2026-11-21): §10 totals apply to gzip-compressed transfer sizes; raw KaTeX HTML is exempt per the math-page note.
 6. **Bullets in experience entries; 1–3 line featured descriptions** (visual QA, 2026-11-21): owner-approved content wins over the original pattern wording; §6/§7 amended accordingly.
 7. **Home portrait + 2.0 monogram** (owner, 2026-11-21): circular 88 px portrait + short bio on home (the one allowed image); 2.0's `monogram.svg` transferred to the nav (24 px beside the text wordmark) and the favicon (tightened viewBox).
-8. **Color scheme under review** (owner, 2026-11-21): the warm paper/rust palette reads "a little too warm"; options presented (A cool paper + ink blue — recommended, B white + deep teal, C accent-free mono). Pending owner choice; token swap only.
+8. **Color scheme: cool paper + ink blue** (owner chose A, 2026-11-21): the warm paper/rust v1 palette was retired as "a little too warm"; §1 tokens swapped (contrast re-verified, all pairs ≥4.5:1). Token-only change — no layout/type impact.
