@@ -1,6 +1,7 @@
 ---
-// Blog index (DESIGN §7): one hairline row per post — date meta line,
-// title (accent link), one-line excerpt. Newest first. The display order
+// Blog index (DESIGN §7): one hairline row per post — meta line
+// (date · reading time), title (accent link), one-line excerpt. Newest
+// first. The display order
 // comes from content/blog/index.yaml, the source of truth for /blog.
 import Layout from '../../layouts/Layout.astro';
 import { blogIndex, site, navLabelFor } from '../../lib/data';
@@ -15,7 +16,7 @@ import { formatDate } from '../../lib/format';
       {
         blogIndex.posts.map((post) => (
           <li class="row">
-            <p class="row-meta">{formatDate(post.date)}</p>
+            <p class="row-meta">{formatDate(post.date)} · {post.readingTime} min read</p>
             <p class="row-title">
               <a href={`/blog/${post.slug}`}>{post.title}</a>
             </p>

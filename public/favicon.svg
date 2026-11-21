@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+  <!-- Monogram "A" — the site's one rust accent (DESIGN §1). Light token
+       #A6421E, dark token #E07A4F via prefers-color-scheme (both schemes
+       from day one, §8). Text only, no raster (DESIGN §9.6/§9.13). -->
+  <style>
+    .m { stroke: #a6421e; }
+    @media (prefers-color-scheme: dark) { .m { stroke: #e07a4f; } }
+  </style>
+  <path class="m" fill="none" stroke-width="3" stroke-linecap="round" stroke-linejoin="round" d="M7 27 L16 5 L25 27 M10.1 19.5 H21.9"/>
+</svg>

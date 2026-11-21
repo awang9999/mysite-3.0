@@ -9,9 +9,12 @@ import { site } from '../lib/data';
 interface Props {
   title: string;
   description?: string;
+  // 404: not indexable — no canonical link, robots noindex.
+  noindex?: boolean;
 }
 
-const { title, description = site.description } = Astro.props;
+const { title, description = site.description, noindex = false } = Astro.props;
+const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
 ---
 <!doctype html>
 <html lang="en">
@@ -19,8 +22,12 @@ const { title, description = site.description } = Astro.props;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="color-scheme" content="light dark" />
+    {noindex && <meta name="robots" content="noindex" />}
     <meta name="description" content={description} />
     <title>{title}</title>
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <link rel="manifest" href="/manifest.json" />
+    {canonical && <link rel="canonical" href={canonical} />}
     <slot name="head" />
   </head>
   <body>

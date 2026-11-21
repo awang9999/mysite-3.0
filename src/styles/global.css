@@ -249,6 +249,13 @@ a:focus-visible {
     flex-direction: column;
     align-items: center; /* two centered lines, 16px gap — §4 */
   }
+
+  .nav-links {
+    /* 12px on mobile: at 360px the five 24px-gapped links overflow the 320px
+       content width and wrap to a third line. DESIGN §4's two-centered-lines
+       rule governs; 12px is on the spacing scale (§3). */
+    gap: var(--space-3);
+  }
 }
 
 .wordmark {
@@ -550,6 +557,13 @@ main .katex-display > .katex {
 
 .prose li:last-child {
   margin-bottom: 0;
+}
+
+/* End of post: the link back to /blog (DESIGN §4 — nav rationale: posts are
+   the only long pages and they end with a link back to /blog). */
+.post-nav {
+  margin: var(--space-8) 0 0;
+  font-size: var(--text-sm);
 }
 
 /* ---------- 4. 404 page (§4) ---------- */

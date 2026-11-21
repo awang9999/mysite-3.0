@@ -8,7 +8,7 @@ import { site, navLabelFor } from '../lib/data';
 const [about] = await getCollection('sitePages', (entry) => entry.id === 'about');
 const { Content } = await render(about);
 ---
-<Layout title={`${navLabelFor('/about')} — ${site.title}`}>
+<Layout title={`${navLabelFor('/about')} — ${site.title}`} description={about.data.lead}>
   <div class="container page-top">
     <header class="page-header">
       <h1>{about.data.title}</h1>

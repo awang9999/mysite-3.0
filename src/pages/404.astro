@@ -8,7 +8,7 @@ import { site } from '../lib/data';
 
 const [notFound] = await getCollection('sitePages', (entry) => entry.id === '404');
 ---
-<Layout title={`${notFound.data.title} — ${site.title}`}>
+<Layout title={`${notFound.data.title} — ${site.title}`} noindex>
   <div class="container notfound">
     <h1>{notFound.data.title}</h1>
     <p class="lead">{notFound.data.line}</p>
