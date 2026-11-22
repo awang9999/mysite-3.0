@@ -54,6 +54,12 @@
 
 ---
 
+### 3.20 — /projects: explicit link labels (2026-11-22, owner)
+- [x] **Row format `Name [GitHub] [Demo]`** — "be explicit about the name, the demo link and the github": the name is now plain text (no link hiding in it); every link renders beside it with its explicit label, `· `-separated. GitHub first, then Demo (or arXiv).
+- [x] **ProjectX 2021 + NN Sensitivity**: both GitHub and the paper — paper labeled `[arXiv]` (per owner's suggestion).
+- [x] Final rows: Hearts `· GitHub · Demo` | MathSearch `· GitHub` | ProjectX 2021 `· GitHub · arXiv` | NN Sensitivity `· GitHub · arXiv` | Personal Website (v2) `· GitHub`.
+- [x] `altLinks` helper retired (the name no longer carries the first link); DESIGN §6 + resolved #19; YAML comment documents the format.
+
 ### 3.19 — /projects: flat list + Hearts Live link (2026-11-22, owner)
 - [x] **No expansion** — "let's just display all of them in order": the `Show all N projects` native `<details>` is removed; the featured and archive rows render into one `<ul class="rows">`, most relevant first. The `featured`/`archive` split in `projects.yaml` survives only as a row-shape distinction (hook+body+tags vs line+year).
 - [x] **Hearts: Live + GitHub** — added a Live link to `https://hearts.alexander-wang.net` (verified live, 200 — the existing `E2F96O5L3ZEDKQ` distribution; untouched). Live is the first link, so it rides the row title (the name links to the app); GitHub sits beside it.

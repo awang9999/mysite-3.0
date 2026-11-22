@@ -699,8 +699,9 @@ a:focus-visible {
   color: var(--fg-muted);
 }
 
-/* Secondary links on a row: the first link rides the title, the rest sit
-   beside it, separated by the same " · " rhythm as plain text. */
+/* Labeled links on a row (owner 2026-11-22): the name is plain text and
+   every link renders beside it with its explicit label, separated by the
+   same " · " rhythm as plain text. */
 .row-alt-links {
   display: inline;
   font-size: var(--text-sm);

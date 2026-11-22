@@ -3,14 +3,11 @@
 // All projects, in order (owner 2026-11-22 — no expansion; the featured and
 // archive sets render into a single list, most relevant first). Archive rows
 // carry the year in the meta line.
-// Row link rule: the first link rides the row title; any further links sit
-// beside it separated by " · " (DESIGN is silent on multi-link rows).
+// Row format (owner 2026-11-22): Name [GitHub] [Demo] — the name is plain
+// text; every link renders with its explicit label, separated by " · ".
 import Layout from '../layouts/Layout.astro';
 import Link from '../components/Link.astro';
 import { projects, site, navLabelFor } from '../lib/data';
-
-const altLinks = (links: { label: string; href: string }[] | undefined) =>
-  (links ?? []).slice(1);
 ---
 <Layout title={`${navLabelFor('/projects')} — ${site.title}`}>
   <div class="container container--wide page-top">
@@ -24,13 +21,9 @@ const altLinks = (links: { label: string; href: string }[] | undefined) =>
         projects.featured.map((project) => (
           <li class="row">
             <p class="row-title">
-              {project.links?.[0] ? (
-                <Link href={project.links[0].href} label={project.name} />
-              ) : (
-                project.name
-              )}
+              {project.name}
               {
-                altLinks(project.links).map((link) => (
+                (project.links ?? []).map((link) => (
                   <span class="row-alt-links">
                     {' · '}
                     <Link href={link.href} label={link.label} />
@@ -53,13 +46,9 @@ const altLinks = (links: { label: string; href: string }[] | undefined) =>
         projects.archive.map((project) => (
           <li class="row">
             <p class="row-title">
-              {project.links?.[0] ? (
-                <Link href={project.links[0].href} label={project.name} />
-              ) : (
-                project.name
-              )}
+              {project.name}
               {
-                altLinks(project.links).map((link) => (
+                (project.links ?? []).map((link) => (
                   <span class="row-alt-links">
                     {' · '}
                     <Link href={link.href} label={link.label} />

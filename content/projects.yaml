@@ -4,6 +4,10 @@
 # Archive row: same shape, one-line description, year in the meta line.
 # Featured = the projects the editor vouches for: public, substantive, and the work I'd point a visitor to.
 # Archive = everything else that still exists: one line each, nothing deleted.
+#
+# Row format (owner, 2026-11-22): Name [GitHub] [Demo] — explicit labels, the
+# name is plain text, GitHub first, demo (or arXiv for the papers) second.
+# Order of the `links` array = order on the row.
 
 featured:
   - name: Hearts
@@ -11,11 +15,11 @@ featured:
     body: "A friend's grandparents were tired of ads in the Hearts games they could find, so I built a clean one. TypeScript, AWS, prompt to production in an afternoon."
     tags: [TypeScript, AWS, Kiro]
     links:
-      - label: Live
-        href: https://hearts.alexander-wang.net
-        external: true
       - label: GitHub
         href: https://github.com/awang9999/hearts-game
+        external: true
+      - label: Demo
+        href: https://hearts.alexander-wang.net
         external: true
     year: 2025 # confirmed by owner 2026-11-21
 
@@ -34,11 +38,11 @@ featured:
     body: "Led six students from Cornell studying how misinformation spread on social media during the pandemic: a BERT detector plus a virality model. Presented at the 2022 UofT AI conference."
     tags: [NLP, BERT]
     links:
-      - label: arXiv
-        href: https://arxiv.org/abs/2207.01483
-        external: true
       - label: GitHub
         href: https://github.com/CornellDataScience/ProjectX-2021
+        external: true
+      - label: arXiv
+        href: https://arxiv.org/abs/2207.01483
         external: true
     year: 2021
 
@@ -47,11 +51,11 @@ archive:
     line: "A study of how similar fine-tuned neural networks stay, that ended as a pruning algorithm shrinking OPT-1.3B by 20% with little perplexity loss."
     year: 2024
     links:
-      - label: arXiv
-        href: https://arxiv.org/abs/2406.00061
-        external: true
       - label: GitHub
         href: https://github.com/awang9999/nn-sensitivity-research
+        external: true
+      - label: arXiv
+        href: https://arxiv.org/abs/2406.00061
         external: true
 
   - name: Personal Website (v2)
