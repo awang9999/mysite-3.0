@@ -602,6 +602,13 @@ a:focus-visible {
   color: var(--fg-muted);
 }
 
+/* Changelog row bodies are rendered markdown (a <p> inside the div) —
+   drop the paragraph's own margins so the row spacing matches plain-text
+   row bodies. */
+.row-body > p {
+  margin: 0;
+}
+
 .row-tags {
   margin: var(--space-1) 0 0;
   font-size: var(--text-xs);

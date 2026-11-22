@@ -1,0 +1,50 @@
+# Changelog — the 2.0 "Website History" page, migrated verbatim (owner,
+# 2026-11-22). Entries newest first. `version` + `date` render as the row
+# title line ("Version X · Month Year"); `body` is markdown rendered by the
+# site's pipeline (inline links get the accent style; same-origin links are
+# left untouched by the external-link plugin).
+#
+# Copy note: 2.0's text is carried over as-is except two obvious typos
+# fixed silently ("home have" → "home page" in 2.1.0; "It's remnents" →
+# "Its remnants" in 1.0.0).
+
+entries:
+  - version: 3.0.0
+    date: November 2026
+    body: |-
+      I rebuilt the entire website from scratch. The stack switched from a React app to a fully static multi-page site, the design was reworked end to end (a new palette, a light/dark theme toggle, and the experience page is now a vertical timeline), and the matrix calculus blog series migrated over with the math rendered at build time instead of in the browser. [The previous version of the site](/old/) is still reachable for the time being. Hosting stays on AWS S3 and CloudFront, but the CircleCI pipeline was retired in favor of a local deploy script.
+
+  - version: 2.3.0
+    date: December 2025
+    body: |-
+      I updated my bio, latest role, and resume. Added a new project called Hearts.
+
+  - version: 2.2.1
+    date: June 2023
+    body: |-
+      Several sections have been updated to reflect the latest status of my information. The CV has been exchanged for an updated version of my resume which I believe is more indicative of my experiences now. A bug in the mobile view of the blog section has since been resolved. Lastly, I have added a reading time indicator on the blog index items. Still no new blog articles yet, but I promise those are in the works!
+
+  - version: 2.2.0
+    date: March 2023
+    body: |-
+      The blog and 3 articles have been published in this version! On the technical side of things, I added the following node packages to handle rendering markdown text and LaTeX: react-katex, react-markdown, rehype-katex, remark-gfm, and remark-math. Markdown components now translate to HTML components with customizable CSS using the remark/rehype pipelines. I'm excited to deliver more articles in the near future!
+
+  - version: 2.1.0
+    date: January 2023
+    body: |-
+      Several changes were made to the website. Firstly, I updated all the information to reflect all my achievements since graduating from Cornell University last December. I also exchanged my Resume for a CV which is more appropriate for academic positions (for which I am applying to). Additionally, I added the Research Section to my home page which reflects my current experience in that field. Lastly, I added this Website History page and changed the overall color scheme to use the Nord color palette. This is all in preparation for adding the Blog section which is long overdue now. (Originally promised December 2022)
+
+  - version: 2.0.1
+    date: July 2022
+    body: |-
+      I integrated my website project with CircleCI in order to allow for continuous integration and development. Now, it will automatically push changes to the live website whenever I merge the main branch with the live branch in Github.
+
+  - version: 2.0.0
+    date: June 2022
+    body: |-
+      I took down the first version of my personal website and changed the stack and deployment strategy. I switched the source code to a React.js framework and changed the hosting method to AWS S3. I also registered the current domain name -- [alexander-wang.net](https://alexander-wang.net) -- and serve it using AWS CloudFront. The new Github repository can be found here: [Github](https://github.com/awang9999/mysite-2.0)
+
+  - version: 1.0.0
+    date: January 2021
+    body: |-
+      This version of the website was hosted on awang.io prior to my domain switch and website renovation. It was a pure HTML/CSS/JS website that had the bare necessities. Its remnants can be found here: [Github](https://github.com/awang9999/mysite)

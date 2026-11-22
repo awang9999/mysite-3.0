@@ -13,6 +13,7 @@ content/
 ├── 404.md               ← the 404 page's one dry sentence
 ├── experience.yaml      ← all work entries, newest first
 ├── projects.yaml        ← featured set + archive
+├── changelog.yaml       ← website history entries (2.0 migration), newest first
 └── blog/
     ├── index.yaml       ← source of truth for the /blog page (order, titles, dates, summaries)
     ├── matrix-calculus-preface.md

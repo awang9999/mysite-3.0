@@ -93,6 +93,18 @@ export interface BlogIndexFile {
   posts: BlogIndexPost[];
 }
 
+// Changelog (the 2.0 "Website History" page, migrated 2026-11-22).
+// `body` is markdown, rendered by the site's pipeline at build time.
+export interface ChangelogEntry {
+  version: string;
+  date: string;
+  body: string;
+}
+
+export interface ChangelogFile {
+  entries: ChangelogEntry[];
+}
+
 const contentDir = path.resolve(process.cwd(), 'content');
 
 function loadYaml<T>(relativePath: string): T {
@@ -114,6 +126,7 @@ export const experience: ExperienceFile = {
 };
 export const projects = loadYaml<ProjectsFile>('projects.yaml');
 export const blogIndex = loadYaml<BlogIndexFile>('blog/index.yaml');
+export const changelog = loadYaml<ChangelogFile>('changelog.yaml');
 
 // Nav label for a given path (used as the page h1 on subpages).
 export function navLabelFor(path: string): string {

@@ -61,6 +61,15 @@
 - [x] **Experience curation** — cut per "paid professional software engineering jobs only + TA": ~~Researcher, Cornell~~ (P STAT paper entry) and ~~Project Lead, ProjectX 2021~~ (the one explicitly named). Kept: SWE II, SWE I (both AWS HealthOmics), TAE intern, Amazon Music intern, TA CS 4780, AWS Connect intern. Both cut entries are git-recoverable.
 - [x] Build green; DESIGN.md amended (§4 hero, §7 experience, §8.6, §9.13, §9.1 inventory, resolved #11).
 
+### 3.15 — Changelog migration (2026-11-22, owner)
+
+- [x] **Migrate the 2.0 "Website History" page** → `/changelog` (same URL as 2.0). All seven entries (v1.0.0 → v2.3.0) carried over **verbatim** — only two obvious typos fixed silently ("home have" → "home page" in 2.1.0; "It's remnents" → "Its remnants" in 1.0.0).
+- [x] **New 3.0.0 entry** (November 2026) records the full rebuild: static multi-page rewrite, design rework, timeline, build-time KaTeX, `/old/` availability, CircleCI retired.
+- [x] **Data-driven**: `content/changelog.yaml` (`version`, `date`, markdown `body`), rendered as hairline rows ("Version X · Month Year" title line + body). Inline links work: same-origin links plain, external get the ↗ arrow.
+- [x] **Footer link** ("Changelog" between GitHub and Old site) — 2.0 had it as a small footer link too; not in the nav.
+- [x] **Astro 7 gotcha (new)**: `render()` from `astro:content` is entry-only — raw markdown strings must go through the `MarkdownProcessor.createRenderer()` API. The pipeline was extracted to `src/lib/markdown-pipeline.ts` (single source of truth; `astro.config.mjs` and `src/lib/render-markdown.ts` both use it). Result field is `code`, not `html`.
+- [x] Blog KaTeX regression-checked after the pipeline extraction — clean.
+
 ### 3.14 — Owner pass 2 (2026-11-22)
 - [x] **Favicon = bare monogram** — the accent disc is retired: bare AW letterforms, tight-cropped to the letterforms' actual bounds (the old `viewBox` was silently clipping ~10% off the top and bottom), ink blue `#1F5FA8` for light tabs + a `prefers-color-scheme: dark` twin in `#7AA5E8` (`public/favicon-dark.svg`). Favicons can't read the page's JS toggle, so the twin follows the browser/OS scheme. (Pitfall hit: SVG comments must not contain `--` — XML rejects them.)
 - [x] **Résumé links open in a new tab** — all three (nav, hero, footer) get `target="_blank" rel="noopener noreferrer"` via a content `newTab: true` flag on the link (schema + `SiteLink` + renderers), not hardcoded per page. QA caught two renderers not forwarding the flag (footer, hero) — fixed.

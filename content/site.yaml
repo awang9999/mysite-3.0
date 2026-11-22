@@ -30,6 +30,8 @@ footer:
     - label: GitHub
       href: https://github.com/awang9999
       external: true
+    - label: Changelog
+      href: /changelog
     - label: Old site
       href: /old/
 

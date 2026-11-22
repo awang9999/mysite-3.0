@@ -128,7 +128,7 @@ Rationale: radius only where a recessed surface meets text; no rounded cards any
 
 Rationale: one measure for the whole site = one reading rhythm; 640 px at 18 px font lands at 68–75 ch. `/projects` is the single documented exception (rows carry title + description + link and want the room). No third width exists.
 
-### Page header pattern — /about and /blog (experience and projects are h1-only, no lead — removed by the owner 2026-11-22)
+### Page header pattern — /about, /blog, and /changelog (experience and projects are h1-only, no lead — removed by the owner 2026-11-22)
 
 ```
 h1            --text-xl / 700, --fg
@@ -273,6 +273,12 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 - Scoped under `.xp` so the shared `.rows` hairlines on /projects and /blog are untouched (the horizontal row hairline is suppressed inside `.xp` — the vertical rail replaces it).
 - Mobile (≤ 640 px): rail and circle hidden; the left column becomes a row (logo + dates/location) above the full-width text.
 
+### Changelog (/changelog — "Website History", migrated from 2.0, owner 2026-11-22)
+
+- The 2.0 changelog page, carried over **verbatim** (two obvious typos fixed silently — see `changelog.yaml`). Entries newest first; a new 3.0.0 entry records the full rebuild.
+- One hairline row per version: title line "Version X · Month Year" (`--text-md`/500), body = the entry text (markdown rendered at build time; inline links get the accent style, same-origin links stay plain).
+- Footer link only — not in the nav (2.0 had it as a small footer link too).
+
 ### Blog index
 
 - One row per post: meta line date (`--text-xs`, `--fg-muted`) · title (`--text-md`/500, accent link) · optional one-line excerpt (`--text-base`, `--fg-muted`). Newest first. No cards, no thumbnails.
@@ -350,3 +356,4 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 11. **Owner content/layout pass** (2026-11-21): (a) /about body replaced with the 2.0 "About Me" text **verbatim** (the drafted prose retired); (b) home hero links moved **inside the text column** — aligned with name/bio, not under the portrait; (c) /experience rows gained small company-logo chips (36 px white chip, §7); (d) /experience curated to **paid professional SWE jobs + the TA** — Cornell Researcher and ProjectX 2021 entries cut (git-recoverable).
 12. **Résumé links open in a new tab** (owner, 2026-11-22): all three résumé links (nav, hero, footer) get `target="_blank" rel="noopener noreferrer"` — driven by a content `newTab: true` flag on the link, not hardcoded per renderer (the PDF is a document; the reader keeps the site open).
 13. **Favicon = bare monogram + experience timeline** (owner, 2026-11-22): favicon retired the accent disc — bare AW letterforms, tight-cropped to the letterforms' bounds, in the theme accent (ink blue light tab / `#7AA5E8` dark tab via a `prefers-color-scheme` twin; favicons can't read the page's JS toggle). /experience became the vertical timeline in §7 (dates + logo left, open circle on a rail, text right); its lead line removed.
+14. **Changelog migration** (owner, 2026-11-22): the 2.0 "Website History" page (v1.0.0 → v2.3.0 entries) migrated verbatim to /changelog as data-driven rows (content/changelog.yaml), plus a new 3.0.0 entry recording the full rebuild. Small footer link, as in 2.0; not in the nav.
