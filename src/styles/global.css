@@ -662,11 +662,15 @@ a:focus-visible {
 }
 
 /* Open circle on the rail, centered on the title's first line. The --bg
-   fill masks the rail behind it, so it reads as a ring, not a dot. */
+   fill masks the rail behind it, so it reads as a ring, not a dot.
+   Box-sizing is border-box: the 12 px includes the 1.5 px border, so the
+   ring's center is 6 px in from its left/top edge; the 1 px line's center
+   sits 0.5 px right of the line's left edge. Account for both or the ring
+   drifts ~2 px left (owner QA, 2026-11-22). */
 .xp-node {
   position: absolute;
-  top: 24px; /* 31 px center − 7.5 px outer radius */
-  left: calc(var(--xp-left) + var(--xp-rail) / 2 - 7.5px);
+  top: 25px; /* 31.4 px title-line center − 6 px */
+  left: calc(var(--xp-left) + var(--xp-rail) / 2 - 5.5px);
   width: 12px;
   height: 12px;
   border: 1.5px solid var(--accent);
@@ -695,8 +699,10 @@ a:focus-visible {
 }
 
 /* Company logo chip — larger than the 2026-11-21 36 px version (owner
-   2026-11-22), same white-chip treatment so every logo reads on both
-   themes. */
+   2026-11-22). The logo fills the chip edge to edge (owner 2026-11-22):
+   object-fit: cover, so no white gap ring between image and border. All
+   four PNGs are square and already carry their own backgrounds, so cover
+   is a clean downscale — the chip's white background is never visible. */
 .xp-logo {
   display: inline-flex;
   align-items: center;
@@ -707,13 +713,14 @@ a:focus-visible {
   background: #fff;
   border: 1px solid var(--border);
   border-radius: 8px;
+  overflow: hidden; /* clips the logo to the chip's rounded corners */
 }
 
 .xp-logo img {
   display: block;
-  width: 40px;
-  height: 40px;
-  object-fit: contain;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 
 .xp-main {

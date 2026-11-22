@@ -6,9 +6,9 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { load as parseYaml } from 'js-yaml';
 
-// Company logos for experience entries (owner, 2026-11-21). 64 px PNGs, ~3 KB
-// each, shown in a 36 px white chip. Keys are referenced from
-// content/experience.yaml (`logo:`).
+// Company logos for experience entries (owner, 2026-11-21). 64 px square
+// PNGs, ~3 KB each, filling a 48 px chip edge to edge (object-fit: cover).
+// Keys are referenced from content/experience.yaml (`logo:`).
 import logoAws from '../assets/logo-aws.png';
 import logoAmazonMusic from '../assets/logo-amazon-music.png';
 import logoCornell from '../assets/logo-cornell.png';
