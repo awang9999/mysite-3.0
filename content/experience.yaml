@@ -4,60 +4,56 @@
 # per this rule (recoverable from git).
 #
 # Shape (DESIGN §7, timeline per owner 2026-11-22): vertical rail with an open
-# circle per entry; dates + location + company logo on the left, "role ·
-# company" title + 1–3 concrete bullets on the right. `logo` is a key into
-# the LOGOS map in src/lib/data.ts. Dates are display strings (the builder
-# renders them as-is).
+# circle per entry; dates + location + company logo on the left, role title +
+# 1–3 concrete bullets on the right. The organization is NOT in the title
+# (owner 2026-11-22: keep titles to one line) — it leads the first bullet,
+# and the logo chip carries the company. `logo` is a key into the LOGOS map
+# in src/lib/data.ts. Dates are display strings (the builder renders them
+# as-is).
 
 entries:
   - role: Software Engineer II
-    company: Amazon (AWS HealthOmics)
     location: Mountain View, CA # confirmed by owner 2026-11-21
     dates: Jul 2025 — present
     logo: aws
     bullets:
-      - "Built the AWS HealthOmics MCP server, Kiro VS Code extension, and Kiro Powers suite for running bioinformatics workflows from the IDE. 2,600+ downloads."
+      - "AWS HealthOmics — built the MCP server, Kiro VS Code extension, and Kiro Powers suite for running bioinformatics workflows from the IDE. 2,600+ downloads."
       - "Redesigned the workflow database schema and its event-log pipeline, cutting workflow-start latency 80%+. Kotlin, DynamoDB, EventBridge, Kinesis."
 
   - role: Software Engineer I
-    company: Amazon (AWS HealthOmics)
     location: Mountain View, CA # confirmed by owner 2026-11-21
     dates: Jan 2024 — Jul 2025
     logo: aws
     bullets:
-      - "Built a reusable system for onboarding new GPU and large-compute instance types (L4, L40S, more CPU options) across HealthOmics engines — 4,000+ workflow runs since release."
-      - "Wrote an API security test suite validating the IAM permissions surface of all public HealthOmics APIs, 20+ runs a week in CI/CD."
+      - "AWS HealthOmics — built a reusable system for onboarding new GPU and large-compute instance types (L4, L40S, more CPU options). 4,000+ workflow runs since release."
+      - "Wrote an API security test suite validating the IAM permissions surface of all public APIs, 20+ runs a week in CI/CD."
 
   - role: Software Engineering Intern
-    company: TAE Power Solutions
     location: San Francisco, CA
     dates: Fall 2023
     logo: tae
     bullets:
-      - "Wrote automated unit tests covering 20+ C modules in the CANopen microcontroller library with Unity, CMock, and Ceedling."
+      - "TAE Power Solutions — wrote automated unit tests covering 20+ C modules in the CANopen microcontroller library with Unity, CMock, and Ceedling."
 
   - role: Software Engineering Intern
-    company: Amazon (Music)
     location: San Francisco, CA
     dates: May 2022 — Aug 2022
     logo: amazon-music
     bullets:
-      - "Built a real-time dashboard of content publishing status for Amazon Music — React frontend, Java backend."
+      - "Amazon Music — built a real-time dashboard of content publishing status. React frontend, Java backend."
       - "AWS side: Redshift, S3, SQS, CloudFormation."
 
-  - role: Teaching Assistant, CS 4780 (Intro to Machine Learning)
-    company: Cornell University
+  - role: Teaching Assistant
     location: Ithaca, NY
     dates: Aug 2021 — Dec 2022
     logo: cornell
     bullets:
-      - "Wrote and graded assignments, projects, and exams; held office hours from KNN to deep ensembles."
+      - "Cornell University — supported the Intro to Machine Learning course: wrote and graded assignments, projects, and exams; held office hours from KNN to deep ensembles."
       - "Course stack: Python, NumPy, Pandas, PyTorch, Jupyter."
 
   - role: Software Engineering Intern
-    company: Amazon (AWS Connect)
     location: Seattle, WA
     dates: May 2021 — Aug 2021
     logo: aws
     bullets:
-      - "Implemented the delete endpoints for Connect's core resources under GDPR retention rules. Java, with some Ruby scripting."
+      - "AWS Connect — implemented delete endpoints for core resources under GDPR retention rules. Java, with some Ruby scripting."
