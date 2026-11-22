@@ -24,7 +24,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 | S3 bucket (main) | `www.alexander-wang.net` (us-west-1) | Private. Public access block fully on. Bucket policy allows `s3:GetObject` **only** to CloudFront OAI `E3PV3Z1GIPWEQ0`. No versioning. |
 | S3 bucket (legacy apex) | `alexander-wang.net` (us-west-1) | Served via the S3 *static-website* endpoint. Redundant — slated for decommission (§6). |
 | CloudFront (www) | `E91NPMQZ9M9NQ` → `d1oevywpg7h4uc.cloudfront.net` | Origin: `www.alexander-wang.net` bucket. Alias: `www.alexander-wang.net`. TLS ≥ 1.2 (2021). No WAF. |
-| CloudFront (apex, legacy) | `E96YWX7J3SY11` → `d30bl45vk665e7.cloudfront.net` | Origin: legacy apex bucket's website endpoint. Alias: `alexander-wang.net`. |
+| CloudFront (apex, legacy) | `E96YWX7J3SY11` → `d30bl45vk665e7.cloudfront.net` | Origin: legacy apex bucket's website endpoint (until the cutover repoints it to the 3.0 bucket — §6). Alias: `alexander-wang.net`. **Stays after cutover — it serves the apex.** |
 | DNS | `www` → `d1oevywpg7h4uc` (alias A) · apex → `d30bl45vk665e7` (alias A) | Apex and www are served by **two different distributions and two different buckets** — a legacy split. |
 | Unrelated | `E2F96O5L3ZEDKQ` (hearts game, us-west-2) | Out of scope — do not touch. |
 | Old CI | CircleCI, triggered on `live` branch | Builds + `s3 sync`, but **never invalidates CloudFront** (known gap). To be retired. |
@@ -42,16 +42,20 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
   alexander-wang.net   │      wang.net ────────┘                     │
                        └──────────────────────┬──────────────────────┘
                                               │
+            ┌─────────────────────┴─────────────────────┐
+            │                                           │
+   ┌────────▼──────────────────────────┐  ┌─────────────▼──────────────────────┐
+   │  CloudFront — MAIN dist           │  │  CloudFront — LEGACY dist (apex)   │
+   │  E91NPMQZ9M9NQ (www)              │  │  E96YWX7J3SY11                     │
+   │  alias: www.alexander-wang.net    │  │  alias: alexander-wang.net (apex)  │
+   └───────────────────────────────────┘  └────────────────────────────────────┘
+   Both dists: same ACM cert (43e7d0e9), response-headers policy (HSTS,
+   nosniff, referrer), 404 → 404.html custom error response, OAI access,
+   both hostnames serve 200 (no static host-based 301 exists in CloudFront).
+   The legacy dist's ORIGIN is repointed from the 2.0 bucket to the 3.0
+   bucket at cutover (§6) — its alias and the DNS record never move.
+                                              │
                        ┌──────────────────────▼──────────────────────┐
-                       │        CloudFront (ONE distribution)        │
-                       │  • aliases: apex + www                      │
-                       │  • both hostnames serve 200 (no static      │
-                       │    host-based 301 exists in CloudFront)     │
-                       │  • ACM cert, TLS ≥ 1.2, HSTS                │
-                       │  • response-headers policy (security hdrs)  │
-                       │  • 404 → 404.html custom error response     │
-                       │  • origin request: OAI → private bucket     │
-                       └──────────────────────┬──────────────────────┘
                                               │
                        ┌──────────────────────▼──────────────────────┐
                        │   S3  www.alexander-wang.net  (private)     │
@@ -64,7 +68,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
           build → s3 sync (two-tier) → CloudFront invalidate /* → verify
 ```
 
-**One bucket, one distribution, both hostnames.** The legacy apex bucket and distribution are removed after cutover (§6).
+**One bucket, both hostnames.** The legacy apex *bucket* is orphaned at cutover and removed after the soak period (§6); the legacy *distribution* stays — it serves the apex.
 
 ### Why this shape
 
@@ -76,7 +80,7 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 
 | # | Decision | Rationale |
 |---|---|---|
-| D1 | ✅ **CONFIRMED** Single bucket (`www.alexander-wang.net`, reused) + single CloudFront distribution serving both apex and www | Eliminates the legacy two-bucket/two-distribution split; one place to configure headers, cert, cache |
+| D1 | ✅ **CONFIRMED, mechanism amended (2026-11-22)** Single bucket (`www.alexander-wang.net`, reused) + **two** CloudFront distributions: www on the main dist, apex on the legacy dist whose **origin is repointed** to the same bucket at cutover | Original plan (one dist, both aliases) is impossible: the apex CNAME already sits on the legacy dist and CloudFront rejects the same CNAME on two dists (`CNAMEAlreadyExists`); moving it = 1–2 h downtime. Repointing the origin instead: zero downtime, zero DNS change, both dists share one bucket + one cert (43e7d0e9). The legacy dist therefore STAYS (it is the apex's home); only the orphaned 2.0 *bucket* is decommissioned |
 | D2 | ✅ **CONFIRMED (2026-11-20), mechanism amended (2026-11-21)** Canonical host: **apex** `alexander-wang.net`; `www` **serves 200, canonical tags point at apex** | Shorter, cleaner URLs. **Amendment:** a static www→apex 301 is impossible in CloudFront (behaviors branch on path, not host — both names arrive with identical paths); the only 301 route is a Lambda@Edge, which D9 excludes. So: one distribution serves both aliases (200); every page's `<link rel="canonical">` targets apex. `deploy.sh` keeps a `WWW_MODE=redirect` verification path if a Lambda@Edge 301 is ever wanted. |
 | D3 | Multi-page static output (MPP), real URLs, `404.html`, **no SPA** | Hosting stays trivially simple; SEO and deep-linking work with zero config; cache is fully effective |
 | D4 | ✅ **CONFIRMED** Deploy = **a single local script** (`deploy/deploy.sh`), **no CI for now** — CircleCI fully retired. **Door left open for GitHub Actions later.** | Owner preference: a personal site doesn't need a CI pipeline today. One command does build → two-tier sync → invalidate → verify. Replaces CircleCI (paid per seat, and its pipeline never even invalidated the CDN). The script is written **CI-ready**: non-interactive, idempotent, meaningful exit codes, AWS auth via standard profile/env — so adding a GitHub Actions workflow later is a thin wrapper (job runs the same script with OIDC-issued credentials), not a rewrite. |
@@ -109,21 +113,24 @@ Verified live on 2026-11-20 with the `awang` CLI profile (account `488985706349`
 
 **Rollback:** S3 versioning → restore the previous object versions (documented one-liner in `deploy/`), then invalidate `/*`. Target: < 5 minutes.
 
-## 6. Migration plan (mysite-2.0 → 3.0, high level)
+## 6. Migration plan (mysite-2.0 → 3.0) — **as implemented in deploy/**
 
-Ordered so the live site keeps working at every step; no DNS outage expected (alias records flip atomically per-record).
+Ordered so the live site keeps working at every step. **No DNS change ever
+happens** (see the D1 amendment): the apex keeps its alias on the legacy
+dist; we repoint that dist's *origin* and then swap the bucket's content.
 
 1. **Build & verify 3.0 locally** (done in the normal dev loop).
-2. **Configure the target state on the existing www distribution (`E91NPMQZ9M9NQ`):** add the apex alias (cert `43e7d0e9` already covers both names — verified 2026-11-21), attach the response-headers policy (HSTS, nosniff, referrer), add the 404 → `404.html` custom error response. No www 301 behavior — it does not exist in static CloudFront (D2 amendment); both aliases serve 200 and canonical tags do the SEO job.
-3. **Enable S3 versioning** on `www.alexander-wang.net`.
-4. **Prepare the 2.0 archive (D10):** in mysite-2.0, add router `basename="/old"`, rebuild with `PUBLIC_URL=/old`, copy `index.html` to its ~5 route paths (so deep links like `/old/blog` work), sync the build to `s3://www.alexander-wang.net/old/`.
-5. **Deploy the 3.0 build** to the bucket root via `deploy/deploy.sh`. **This replaces the live site on `www`** — the cutover moment (www → 3.0, `/old/` → 2.0).
-6. **Flip DNS:** point the apex alias A record at `d1oevywpg7h4uc.cloudfront.net` (replacing `d30bl45vk665e7`). Alias records propagate within seconds to minutes.
-7. **Verify:** apex serves 3.0, www serves 200 (canonical mode; 301 only if `WWW_MODE=redirect`), `/old/` serves 2.0, 404s work, direct bucket URLs 403, cache headers correct.
-8. **Decommission (after a soak period):** delete legacy distribution `E96YWX7J3SY11`, empty + delete legacy bucket `alexander-wang.net`, delete the CircleCI project, retire the old `deploy.sh` in mysite-2.0.
-9. **Later, at the owner's word:** remove `/old/` from the bucket and drop the footer link.
+2. **`s3-versioning.sh`** — enable versioning on `www.alexander-wang.net` (rollback lever).
+3. **`cfn-configure.sh`** — response-headers policy (HSTS, nosniff, referrer) + 404 → `404.html` custom error response on **both** dists; create an OAI for the legacy dist, grant it in the bucket policy, and **repoint the legacy dist's origin** from the 2.0 website endpoint to the 3.0 bucket. Waits for both dists to be `Deployed`. *Nothing visible changes yet.*
+4. **`archive-2.0.sh`** — rebuild 2.0 as the `/old/` archive (basename + deep-link fallbacks), local only.
+5. **`deploy.sh`** — **the cutover** (gated in `cutover.sh`): build → snapshot bucket versions → sync 3.0 + `/old/` → two-tier cache headers → invalidate `/*` on **both** dists → verify **both** hostnames. After ~1–15 min both `alexander-wang.net` and `www.alexander-wang.net` serve 3.0. `DEPLOY_IS_CUTOVER=1` stamps `deploy/.cutover-at` (the decommission soak clock).
+6. **`verify-live.sh`** — 9 checks: 3.0 on apex, cache + security headers, 404 page, canonical → apex, www mode, `/old/` + `/old/blog/`, direct-S3 403.
+7. **Decommission (after ≥ 7 days soak):** `decommission.sh` — delete the **orphaned 2.0 bucket** `alexander-wang.net`, retire CircleCI. **The legacy dist stays** (it serves the apex).
+8. **Later, at the owner's word:** remove `/old/` (delete `old-archive/`, unset `OLD_ARCHIVE_DIR`, redeploy) and drop the footer link.
 
-**Risk notes:** step 4 replaces www content before step 5 flips apex — for the gap between them, apex still shows 2.0 and www shows 3.0. Both work; no broken state. If anything is wrong, revert step 4 via S3 versioning and step 5 by re-pointing the alias.
+**Rollback (any time before decommission):** `rollback.sh` restores the exact pre-deploy bucket state from `deploy/.pre-cutover-versions.json` (S3 versioning), re-invalidates both edges, sanity-checks. Re-cutover: `deploy.sh`. The origin repoint needs no undoing — the apex dist serves the bucket, so a restored bucket shows the old site on both hostnames.
+
+**Risk notes:** between steps 3 and 5 nothing is visible — the legacy dist's edge cache still holds 2.0 and the bucket still contains 2.0. The only moment of change is step 5's invalidation, which completes in minutes. The old 2.0 site stays fully intact (old bucket + `/old/` archive + S3 versions) until decommission, so the cutover is reversible well past "deploy failed".
 
 ## 7. Cost estimate (steady state)
 

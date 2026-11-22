@@ -1,12 +1,15 @@
 #!/usr/bin/env bash
 # =============================================================================
-# deploy/decommission.sh — retire legacy infra (TODOS 4.6, HOSTING §6 step 7)
+# deploy/decommission.sh — retire orphaned 2.0 infra (TODOS 4.6, HOSTING §6)
 #
 # Run only AFTER the cutover has soaked (default: 7+ days, SOAK_DAYS).
+# IMPORTANT: the legacy CloudFront distribution E96YWX7J3SY11 STAYS — after
+# the cutover it serves the APEX hostname (its origin was repointed to the
+# 3.0 bucket by cfn-configure.sh). Only the now-orphaned 2.0 BUCKET is
+# deleted.
 # Destroys, in order (each step gated):
-#   1. Legacy CloudFront distribution E96YWX7J3SY11 (disable -> wait -> delete)
-#   2. Legacy S3 bucket alexander-wang.net (s3 rb --force)
-#   3. CircleCI project (API call if CIRCLE_TOKEN set, else manual instructions)
+#   1. Orphaned 2.0 S3 bucket alexander-wang.net (s3 rb --force)
+#   2. CircleCI project (API call if CIRCLE_TOKEN set, else manual instructions)
 #   (Old 2.0 deploy.sh / .circleci/config.yml are retired with the 2.0 repo —
 #    nothing to do in AWS.)
 #
@@ -39,41 +42,27 @@ confirm() { # prompt, expected
 }
 
 # --- 0. Soak check -------------------------------------------------------------
-echo "[decom] Soak check (min $SOAK_DAYS days since apex flip)…"
-SOAK_OK="$(SOAK_DAYS="$SOAK_DAYS" ZONE_ID="$ZONE_ID" PROFILE="$PROFILE" python3 - <<'PYEOF'
-import json, os, subprocess, sys, datetime
-now = datetime.datetime.now(datetime.timezone.utc)
-def parse_ts(v):
-    if v is None: return None
-    if isinstance(v, (int, float)):
-        return datetime.datetime.fromtimestamp(v, datetime.timezone.utc)
-    try:
-        return datetime.datetime.fromisoformat(str(v).strip().replace("Z", "+00:00"))
-    except ValueError:
-        return None
-try:
-    data = json.loads(subprocess.check_output([
-        "aws", "route53", "list-hosted-zone-change-records",
-        "--hosted-zone-id", os.environ["ZONE_ID"],
-        "--profile", os.environ["PROFILE"], "--output", "json"]))
-except Exception:
-    print("UNKNOWN"); sys.exit()
-newest = None
-for batch in data.get("ResourceRecordSets", []):
-    changes = batch.get("ResourceRecordSetChanges") or batch.get("ResourceRecordSets") or []
-    for item in changes:
-        rrs = item.get("ResourceRecordSet", item) if isinstance(item, dict) else item
-        if rrs.get("Name") == "alexander-wang.net." and rrs.get("Type") == "A":
-            ts = parse_ts(batch.get("SubmittedAt")) or parse_ts(batch.get("Timestamp"))
-            if ts and (newest is None or ts > newest):
-                newest = ts
-if newest is None:
-    print("OK")  # no apex change in the 30-day window -> long soaked
-    sys.exit()
-age = (now - newest).total_seconds() / 86400
-print("OK" if age >= float(os.environ["SOAK_DAYS"]) else f"TOO_SOON({age:.1f}d)")
-PYEOF
-)"
+# No DNS change happens during the cutover (origin repoint, not a record
+# change), so the soak clock is the deploy.sh cutover stamp, not Route53
+# history.
+HERE="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+CUTOVER_AT="$HERE/.cutover-at"
+echo "[decom] Soak check (min $SOAK_DAYS days since cutover)…"
+SOAK_OK="UNKNOWN"
+if [ -f "$CUTOVER_AT" ]; then
+  CUTOVER_TS="$(cat "$CUTOVER_AT")"
+  THEN_TS="$(date -u -d "$CUTOVER_TS" +%s 2>/dev/null || true)"
+  if [ -n "$THEN_TS" ]; then
+    AGE_DAYS=$(( ( $(date -u +%s) - THEN_TS ) / 86400 ))
+    if [ "$AGE_DAYS" -ge "$SOAK_DAYS" ]; then SOAK_OK="OK(${AGE_DAYS}d)"
+    else SOAK_OK="TOO_SOON(${AGE_DAYS}d)"
+    fi
+  else
+    SOAK_OK="UNKNOWN(bad timestamp: $CUTOVER_TS)"
+  fi
+else
+  SOAK_OK="UNKNOWN(no $CUTOVER_AT — cutover not recorded by deploy.sh)"
+fi
 echo "[decom] soak: $SOAK_OK"
 case "$SOAK_OK" in
   OK) : ;;
@@ -81,55 +70,16 @@ case "$SOAK_OK" in
   *) echo "[decom][ERROR] could not determine flip age ($SOAK_OK). Use FORCE=1 to override." >&2; [ "${FORCE:-0}" = "1" ] || exit 22 ;;
 esac
 
-# --- 1. Disable + delete legacy distribution -----------------------------------
-echo "[decom] === 1. Legacy distribution $LEGACY_DIST ==="
-confirm "disable distribution $LEGACY_DIST" "$LEGACY_DIST"
-
-python3 - "$LEGACY_DIST" "$PROFILE" <<'PYEOF' || exit 23
-import json, os, subprocess, sys, time
-dist_id, profile = sys.argv[1], sys.argv[2]
-def aws(*a, parse=True):
-    r = subprocess.run(["aws", *a, "--profile", profile, "--output", "json"], capture_output=True, text=True)
-    if r.returncode != 0:
-        print(f"[decom][ERROR] {r.stderr.strip()[:400]}", file=sys.stderr); sys.exit(1)
-    return json.loads(r.stdout) if parse else r.stdout
-import tempfile
-dist = aws("cloudfront", "get-distribution", "--id", dist_id)["Distribution"]
-if dist["DistributionConfig"]["Enabled"]:
-    cfg = dict(dist["DistributionConfig"]); cfg["Enabled"] = False
-    fd, f = tempfile.mkstemp(suffix=".json")
-    with os.fdopen(fd, "w") as fh:
-        json.dump(cfg, fh)
-    aws("cloudfront", "update-distribution", "--id", dist_id,
-        "--if-match", dist["ETag"], "--distribution-config", f"file://{f}")
-    os.unlink(f)
-    print("[decom] disable issued; waiting for Deployed…")
-    for _ in range(180):
-        st = aws("cloudfront", "get-distribution", "--id", dist_id)["Distribution"]["Status"]
-        if st == "Deployed": break
-        time.sleep(10)
-    else:
-        print("[decom][ERROR] dist not Deployed after 30 min", file=sys.stderr); sys.exit(1)
-else:
-    print("[decom] dist already disabled.")
-dist = aws("cloudfront", "get-distribution", "--id", dist_id)["Distribution"]
-aws("cloudfront", "delete-distribution", "--id", dist_id, "--if-match", dist["ETag"])
-print(f"[decom] distribution {dist_id} deleted.")
-PYEOF
-aws cloudfront get-distribution --id "$LEGACY_DIST" --profile "$PROFILE" >/dev/null 2>&1 \
-  && { echo "[decom][ERROR] distribution still exists!" >&2; exit 24; } \
-  || echo "[decom] confirmed: $LEGACY_DIST is gone."
-
-# --- 2. Delete legacy bucket ----------------------------------------------------
-echo "[decom] === 2. Legacy bucket s3://$LEGACY_BUCKET ==="
+# --- 1. Delete orphaned 2.0 bucket -------------------------------------------------
+echo "[decom] === 1. Orphaned 2.0 bucket s3://$LEGACY_BUCKET ==="
 confirm "delete bucket $LEGACY_BUCKET" "$LEGACY_BUCKET"
 aws s3 rb "s3://$LEGACY_BUCKET" --force --profile "$PROFILE" || exit 25
 aws s3api head-bucket --bucket "$LEGACY_BUCKET" --profile "$PROFILE" 2>/dev/null \
   && { echo "[decom][ERROR] bucket still exists!" >&2; exit 26; } \
   || echo "[decom] confirmed: s3://$LEGACY_BUCKET is gone."
 
-# --- 3. CircleCI ----------------------------------------------------------------
-echo "[decom] === 3. CircleCI project ==="
+# --- 2. CircleCI ----------------------------------------------------------------
+echo "[decom] === 2. CircleCI project ==="
 if [ -n "${CIRCLE_TOKEN:-}" ]; then
   # Best-effort: list projects for the org, find mysite-2.0, delete it.
   SLUG="$(curl -sS -H "Circle-Token: $CIRCLE_TOKEN" \
@@ -149,5 +99,6 @@ else
 fi
 
 echo
-echo "[decom] DONE. Legacy dist + bucket removed; CircleCI per above."
+echo "[decom] DONE. Orphaned 2.0 bucket removed; CircleCI per above."
+echo "[decom] The legacy dist STAYS (it serves the apex now) — never delete it."
 echo "[decom] Reminder: the 2.0 /old/ archive stays live until the owner says to remove it (TODOS 4.7)."

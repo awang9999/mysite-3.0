@@ -5,3 +5,6 @@ dist/
 # scripts/vendor-katex.mjs (postinstall). Never committed.
 public/katex/
 old-archive/
+# deploy run-state (local, never committed)
+deploy/.pre-cutover-versions.json
+deploy/.cutover-at
