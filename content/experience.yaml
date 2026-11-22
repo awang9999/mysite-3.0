@@ -1,7 +1,12 @@
-# Experience — all work entries, newest first.
-# Shape (DESIGN §7): title line = "role · company", meta line = dates (+ location),
-# body = 1–3 concrete bullets. No timeline rail.
-# Dates are display strings (the builder renders them as-is).
+# Experience — paid, professional software engineering jobs, newest first
+# (owner curation, 2026-11-21). Teaching Assistant kept as the one approved
+# non-SWE entry. The Cornell Researcher and ProjectX 2021 entries were cut
+# per this rule (recoverable from git).
+#
+# Shape (DESIGN §7): small company logo chip + "role · company" title line,
+# meta line = dates (+ location), body = 1–3 concrete bullets. `logo` is a key
+# into the LOGOS map in src/lib/data.ts. Dates are display strings (the
+# builder renders them as-is).
 
 lead: "The roles, newest first — what each one was actually about."
 
@@ -10,6 +15,7 @@ entries:
     company: Amazon (AWS HealthOmics)
     location: Mountain View, CA # confirmed by owner 2026-11-21
     dates: Jul 2025 — present
+    logo: aws
     bullets:
       - "Built the AWS HealthOmics MCP server, Kiro VS Code extension, and Kiro Powers suite for running bioinformatics workflows from the IDE. 2,600+ downloads."
       - "Redesigned the workflow database schema and its event-log pipeline, cutting workflow-start latency 80%+. Kotlin, DynamoDB, EventBridge, Kinesis."
@@ -18,6 +24,7 @@ entries:
     company: Amazon (AWS HealthOmics)
     location: Mountain View, CA # confirmed by owner 2026-11-21
     dates: Jan 2024 — Jul 2025
+    logo: aws
     bullets:
       - "Built a reusable system for onboarding new GPU and large-compute instance types (L4, L40S, more CPU options) across HealthOmics engines — 4,000+ workflow runs since release."
       - "Wrote an API security test suite validating the IAM permissions surface of all public HealthOmics APIs, 20+ runs a week in CI/CD."
@@ -26,25 +33,15 @@ entries:
     company: TAE Power Solutions
     location: San Francisco, CA
     dates: Fall 2023
+    logo: tae
     bullets:
       - "Wrote automated unit tests covering 20+ C modules in the CANopen microcontroller library with Unity, CMock, and Ceedling."
-
-  - role: Researcher
-    company: Cornell University
-    location: Ithaca, NY
-    dates: Aug 2022 — Aug 2023
-    bullets:
-      - "With advisor Prof. Anil Damle, studied how fine-tuning changes neural networks — can you tell whether two models share a base model?"
-      - "Developed a pruning algorithm that shrank OPT-1.3B by 20% with little perplexity drop on standard benchmarks (\"P STAT: Shrinking Transformers After Training\")."
-    links:
-      - label: arXiv
-        href: https://arxiv.org/abs/2406.00061
-        external: true
 
   - role: Software Engineering Intern
     company: Amazon (Music)
     location: San Francisco, CA
     dates: May 2022 — Aug 2022
+    logo: amazon-music
     bullets:
       - "Built a real-time dashboard of content publishing status for Amazon Music — React frontend, Java backend."
       - "AWS side: Redshift, S3, SQS, CloudFormation."
@@ -53,28 +50,15 @@ entries:
     company: Cornell University
     location: Ithaca, NY
     dates: Aug 2021 — Dec 2022
+    logo: cornell
     bullets:
       - "Wrote and graded assignments, projects, and exams; held office hours from KNN to deep ensembles."
       - "Course stack: Python, NumPy, Pandas, PyTorch, Jupyter."
-
-  - role: Project Lead, ProjectX 2021
-    company: University of Toronto (undergraduate research competition)
-    location: Ithaca, NY
-    dates: Aug 2021 — Feb 2022
-    bullets:
-      - "Led six undergraduates from Cornell; we took first place in the Epidemiology category ($25,000 prize)."
-      - "Built a BERT misinformation detector and a post-virality model to study COVID-19 misinformation on social media; presented at the 2022 UofT AI conference."
-    links:
-      - label: arXiv
-        href: https://arxiv.org/abs/2207.01483
-        external: true
-      - label: GitHub
-        href: https://github.com/CornellDataScience/ProjectX-2021
-        external: true
 
   - role: Software Engineering Intern
     company: Amazon (AWS Connect)
     location: Seattle, WA
     dates: May 2021 — Aug 2021
+    logo: aws
     bullets:
       - "Implemented the delete endpoints for Connect's core resources under GDPR retention rules. Java, with some Ruby scripting."

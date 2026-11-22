@@ -508,6 +508,9 @@ a:focus-visible {
   .hero-copy {
     max-width: none;
   }
+  .hero-links {
+    justify-content: center;
+  }
 }
 
 .hero h1 {
@@ -526,10 +529,13 @@ a:focus-visible {
   color: var(--fg-muted);
 }
 
+/* Hero links — inside .hero-copy, aligned with the name/bio text, not the
+   portrait (owner, 2026-11-21). The bio's bottom margin is the gap. */
 .hero-links {
   display: flex;
   flex-wrap: wrap;
   gap: var(--space-5); /* 24px between links */
+  margin: 0;
 }
 
 /* ---------- 4. Page header — identical on every subpage (§4) ---------- */
@@ -609,6 +615,33 @@ a:focus-visible {
   display: inline;
   font-size: var(--text-sm);
   font-weight: 400;
+}
+
+/* Experience rows (§7): small company-logo chip before the title. Scoped
+   with :has() so the shared .row-title on /projects and /blog is untouched. */
+.row-title:has(.row-logo) {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3); /* 12px chip → text */
+}
+
+.row-logo {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px;
+  height: 36px;
+  flex-shrink: 0;
+  background: #fff; /* white chip: every logo reads on light AND dark */
+  border: 1px solid var(--border);
+  border-radius: 8px;
+}
+
+.row-logo img {
+  display: block;
+  width: 28px;
+  height: 28px;
+  object-fit: contain;
 }
 
 /* Experience entries (§7): title "Role · Company", dates, bullets.

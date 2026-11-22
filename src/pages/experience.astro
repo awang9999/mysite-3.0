@@ -20,16 +20,29 @@ const extraLinks = (links: { label: string; href: string }[] | undefined) =>
         experience.entries.map((entry) => (
           <li class="row">
             <p class="row-title">
-              {entry.role}
-              {entry.company && ` · ${entry.company}`}
-              {
-                extraLinks(entry.links).map((link) => (
-                  <span class="row-alt-links">
-                    {' · '}
-                    <Link href={link.href} label={link.label} />
-                  </span>
-                ))
-              }
+              {entry.logoAsset && (
+                <span class="row-logo">
+                  <img
+                    src={entry.logoAsset.src}
+                    width={entry.logoAsset.width}
+                    height={entry.logoAsset.height}
+                    alt=""
+                    aria-hidden="true"
+                  />
+                </span>
+              )}
+              <span class="row-title-text">
+                {entry.role}
+                {entry.company && ` · ${entry.company}`}
+                {
+                  extraLinks(entry.links).map((link) => (
+                    <span class="row-alt-links">
+                      {' · '}
+                      <Link href={link.href} label={link.label} />
+                    </span>
+                  ))
+                }
+              </span>
             </p>
             <p class="row-meta">
               {[entry.dates, entry.location].filter(Boolean).join(' · ')}

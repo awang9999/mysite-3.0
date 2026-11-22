@@ -52,6 +52,15 @@
 
 ---
 
+### 3.13 — Owner content/layout pass (2026-11-21)
+- [x] **About verbatim** — `content/about.md` body replaced with the 2.0 "About Me" text exactly (drafted prose retired; lead dropped — 2.0's page had none). Emails kept as bold text, made mailto-clickable (display text unchanged).
+- [x] **Hero links aligned to text** — `<p class=hero-links>` moved inside `.hero-copy` (owner: "align to the text instead of the picture"). Mobile: centered under the stacked text.
+- [x] **Experience logos** — 4 company logos from 2.0's `public/images/` (aws_dark, amazon_music, cornell_cis, tae) → 64 px PNGs in `src/assets/` (~3 KB each), rendered as 36 px white chips before the title line (`:has()`-scoped flex so /projects + /blog rows are untouched). Logo key in `experience.yaml`, resolved by the `LOGOS` map in `src/lib/data.ts`.
+- [x] **Experience curation** — cut per "paid professional software engineering jobs only + TA": ~~Researcher, Cornell~~ (P STAT paper entry) and ~~Project Lead, ProjectX 2021~~ (the one explicitly named). Kept: SWE II, SWE I (both AWS HealthOmics), TAE intern, Amazon Music intern, TA CS 4780, AWS Connect intern. Both cut entries are git-recoverable.
+- [x] Build green; DESIGN.md amended (§4 hero, §7 experience, §8.6, §9.13, §9.1 inventory, resolved #11).
+
+---
+
 ## Cross-cutting
 
 - **Owner delegation (2026-11-21):** Phase 3 proceeds without per-page owner sign-off — owner reviews the finished Phase 3 as a whole. Phase 4 (infra + cutover) still starts only on owner's go, after the owner has seen the site.

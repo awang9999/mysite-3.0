@@ -19,12 +19,12 @@ const { name, role, bio, links } = home.data;
         <h1>{name}</h1>
         <p class="hero-role">{role}</p>
         {bio && <p class="hero-bio">{bio}</p>}
+        <p class="hero-links">
+          {
+            (links ?? []).map((link) => <Link href={link.href} label={link.label} />)
+          }
+        </p>
       </div>
     </div>
-    <p class="hero-links">
-      {
-        (links ?? []).map((link) => <Link href={link.href} label={link.label} />)
-      }
-    </p>
   </section>
 </Layout>

@@ -143,8 +143,11 @@ content
 
 ### Hero (home only)
 
-- A normal section, **not** full-viewport: 96 px top padding, name as h1 (`--text-xl`), role line (`--text-base`, `--fg-muted`), then 2–4 inline links (GitHub, Résumé, Email, Blog — exact set is owner's, see §11) as accent links with 24 px gap, 96 px bottom padding.
-- Mostly text and whitespace: no video, no 100 vh, no chevron, no background treatment. One image is allowed: the hero portrait (owner, 2026-11-21).
+- A normal section, **not** full-viewport: 96 px top/bottom padding, wider container (`--home-width`, 58 rem) than prose pages. Even 50/50 flex row (owner, 2026-11-21): portrait left, text right (48 px gutter).
+- Left: portrait — rounded square, 40 px radius, `clamp(240 px, 42 vw, 440 px)`, full-res 1000 px source (the one allowed image, see §9.13).
+- Right (`.hero-copy`, measure capped at 46 ch): name as h1 (`--text-xl`), role line (`--text-base`, `--fg-muted`), bio, then the link row (Résumé · GitHub · Blog — exact set is owner's, see §11) as accent links with 24 px gap. **The links live inside the text column, aligned with the name/bio — not under the portrait** (owner, 2026-11-21).
+- Mobile (≤ 640 px): stacks centered — portrait above the text, links centered under it.
+- Mostly text and whitespace: no video, no 100 vh, no chevron, no background treatment. Images allowed: the hero portrait, and small company-logo chips on /experience (§7, owner 2026-11-21).
 - Rationale: 2.0's 100 vh video hero + 50 px scroll chevron is the defining sin of the old site; a 48 px name on a wall of whitespace reads as confident, not empty.
 
 ### Nav
@@ -263,7 +266,9 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 
 ### Experience entries
 
-- One row per role: title line "**Role** · Company" (`--text-md`/500), meta line date range (`--text-xs`, `--fg-muted`), body 2–3 sentences or 1–3 short bullets (`--text-base`). *(amended 2026-11-21: owner-approved copy uses bullets)*
+- **Curation rule (owner, 2026-11-21): paid, professional software engineering jobs only** — the Teaching Assistant is the one approved non-SWE entry. (The Cornell Researcher and ProjectX 2021 entries were cut per this rule; recoverable from git.)
+- One row per role: a **small company-logo chip** before the title line — 36 px white rounded chip, 1 px `--border`, 28 px logo inside (2026-11-21; the white chip keeps every logo legible on both themes). Logos are 64 px PNGs (~3 KB each) referenced by key from `experience.yaml` through the `LOGOS` map in `src/lib/data.ts`. The flex layout is scoped with `.row-title:has(.row-logo)` so /projects and /blog rows are untouched.
+- Title line "**Role** · Company" (`--text-md`/500), meta line date range + location (`--text-xs`, `--fg-muted`), body 1–3 short bullets (`--text-base`). *(amended 2026-11-21: owner-approved copy uses bullets)*
 - No timeline rail, dots, or connector line. Rationale: the timeline rail is a résumé-template cliché; date ranges as text are unambiguous, print well, and cost nothing.
 
 ### Blog index
@@ -304,14 +309,14 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 3. **No icon fonts** — 2.0's Font Awesome; icons exist only as inline SVG and only where functional (external-link arrow, details chevron).
 4. **No `<hr>` or dividers where spacing works** — hairlines exist only as nav/footer chrome and list-row borders; 2.0 had an `<hr>` after nearly every section heading.
 5. **No single-page hash-scroll navigation** — real pages, real URLs (HOSTING D3).
-6. **No image logo** — the only image mark on the site is the 2.0 monogram badge (owner, 2026-11-21); the wordmark stays text.
+6. **No image site logo** — the only *site* image mark is the 2.0 monogram badge (owner, 2026-11-21); the wordmark stays text. (Company-logo chips on /experience are content, not branding — see §7.)
 7. **No cards with shadows, or any `box-shadow`, anywhere.**
 8. **No gradient backgrounds, decorative color blocks, or the inverted dark-hero/light-body trick** (2.0's hero was a dark block over a light page).
 9. **No full-viewport hero** (`min-height: 100vh`) — the hero is a section, not a screen.
 10. **No sticky nav or scrollspy.** Hamburger: allowed on mobile only (owner, 2026-11-21) — see §4; it is a real `<button>` with full a11y state, not a sticky-chrome app pattern.
 11. **No font CDNs or any third-party script/style** — self-host everything; the only external resources on the live site are outbound links.
 12. **No decorative borders, underlines, or color on headings.**
-13. **No image-heavy layouts** — any image must justify its bytes; v1 ships exactly one image: the home portrait. *(Exception to the ≤ 100 KB line, owner 2026-11-21: the portrait is served at its native 1000 px / 154 KB so it stays crisp at large display sizes — the earlier 320 px / 29 KB downscale blurred when enlarged.)*
+13. **No image-heavy layouts** — any image must justify its bytes. Image inventory (all owner-approved, 2026-11-21): the home portrait + four 64 px company-logo chips on /experience (~12 KB total). *(Exception to the ≤ 100 KB line, owner 2026-11-21: the portrait is served at its native 1000 px / 154 KB so it stays crisp at large display sizes — the earlier 320 px / 29 KB downscale blurred when enlarged.)*
 14. **No more than 6 type sizes, no values outside the spacing scale, no second accent color.**
 
 ---
@@ -321,7 +326,7 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 - Fonts: 24.5 KB Manrope (latin) + 15.2 KB (latin-ext, optional but default yes) + KaTeX faces ≤ ~50 KB after subsetting.
 - CSS: single stylesheet, target ≤ 15 KB minified.
 - JS: **~1 KB min** (owner, 2026-11-21): `src/scripts/ui.ts` — theme toggle + mobile hamburger, vanilla, no dependencies — plus a ~200 B pre-paint theme snippet in `<head>`. No islands, no framework, no hydration; the `<details>` archive needs no JS and still doesn't. This is the entire JS on the site.
-- Image: one portrait, 1000 px JPEG (154 KB as shipped 2026-11-21, see §9.13). All other pages: zero images.
+- Image: one portrait, 1000 px JPEG (154 KB as shipped 2026-11-21, see §9.13) + four ~3 KB logo PNGs on /experience only. All other pages: zero images.
 - Per-page HTML: ≤ 20 KB (non-math pages). Math pages are exempt: server-rendered KaTeX DOM is span-verbose (chapter 1 ≈ 242 KB raw) but compresses ~10× over the wire.
 - Total per page (wire, gzip-compressed — CloudFront compresses HTML/CSS by default), target: **≤ ~150 KB** before any image. Measured 2026-11-21: non-math ≈ 45–46 KB, math ≈ 96 KB worst case.
 - Rationale: the site should hit the edge in one round trip and paint before a 3G upload of the old hero video would finish one frame.
@@ -340,3 +345,4 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 8. **Color scheme: cool paper + ink blue** (owner chose A, 2026-11-21): the warm paper/rust v1 palette was retired as "a little too warm"; §1 tokens swapped (contrast re-verified, all pairs ≥4.5:1). Token-only change — no layout/type impact.
 9. **Theme toggle** (owner, 2026-11-21): manual light/dark in the nav (32 px icon button; icon = the theme you'd switch to). Saved choice beats OS preference; OS preference is the JS-free default; choice persists in `localStorage` and is restored pre-paint (no flash).
 10. **Mobile hamburger** (owner, 2026-11-21): ≤ 640 px the five links collapse behind a hamburger (real `<button>`, `aria-expanded`/`aria-controls`); they open as a centered panel and close on link click, Escape, or outside click. Replaces the v1 zero-JS wrap.
+11. **Owner content/layout pass** (2026-11-21): (a) /about body replaced with the 2.0 "About Me" text **verbatim** (the drafted prose retired); (b) home hero links moved **inside the text column** — aligned with name/bio, not under the portrait; (c) /experience rows gained small company-logo chips (36 px white chip, §7); (d) /experience curated to **paid professional SWE jobs + the TA** — Cornell Researcher and ProjectX 2021 entries cut (git-recoverable).

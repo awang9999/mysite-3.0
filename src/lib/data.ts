@@ -6,6 +6,14 @@ import fs from 'node:fs';
 import path from 'node:path';
 import { load as parseYaml } from 'js-yaml';
 
+// Company logos for experience entries (owner, 2026-11-21). 64 px PNGs, ~3 KB
+// each, shown in a 36 px white chip. Keys are referenced from
+// content/experience.yaml (`logo:`).
+import logoAws from '../assets/logo-aws.png';
+import logoAmazonMusic from '../assets/logo-amazon-music.png';
+import logoCornell from '../assets/logo-cornell.png';
+import logoTae from '../assets/logo-tae.png';
+
 export interface SiteLink {
   label: string;
   href: string;
@@ -30,12 +38,22 @@ export interface ExperienceEntry {
   dates: string;
   bullets: string[];
   links?: SiteLink[];
+  logo?: string;
+  /** Resolved at load time (see LOGOS) — Astro asset import, not a string. */
+  logoAsset?: { src: string; width: number; height: number };
 }
 
 export interface ExperienceFile {
   lead?: string;
   entries: ExperienceEntry[];
 }
+
+const LOGOS: Record<string, { src: string; width: number; height: number }> = {
+  aws: logoAws,
+  'amazon-music': logoAmazonMusic,
+  cornell: logoCornell,
+  tae: logoTae,
+};
 
 export interface FeaturedProject {
   name: string;
@@ -82,7 +100,17 @@ function loadYaml<T>(relativePath: string): T {
 }
 
 export const site = loadYaml<Site>('site.yaml');
-export const experience = loadYaml<ExperienceFile>('experience.yaml');
+const experienceRaw = loadYaml<ExperienceFile>('experience.yaml');
+// Resolve the `logo` key to an Astro asset import (Astro 7: asset imports
+// are { src, width, height } objects, not strings).
+export const experience: ExperienceFile = {
+  ...experienceRaw,
+  entries: experienceRaw.entries.map((entry) =>
+    entry.logo
+      ? { ...entry, logoAsset: LOGOS[entry.logo] }
+      : { ...entry },
+  ),
+};
 export const projects = loadYaml<ProjectsFile>('projects.yaml');
 export const blogIndex = loadYaml<BlogIndexFile>('blog/index.yaml');
 
