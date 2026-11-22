@@ -464,9 +464,19 @@ a:focus-visible {
   color: var(--accent);
 }
 
-/* ---------- 4. Hero — home only: a section, not a screen (§4) ---------- */
+/* ---------- 4. Hero — home only (§4) ----------
+   Owner (2026-11-22): the profile + text are vertically centered in the
+   visible area under the nav, and the page is tall enough that the footer
+   sits below the fold — it only appears on scroll. The nav occupies 65 px
+   (desktop) / 57 px (mobile, measured 2026-11-22), so the hero fills the
+   rest of the viewport. 100vh line is the fallback for browsers without
+   svh. */
 .hero {
   max-width: var(--home-width); /* wider than prose pages: room for the portrait */
+  min-height: calc(100vh - 65px);
+  min-height: calc(100svh - 65px);
+  display: flex;
+  align-items: center;
   padding-block: var(--space-9);
 }
 
@@ -495,6 +505,9 @@ a:focus-visible {
 /* Mobile: portrait stacks above the bio, centered (owner, 2026-11-21). */
 @media (max-width: 640px) {
   .hero {
+    /* mobile nav is 57 px tall (measured 2026-11-22) */
+    min-height: calc(100vh - 57px);
+    min-height: calc(100svh - 57px);
     padding-block: var(--space-6);
   }
   .hero-inner {

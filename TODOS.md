@@ -61,6 +61,14 @@
 - [x] **Experience curation** — cut per "paid professional software engineering jobs only + TA": ~~Researcher, Cornell~~ (P STAT paper entry) and ~~Project Lead, ProjectX 2021~~ (the one explicitly named). Kept: SWE II, SWE I (both AWS HealthOmics), TAE intern, Amazon Music intern, TA CS 4780, AWS Connect intern. Both cut entries are git-recoverable.
 - [x] Build green; DESIGN.md amended (§4 hero, §7 experience, §8.6, §9.13, §9.1 inventory, resolved #11).
 
+### 3.16 — Hero centering + footer below the fold (2026-11-22, owner)
+
+- [x] **Owner ask**: "make the footer a little lower so it's off the page at the start… profile and text vertically centered on most screen sizes. Footer should only show up if the user scrolls."
+- [x] `.hero` (home only) now: `min-height: calc(100svh - 65px)` desktop / `calc(100svh - 57px)` mobile (nav heights **measured** on the built page: 65 px / 57 px), `display: flex; align-items: center` — the profile + text center in the visible area under the nav, and the page is tall enough that the footer sits below the fold.
+- [x] `100vh` fallback line before `100svh` (cascade) for browsers without svh.
+- [x] Measured verification (headless): content center == visible center at 1280×800 and 1440×900 (±3 px at 1024×768, ±8 px mobile 390×844); footer top below the viewport in every size tested. Short windows (≈513 px) simply can't fit the 440 px portrait — content scrolls, acceptable.
+- [x] DESIGN §4 hero section + resolved item 15 updated (supersedes the old "not full-viewport" rule — the video hero was the sin, not the height).
+
 ### 3.15 — Changelog migration (2026-11-22, owner)
 
 - [x] **Migrate the 2.0 "Website History" page** → `/changelog` (same URL as 2.0). All seven entries (v1.0.0 → v2.3.0) carried over **verbatim** — only two obvious typos fixed silently ("home have" → "home page" in 2.1.0; "It's remnents" → "Its remnants" in 1.0.0).

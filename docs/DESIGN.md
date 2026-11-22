@@ -143,12 +143,12 @@ content
 
 ### Hero (home only)
 
-- A normal section, **not** full-viewport: 96 px top/bottom padding, wider container (`--home-width`, 58 rem) than prose pages. Even 50/50 flex row (owner, 2026-11-21): portrait left, text right (48 px gutter).
+- Fills the viewport **under the nav** and centers the profile + text vertically (owner, 2026-11-22): `min-height: calc(100svh - 65px)` desktop / `calc(100svh - 57px)` mobile (nav heights measured), flex-centered, 96 px top/bottom padding as the minimum margin. This also pushes the footer below the fold — it appears only on scroll (the owner's ask). Wider container (`--home-width`, 58 rem) than prose pages. Even 50/50 flex row (owner, 2026-11-21): portrait left, text right (48 px gutter).
 - Left: portrait — rounded square, 40 px radius, `clamp(240 px, 42 vw, 440 px)`, full-res 1000 px source (the one allowed image, see §9.13).
 - Right (`.hero-copy`, measure capped at 46 ch): name as h1 (`--text-xl`), role line (`--text-base`, `--fg-muted`), bio, then the link row (Résumé · GitHub · Blog — exact set is owner's, see §11) as accent links with 24 px gap. **The links live inside the text column, aligned with the name/bio — not under the portrait** (owner, 2026-11-21).
 - Mobile (≤ 640 px): stacks centered — portrait above the text, links centered under it.
-- Mostly text and whitespace: no video, no 100 vh, no chevron, no background treatment. Images allowed: the hero portrait, and small company-logo chips on /experience (§7, owner 2026-11-21).
-- Rationale: 2.0's 100 vh video hero + 50 px scroll chevron is the defining sin of the old site; a 48 px name on a wall of whitespace reads as confident, not empty.
+- Mostly text and whitespace: no video, no chevron, no background treatment. Images allowed: the hero portrait, and small company-logo chips on /experience (§7, owner 2026-11-21).
+- Rationale: 2.0's sin was the 100 vh **video** hero + scroll chevron, not the height — a centered profile + bio in a viewport-height section still reads as confident, and the owner wants the footer out of first view (2026-11-22).
 
 ### Nav
 
@@ -357,3 +357,4 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 12. **Résumé links open in a new tab** (owner, 2026-11-22): all three résumé links (nav, hero, footer) get `target="_blank" rel="noopener noreferrer"` — driven by a content `newTab: true` flag on the link, not hardcoded per renderer (the PDF is a document; the reader keeps the site open).
 13. **Favicon = bare monogram + experience timeline** (owner, 2026-11-22): favicon retired the accent disc — bare AW letterforms, tight-cropped to the letterforms' bounds, in the theme accent (ink blue light tab / `#7AA5E8` dark tab via a `prefers-color-scheme` twin; favicons can't read the page's JS toggle). /experience became the vertical timeline in §7 (dates + logo left, open circle on a rail, text right); its lead line removed.
 14. **Changelog migration** (owner, 2026-11-22): the 2.0 "Website History" page (v1.0.0 → v2.3.0 entries) migrated verbatim to /changelog as data-driven rows (content/changelog.yaml), plus a new 3.0.0 entry recording the full rebuild. Small footer link, as in 2.0; not in the nav.
+15. **Hero fills the viewport, footer below the fold** (owner, 2026-11-22): the home hero centers the profile + text in the area under the nav (`min-height: calc(100svh - nav)`, nav 65 px desktop / 57 px mobile measured) so the footer only appears on scroll. Supersedes the §4 "not full-viewport" rule — the video hero was the sin, not the height.
