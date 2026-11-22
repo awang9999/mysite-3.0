@@ -291,29 +291,93 @@ a:focus-visible {
   outline-offset: 2px;
 }
 
-/* Theme toggle: the icon shows the theme you'd switch TO (moon in light,
-   sun in dark). Mirrors the §8 token priority: explicit data-theme wins,
-   otherwise the OS preference decides. */
-.theme-toggle .icon-sun {
+/* Theme picker (owner, 2026-11-22): the button icon mirrors the SAVED
+   choice — auto = monitor, light = sun, dark = moon. data-choice is set
+   pre-paint by the <head> snippet, so the icon is right on the first
+   frame; with no data-choice at all (JS off) the auto icon shows. */
+.theme-toggle .icon-sun,
+.theme-toggle .icon-moon {
   display: none;
 }
 
-:root[data-theme='dark'] .theme-toggle .icon-sun {
+:root:not([data-choice]) .theme-toggle .icon-auto,
+:root[data-choice='auto'] .theme-toggle .icon-auto {
   display: block;
 }
 
-:root[data-theme='dark'] .theme-toggle .icon-moon {
-  display: none;
+:root[data-choice='light'] .theme-toggle .icon-sun {
+  display: block;
 }
 
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme='light']) .theme-toggle .icon-sun {
-    display: block;
-  }
+:root[data-choice='dark'] .theme-toggle .icon-moon {
+  display: block;
+}
 
-  :root:not([data-theme='light']) .theme-toggle .icon-moon {
-    display: none;
-  }
+/* Dropdown: hairline box, no shadow (DESIGN §8 — the design has zero of
+   them). Anchored under the button, right-aligned so it stays on screen
+   at the mobile nav edge. */
+.theme-picker {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 6px);
+  right: 0;
+  z-index: 30;
+  display: none;
+  min-width: 132px;
+  padding: var(--space-1);
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-md);
+}
+
+.theme-picker[data-open='true'] .theme-menu {
+  display: block;
+}
+
+.theme-menu button {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  padding: 6px 8px;
+  border: 0;
+  border-radius: var(--radius-sm);
+  background: none;
+  font-family: inherit;
+  font-size: var(--text-sm);
+  color: var(--fg);
+  cursor: pointer;
+  text-align: left;
+}
+
+.theme-menu button:hover {
+  background: var(--surface);
+}
+
+.theme-menu button:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: -2px;
+}
+
+.theme-menu button[aria-checked='true'] {
+  color: var(--accent);
+}
+
+.theme-menu svg {
+  flex-shrink: 0;
+}
+
+.theme-menu .icon-check {
+  display: none;
+  margin-left: auto;
+}
+
+.theme-menu button[aria-checked='true'] .icon-check {
+  display: block;
 }
 
 /* Hamburger: hidden on desktop; icon swaps to a close X while open. */
@@ -359,7 +423,7 @@ a:focus-visible {
     grid-area: wordmark;
   }
 
-  .theme-toggle {
+  .theme-picker {
     grid-area: toggle;
   }
 

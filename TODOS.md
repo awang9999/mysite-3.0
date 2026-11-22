@@ -61,6 +61,17 @@
 - [x] **Experience curation** — cut per "paid professional software engineering jobs only + TA": ~~Researcher, Cornell~~ (P STAT paper entry) and ~~Project Lead, ProjectX 2021~~ (the one explicitly named). Kept: SWE II, SWE I (both AWS HealthOmics), TAE intern, Amazon Music intern, TA CS 4780, AWS Connect intern. Both cut entries are git-recoverable.
 - [x] Build green; DESIGN.md amended (§4 hero, §7 experience, §8.6, §9.13, §9.1 inventory, resolved #11).
 
+### 3.17 — Theme picker dropdown (2026-11-22, owner)
+
+- [x] **Owner ask**: replace the light/dark toggle with a dropdown: **Automatic / Light / Dark**.
+- [x] **Storage**: `localStorage.theme` = `auto|light|dark` (old `light`/`dark` values are valid choices — nothing migrates). `auto` → no `data-theme` on `<html>`: the OS `prefers-color-scheme` decides, JS-free, live OS flips tracked by the media query for free.
+- [x] **Button icon mirrors the saved choice** — monitor (auto) / sun (light) / moon (dark) — via `data-choice` on `<html>` set by the pre-paint `<head>` snippet (extended to also set `data-theme`), so no icon flash. No `data-choice` (JS off) → auto icon by default.
+- [x] **Menu**: hairline `--bg` box (no shadow — §8), right-anchored under the button (stays on screen at the mobile nav edge), rows = icon + label, chosen row in `--accent` + right-aligned check. `role=menu`/`menuitemradio`/`aria-checked`; button `aria-haspopup`/`aria-expanded`/`aria-controls`; closes on select / Escape / outside click; focus returns to the button.
+- [x] **ui.ts** theme section rewritten (choice state machine: `storedChoice` / `applyChoice(choice, save)` / `setThemeMenuOpen`); old `systemDark` listener dropped — nothing to sync when the icon reflects the choice, not the effective theme.
+- [x] Mobile nav grid: `grid-area: toggle` moved from `.theme-toggle` to the `.theme-picker` wrapper.
+- [x] Verified headless: fresh visit → auto; stored light/dark/`banana` → correct pre-paint restore + icon + check; open/close + selection + persistence all pass; desktop + mobile screenshots.
+- [x] DESIGN §8 (choices + priority), §4 nav line, resolved item 16 (supersedes item 9).
+
 ### 3.16 — Hero centering + footer below the fold (2026-11-22, owner)
 
 - [x] **Owner ask**: "make the footer a little lower so it's off the page at the start… profile and text vertically centered on most screen sizes. Footer should only show up if the user scrolls."

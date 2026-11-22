@@ -24,11 +24,15 @@ const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <script is:inline>
-      // Theme (DESIGN §8): restore the saved choice before first paint so
-      // there is no flash of the wrong scheme. Companion to ui.ts.
+      // Theme (DESIGN §8): restore the saved choice (auto|light|dark) before
+      // first paint so there is no flash of the wrong scheme. data-choice
+      // drives the nav icon; data-theme drives the colors (absent in auto —
+      // the OS preference decides, no JS needed). Companion to ui.ts.
       try {
         var t = localStorage.getItem('theme');
-        if (t === 'light' || t === 'dark') document.documentElement.dataset.theme = t;
+        t = t === 'light' || t === 'dark' || t === 'auto' ? t : 'auto';
+        document.documentElement.dataset.choice = t;
+        if (t !== 'auto') document.documentElement.dataset.theme = t;
       } catch (e) {}
     </script>
     <meta name="color-scheme" content="light dark" />
