@@ -624,17 +624,17 @@ a:focus-visible {
    max-width query (the cascade rule, 2026-11-21). */
 .xp {
   --xp-left: 128px; /* dates + logo column: fits "Jan 2024 — Jul 2025" on one line */
-  --xp-rail: 24px;  /* rail column: 12px of air on each side of the line */
+  --xp-rail: 32px;  /* rail column: 16px of air on each side of the line (owner 2026-11-22: a little more breathing room between rail and text) */
 }
 
 .xp > li {
   position: relative;
   display: grid;
   grid-template-columns: var(--xp-left) 1fr;
-  /* The rail is the 24 px column gap — .xp-node is absolutely positioned,
+  /* The rail is the column gap — .xp-node is absolutely positioned,
      so it occupies no grid cell; the line + ring sit in the middle of the
      gap. (A third grid track would leave the content auto-placed in the
-     24 px rail column — QA 2026-11-22 caught this collapse.) */
+     rail track — QA 2026-11-22 caught this collapse.) */
   column-gap: var(--xp-rail);
 }
 

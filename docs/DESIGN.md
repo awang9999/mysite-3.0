@@ -128,7 +128,7 @@ Rationale: radius only where a recessed surface meets text; no rounded cards any
 
 Rationale: one measure for the whole site = one reading rhythm; 640 px at 18 px font lands at 68–75 ch. `/projects` is the single documented exception (rows carry title + description + link and want the room). No third width exists.
 
-### Page header pattern — /about, /projects, /blog (experience is h1-only, no lead — removed by the owner 2026-11-22)
+### Page header pattern — /about and /blog (experience and projects are h1-only, no lead — removed by the owner 2026-11-22)
 
 ```
 h1            --text-xl / 700, --fg
@@ -267,7 +267,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 ### Experience entries
 
 - **Curation rule (owner, 2026-11-21): paid, professional software engineering jobs only** — the Teaching Assistant is the one approved non-SWE entry. (The Cornell Researcher and ProjectX 2021 entries were cut per this rule; recoverable from git.)
-- **Vertical timeline** (owner, 2026-11-22 — supersedes the earlier "no rail" decision): three grid columns per entry — left 92 px (date range, location, logo chip), a 24 px rail column, then the content. The rail is a 1 px `--border` line with an **open circle** (10 px ring, 1.5 px `--accent` border, `--bg` fill so the line doesn't cross through) centered on the title's first line; no line stub above the first node or below the last.
+- **Vertical timeline** (owner, 2026-11-22 — supersedes the earlier "no rail" decision): per entry — a 128 px left column (date range, location, logo chip), a 32 px rail gap, then the content. The rail is a 1 px `--border` line with an **open circle** (12 px ring, 1.5 px `--accent` border, `--bg` fill so the line doesn't cross through) centered on the title's first line; no line stub above the first node or below the last.
 - Logo chip: 48 px rounded chip, 1 px `--border` (2026-11-22; up from the 36 px chip of 2026-11-21). The logo **fills the chip edge to edge** — `object-fit: cover`, no white gap ring (owner 2026-11-22); all four PNGs are square and carry their own backgrounds, so the chip's white background is never visible. Logos are 64 px PNGs (~3 KB each) referenced by key from `experience.yaml` through the `LOGOS` map in `src/lib/data.ts`.
 - Right column: title = **role only** (`--text-md`/500) + 1–3 short bullets (`--text-base`). The organization is *not* in the title (owner 2026-11-22: keep titles to one line — "Software Engineer II · Amazon (AWS HealthOmics)" wrapped) — it leads the first bullet, and the logo chip + location carry the company. The CS 4780 course number is dropped for the same reason (the course *name* stays in the bullet; the number is opaque to non-Cornell readers). Date/location moved from the meta line into the left column.
 - Scoped under `.xp` so the shared `.rows` hairlines on /projects and /blog are untouched (the horizontal row hairline is suppressed inside `.xp` — the vertical rail replaces it).
