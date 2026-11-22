@@ -26,7 +26,7 @@ const extraLinks = (links: { label: string; href: string }[] | undefined) =>
                 {entry.location && <span class="xp-loc">{entry.location}</span>}
               </span>
               {entry.logoAsset && (
-                <span class="xp-logo">
+                <span class={entry.logoColor ? 'xp-logo xp-logo--color' : 'xp-logo'}>
                   <img
                     src={entry.logoAsset.src}
                     width={entry.logoAsset.width}

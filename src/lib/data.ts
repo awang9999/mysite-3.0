@@ -43,6 +43,8 @@ export interface ExperienceEntry {
   logo?: string;
   /** Resolved at load time (see LOGOS) — Astro asset import, not a string. */
   logoAsset?: { src: string; width: number; height: number };
+  /** Resolved at load time (see COLOR_LOGOS) — stays full-color in dark mode. */
+  logoColor?: boolean;
 }
 
 export interface ExperienceFile {
@@ -55,6 +57,11 @@ const LOGOS: Record<string, { src: string; width: number; height: number }> = {
   cornell: logoCornell,
   tae: logoTae,
 };
+
+// Logos that stay full-color in dark mode (they carry their own dark
+// background). Every other logo is transparent-background art and gets the
+// dark-mode silhouette (see .xp-logo in global.css).
+const COLOR_LOGOS = new Set(['amazon-music']);
 
 export interface FeaturedProject {
   name: string;
@@ -120,7 +127,7 @@ export const experience: ExperienceFile = {
   ...experienceRaw,
   entries: experienceRaw.entries.map((entry) =>
     entry.logo
-      ? { ...entry, logoAsset: LOGOS[entry.logo] }
+      ? { ...entry, logoAsset: LOGOS[entry.logo], logoColor: COLOR_LOGOS.has(entry.logo) }
       : { ...entry },
   ),
 };

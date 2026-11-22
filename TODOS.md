@@ -54,6 +54,17 @@
 
 ---
 
+### 3.18 — Icon + logo fixes (2026-11-22, owner)
+- [x] **One icon per theme mode** — owner: "I don't like the two emojis being pressed together. One emoji per mode." Two problems found:
+  - (a) **Real bug (since 3.17):** the button actually showed *two* icons in light/dark mode — the base CSS hid only `.icon-sun`/`.icon-moon`, so `.icon-auto` stayed visible under the sun/moon. Fixed: all three icons hidden by default; the matching `:root[data-choice=…]` rule un-hides exactly one.
+  - (b) The auto glyph (monitor + stand) read as two stacked symbols. Replaced with a single **half-filled circle** (the standard "auto" pictogram) — button + menu row, in `Nav.astro`.
+- [x] **No white edge on experience logos in dark mode** — the TAE and Cornell PNGs carried white backgrounds, which showed as a white ring/box around the logo in dark mode (the chip background was also `#fff`). Fix:
+  - Re-extracted all three plain logos (AWS, TAE, Cornell) from the 2.0 sources (`aws_light.jpg`, `tae.png`, `cornell_cis.jpg`) as **transparent-background art** via background un-multiplication (white-bg and per-row gradient-bg variants), centered on a 64 px canvas at 84 % fill.
+  - Chip background `#fff` → `var(--bg)` (the page shows through).
+  - Dark mode: the three logos become a **light silhouette** (`filter: brightness(0) invert(1)`, both `data-theme` and `prefers-color-scheme` sources); the Amazon Music chip keeps its full-bleed gradient in both themes (`xp-logo--color` via `COLOR_LOGOS` in `data.ts`).
+  - The 2.0 sources are kept untouched in the 2.0 repo.
+- [x] Verified: light/dark desktop, dark chips (aws/tae/music/cornell), light chips, theme menu (one icon per row), all three button icons, mobile 390×844. DESIGN.md amended (resolved #16 icon note, #17, §4 nav, §7 chips).
+
 ### 3.13 — Owner content/layout pass (2026-11-21)
 - [x] **About verbatim** — `content/about.md` body replaced with the 2.0 "About Me" text exactly (drafted prose retired; lead dropped — 2.0's page had none). Emails kept as bold text, made mailto-clickable (display text unchanged).
 - [x] **Hero links aligned to text** — `<p class=hero-links>` moved inside `.hero-copy` (owner: "align to the text instead of the picture"). Mobile: centered under the stacked text.

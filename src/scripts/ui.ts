@@ -14,8 +14,8 @@ const root = document.documentElement;
              query decides (works with no JS at all, and tracks live OS
              flips for free).
    - light/dark → data-theme set; beats the media query.
-   data-choice on <html> drives the button icon (auto = monitor, light =
-   sun, dark = moon) and is set pre-paint by the <head> snippet, so the
+   data-choice on <html> drives the button icon (auto = half-filled
+   circle, light = sun, dark = moon) and is set pre-paint by the <head> snippet, so the
    icon is right on the first frame. This module re-asserts both and wires
    the dropdown (open/close + selection). */
 
