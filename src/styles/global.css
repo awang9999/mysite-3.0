@@ -31,7 +31,7 @@
   --space-5: 1.5rem;  /* 24px — nav link gap, code block margin */
   --space-6: 2rem;    /* 32px — footer top padding, mobile h2 top */
   --space-7: 3rem;    /* 48px — h2 top margin, section gap (mobile) */
-  --space-8: 4rem;    /* 64px — page top padding, featured → archive */
+  --space-8: 4rem;    /* 64px — page top padding, section rhythm */
   --space-9: 6rem;    /* 96px — major rhythm, page bottom, hero padding */
 
   /* ---------- 3. Radii — the only ones that exist (§3) ---------- */
@@ -198,7 +198,8 @@ a:focus-visible {
   text-decoration-color: currentColor;
 }
 
-/* External-link arrow (§7): only icon besides the details chevron. */
+/* External-link arrow (§7): only content icon — the rest are chrome
+   (theme picker, hamburger). */
 .ext-arrow {
   display: inline-block;
   width: 0.7em;
@@ -882,45 +883,10 @@ a:focus-visible {
   margin-bottom: 0;
 }
 
-/* ---------- 6. Archive — native <details>, zero JS (§6) ---------- */
-.archive {
-  margin-top: var(--space-8); /* featured → archive: 64px — §4 */
-}
-
-.archive summary {
-  display: inline-flex;
-  align-items: center;
-  gap: var(--space-2);
-  padding: 0;
-  font-size: var(--text-sm);
-  line-height: 1.5;
-  font-weight: 500;
-  color: var(--accent);
-  cursor: pointer;
-  list-style: none;
-}
-
-.archive summary::-webkit-details-marker {
-  display: none;
-}
-
-.archive summary:hover {
-  text-decoration: underline;
-  text-underline-offset: 3px;
-}
-
-.archive .chev {
-  flex-shrink: 0;
-  transition: transform 150ms ease-out; /* §5 #2 — transform only */
-}
-
-.archive[open] .chev {
-  transform: rotate(90deg);
-}
-
-.archive .rows {
-  margin-top: var(--space-4);
-}
+/* ---------- 6. Projects — all rows in one list (§6) ----------
+   (The native <details> archive was removed 2026-11-22 — owner: show
+   every project in order, no expansion. The featured/archive split in
+   projects.yaml only controls the row shape now.) */
 
 /* ---------- 7. Code & math (§7) — one recessed surface ---------- */
 code {

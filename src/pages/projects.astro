@@ -1,7 +1,8 @@
 ---
 // Projects (DESIGN §6) — the signature page. One language: rows.
-// Featured set (owner-approved, content/projects.yaml) + native <details>
-// archive with the year in the meta line. Zero JS.
+// All projects, in order (owner 2026-11-22 — no expansion; the featured and
+// archive sets render into a single list, most relevant first). Archive rows
+// carry the year in the meta line.
 // Row link rule: the first link rides the row title; any further links sit
 // beside it separated by " · " (DESIGN is silent on multi-link rows).
 import Layout from '../layouts/Layout.astro';
@@ -47,40 +48,30 @@ const altLinks = (links: { label: string; href: string }[] | undefined) =>
           </li>
         ))
       }
-    </ul>
 
-    <details class="archive">
-      <summary>
-        <svg class="chev" viewBox="0 0 10 10" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-          <path d="M3.5 1.5L7 5L3.5 8.5" />
-        </svg>
-        Show all {projects.archive.length} projects
-      </summary>
-      <ul class="rows">
-        {
-          projects.archive.map((project) => (
-            <li class="row">
-              <p class="row-title">
-                {project.links?.[0] ? (
-                  <Link href={project.links[0].href} label={project.name} />
-                ) : (
-                  project.name
-                )}
-                {
-                  altLinks(project.links).map((link) => (
-                    <span class="row-alt-links">
-                      {' · '}
-                      <Link href={link.href} label={link.label} />
-                    </span>
-                  ))
-                }
-              </p>
-              <p class="row-body">{project.line}</p>
-              <p class="row-meta">{project.year}</p>
-            </li>
-          ))
-        }
-      </ul>
-    </details>
+      {
+        projects.archive.map((project) => (
+          <li class="row">
+            <p class="row-title">
+              {project.links?.[0] ? (
+                <Link href={project.links[0].href} label={project.name} />
+              ) : (
+                project.name
+              )}
+              {
+                altLinks(project.links).map((link) => (
+                  <span class="row-alt-links">
+                    {' · '}
+                    <Link href={link.href} label={link.label} />
+                  </span>
+                ))
+              }
+            </p>
+            <p class="row-body">{project.line}</p>
+            <p class="row-meta">{project.year}</p>
+          </li>
+        ))
+      }
+    </ul>
   </div>
 </Layout>

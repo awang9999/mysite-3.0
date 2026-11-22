@@ -50,7 +50,7 @@ Markdown files use a YAML frontmatter block. Blog posts (and `blog/index.yaml`) 
 `projects.yaml` has two lists (pattern: DESIGN §6, rows, no images):
 
 - **Featured** — 3–4 projects, newest or most-relevant first. The editor's vouch: public, substantive, and the work a visitor should actually look at. Fields: `name` (linked), `hook` (one line, ≤ ~120 chars), optional `body` (1–3 sentences), `tags` (plain text, rendered with ` · ` separators), `links`, `year` (data only — featured rows don't display it).
-- **Archive** — everything else that still exists: one line each (`name`, `line`, `year` in the meta line, optional `links`). Rendered in a native `<details>` ("Show all N projects"). Nothing is deleted or hidden unless the reader wants depth; revisit the pattern if the archive passes ~15 items.
+- **Archive** — everything else that still exists: one line each (`name`, `line`, `year` in the meta line, optional `links`). Rendered in the same list, right after the featured rows — **everything displays at once, in order** (owner, 2026-11-22 — the `<details>` expansion was removed). The split only controls the row shape.
 
 Demotion rule: a project leaves Featured (to Archive, not to oblivion) when a newer, more representative project takes its slot, or when it duplicates an Experience entry that already carries the links.
 

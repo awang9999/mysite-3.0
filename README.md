@@ -7,7 +7,7 @@ The third iteration of my personal website: **clean and straight to the point, w
 - **Home** — hero (name, one-line role, links)
 - **About** — who I am
 - **Experience** — work history
-- **Projects** — curated featured set, expandable into the full archive
+- **Projects** — the curated featured set + the full archive, all in one ordered list
 - **Blog** — index + posts
 
 ## Task list

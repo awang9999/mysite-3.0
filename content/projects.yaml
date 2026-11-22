@@ -1,8 +1,9 @@
-# Projects — curated featured set + archive (DESIGN §6).
-# Featured row: name (linked) / one-line hook / optional body / tags. 3–4 items, newest or most relevant first.
-# Archive row: same shape, one-line description, year in the meta line. Native <details>, no JS.
+# Projects — all projects, displayed in order (DESIGN §6, owner 2026-11-22: no
+# expansion — everything shows at once, most relevant first).
+# Featured row: name (linked) / one-line hook / optional body / tags. 3–4 items.
+# Archive row: same shape, one-line description, year in the meta line.
 # Featured = the projects the editor vouches for: public, substantive, and the work I'd point a visitor to.
-# Archive = everything else that still exists: one line each, nothing deleted, nothing hidden.
+# Archive = everything else that still exists: one line each, nothing deleted.
 
 featured:
   - name: Hearts
@@ -10,6 +11,9 @@ featured:
     body: "A friend's grandparents were tired of ads in the Hearts games they could find, so I built a clean one. TypeScript, AWS, prompt to production in an afternoon."
     tags: [TypeScript, AWS, Kiro]
     links:
+      - label: Live
+        href: https://hearts.alexander-wang.net
+        external: true
       - label: GitHub
         href: https://github.com/awang9999/hearts-game
         external: true

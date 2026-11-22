@@ -192,8 +192,9 @@ Allowed exceptions (opacity/transform only, ≤ 200 ms, ease-out, all disabled u
 | # | What | Spec | Why it earns its place |
 |---|---|---|---|
 | 1 | Link hover | color swap + underline fade-in, 150 ms | Tells the user "this is clickable" — an affordance, not decoration |
-| 2 | `<details>` chevron | 90° rotate on toggle, 150 ms, transform only | Shows the disclosure state changed — the only motion on /projects |
-| 3 | Button hover | background swap, 150 ms | Same affordance logic |
+| 2 | Button hover | background swap, 150 ms | Same affordance logic |
+
+(The `<details>` chevron rotation was exception #2 — retired 2026-11-22 with the /projects expansion.)
 
 Global rule: `@media (prefers-reduced-motion: reduce) { *, *::before, *::after { transition: none !important; animation: none !important; } }`
 
@@ -201,37 +202,19 @@ Rationale: if motion doesn't communicate state (hover, expanded, focus), it's no
 
 ---
 
-## 6. The projects pattern — curated + expandable
+## 6. The projects pattern — all rows, in order (no expansion)
 
 This is the signature page. One language: **rows**. No cards, no images, no grid.
 
-### Featured set (top of /projects)
-
-- 3 projects (owner-approved 2026-11-21: Hearts, MathSearch, ProjectX 2021), single column, newest/most-relevant first.
-- Each project is a row:
+- **Every project displays at once, in order** (owner, 2026-11-22 — the `Show all N projects` expansion is removed). The `featured` / `archive` split in `projects.yaml` survives only as a *row-shape* distinction; both sets render into one `<ul class="rows">`, most relevant first.
+- **Featured rows** (Hearts, MathSearch, ProjectX 2021 — owner-approved 2026-11-21):
   1. **Line 1:** project name (`--text-md`, 500) — linked, accent on hover, external arrow if off-site
   2. **Line 2:** 1–3 line description (`--text-base`, `--fg-muted`) *(amended 2026-11-21: owner-approved copy runs 1–3 lines)*
   3. **Line 3 (optional):** tech tags (`--text-xs`, `--fg-muted`, plain text separated by ` · ` — **no pill badges**)
+- **Archive rows** (the rest that still exist): same row structure, one-line description + **year** in the meta line. Nothing deleted, nothing hidden.
 - Rows separated by a 1 px `--border` hairline (border-top on all but the first), 16 px vertical padding.
+- Row link rule: the first link rides the row title (Hearts: **Live**, then GitHub); any further links sit beside it separated by ` · `.
 - No image cards. Rationale: 2.0's screenshot cards were ornament + payload; a text row *is* the project, and the link carries the proof. Zero image bytes, faster read, and it matches the blog index so the site has one list language.
-
-### Archive (bottom of /projects) — native `<details>`
-
-```html
-<details class="archive">
-  <summary>Show all N projects</summary>
-  <ul>
-    <li> <!-- same row structure as featured; meta line includes the year -->
-```
-
-- **Recommendation: native `<details>`, no JS.** Rationale:
-  - Zero-JS progressive disclosure — the platform handles keyboard, screen reader, and state for free (the near-zero-JS constraint makes this the obvious choice).
-  - A JS toggle (button + `aria-expanded` + hidden class) buys nothing for this user and adds script + a11y surface.
-  - A separate `/projects/archive` URL is navigation friction for a page that exists for one click; the archive is short (a handful of items). Revisit only if the archive passes ~15 items.
-- `summary` styled as a quiet link-button (`--text-sm`, 500, `--accent`) with a CSS-drawn chevron (border-based triangle or inline SVG) that rotates on open — motion exception #2.
-- Archive rows add the **year** to the meta line; featured rows don't.
-- The `open` state does not persist across reload — acceptable: it's an expansion, not a view.
-- Rationale for the whole pattern: the featured set is the curation (what the editor vouches for), the `<details>` archive is the completeness (nothing deleted, nothing hidden behind a click *unless* the reader wants depth). Both read as rows, so the page is one idea.
 
 ---
 
@@ -240,7 +223,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 ### Links
 
 - `--accent`, no underline at rest; on `:hover` and `:focus-visible`: 1 px underline, `text-underline-offset: 3px`, faded in over 150 ms.
-- External links: append an inline SVG arrow (↗, 0.7 em, `currentColor`, top-aligned) — the only icon besides the details chevron. Rationale: users shouldn't have to hover to learn a link leaves the site.
+- External links: append an inline SVG arrow (↗, 0.7 em, `currentColor`, top-aligned) — the only *content* icon (the rest are chrome: theme picker, hamburger). Rationale: users shouldn't have to hover to learn a link leaves the site.
 - Nav links: `--fg-muted` → `--fg` on hover; current page `--accent`/500 (see §4).
 - Rationale: underline-on-hover is the subtle standard; permanent underlines on a text-dense site are visual noise; the accent stays reserved.
 
@@ -314,8 +297,8 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 Carried forward from the seed, expanded with 2.0's specific sins. If a proposal needs any of these, it's a no without a new decision written in this file.
 
 1. **No video, autoplay, or looping media** anywhere — 2.0's hero `<video autoPlay loop>`.
-2. **No scroll indicators, parallax, or scroll-triggered animation** — 2.0's 50 px bouncing chevron; the only chevron in 3.0 is the `<details>` disclosure.
-3. **No icon fonts** — 2.0's Font Awesome; icons exist only as inline SVG and only where functional (external-link arrow, details chevron).
+2. **No scroll indicators, parallax, or scroll-triggered animation** — 2.0's 50 px bouncing chevron; 3.0 has no chevrons at all (the `<details>` disclosure was retired 2026-11-22).
+3. **No icon fonts** — 2.0's Font Awesome; icons exist only as inline SVG and only where functional (external-link arrow, theme picker, hamburger).
 4. **No `<hr>` or dividers where spacing works** — hairlines exist only as nav/footer chrome and list-row borders; 2.0 had an `<hr>` after nearly every section heading.
 5. **No single-page hash-scroll navigation** — real pages, real URLs (HOSTING D3).
 6. **No image site logo** — the only *site* image mark is the 2.0 monogram badge (owner, 2026-11-21); the wordmark stays text. (Company-logo chips on /experience are content, not branding — see §7.)
@@ -334,7 +317,7 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 
 - Fonts: 24.5 KB Manrope (latin) + 15.2 KB (latin-ext, optional but default yes) + KaTeX faces ≤ ~50 KB after subsetting.
 - CSS: single stylesheet, target ≤ 15 KB minified.
-- JS: **~1 KB min** (owner, 2026-11-21): `src/scripts/ui.ts` — theme toggle + mobile hamburger, vanilla, no dependencies — plus a ~200 B pre-paint theme snippet in `<head>`. No islands, no framework, no hydration; the `<details>` archive needs no JS and still doesn't. This is the entire JS on the site.
+- JS: **~1 KB min** (owner, 2026-11-21): `src/scripts/ui.ts` — theme picker + mobile hamburger, vanilla, no dependencies — plus a ~200 B pre-paint theme snippet in `<head>`. No islands, no framework, no hydration. This is the entire JS on the site.
 - Image: one portrait, 1000 px JPEG (154 KB as shipped 2026-11-21, see §9.13) + four ~3 KB logo PNGs on /experience only. All other pages: zero images.
 - Per-page HTML: ≤ 20 KB (non-math pages). Math pages are exempt: server-rendered KaTeX DOM is span-verbose (chapter 1 ≈ 242 KB raw) but compresses ~10× over the wire.
 - Total per page (wire, gzip-compressed — CloudFront compresses HTML/CSS by default), target: **≤ ~150 KB** before any image. Measured 2026-11-21: non-math ≈ 45–46 KB, math ≈ 96 KB worst case.
@@ -361,3 +344,4 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 15. **Hero fills the viewport, footer below the fold** (owner, 2026-11-22): the home hero centers the profile + text in the area under the nav (`min-height: calc(100svh - nav)`, nav 65 px desktop / 57 px mobile measured) so the footer only appears on scroll. Supersedes the §4 "not full-viewport" rule — the video hero was the sin, not the height.
 16. **Theme picker dropdown** (owner, 2026-11-22): the light/dark toggle became a dropdown — **Automatic / Light / Dark** — in the nav. Auto = no `data-theme`, the OS preference decides (JS-free, live-tracked). Button icon mirrors the saved choice (half-filled circle / sun / moon — one glyph per mode, the original monitor glyph read as two stacked symbols) via pre-paint `data-choice`; the menu is a hairline box (no shadow, §8) closing on select / Escape / outside click. Supersedes resolved item 9.
 17. **Experience logo chips: no white edge in dark mode** (owner, 2026-11-22): the TAE/Cornell PNGs carried white backgrounds, which read as a white ring around the logo in dark mode. All three plain logos (AWS, TAE, Cornell) were re-extracted from the 2.0 sources as transparent-background art; the chip background is now `var(--bg)` and the three logos render as light silhouettes in dark mode. The Amazon Music chip keeps its gradient in both themes.
+18. **/projects: everything in order, no expansion** (owner, 2026-11-22): the `Show all N projects` `<details>` is retired — the featured and archive rows render into one ordered list. Hearts gained a **Live** link (`https://hearts.alexander-wang.net` — the existing distribution, untouched) alongside GitHub; Live is the first link, so it rides the row title.

@@ -54,6 +54,11 @@
 
 ---
 
+### 3.19 — /projects: flat list + Hearts Live link (2026-11-22, owner)
+- [x] **No expansion** — "let's just display all of them in order": the `Show all N projects` native `<details>` is removed; the featured and archive rows render into one `<ul class="rows">`, most relevant first. The `featured`/`archive` split in `projects.yaml` survives only as a row-shape distinction (hook+body+tags vs line+year).
+- [x] **Hearts: Live + GitHub** — added a Live link to `https://hearts.alexander-wang.net` (verified live, 200 — the existing `E2F96O5L3ZEDKQ` distribution; untouched). Live is the first link, so it rides the row title (the name links to the app); GitHub sits beside it.
+- [x] CSS: the `.archive` details/summary/chevron block deleted; motion exception #2 (chevron rotate) retired from §5; all stale `details`/`expandable` references updated (DESIGN §5/§6/§7/§9/§10, content/README, root README).
+
 ### 3.18 — Icon + logo fixes (2026-11-22, owner)
 - [x] **One icon per theme mode** — owner: "I don't like the two emojis being pressed together. One emoji per mode." Two problems found:
   - (a) **Real bug (since 3.17):** the button actually showed *two* icons in light/dark mode — the base CSS hid only `.icon-sun`/`.icon-moon`, so `.icon-auto` stayed visible under the sun/moon. Fixed: all three icons hidden by default; the matching `:root[data-choice=…]` rule un-hides exactly one.
