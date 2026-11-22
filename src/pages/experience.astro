@@ -1,7 +1,8 @@
 ---
-// Experience (DESIGN §7): one hairline row per role — "Role · Company"
-// title line, date range + location meta line, 1–3 concrete bullets.
-// No timeline rail. Data from content/experience.yaml (newest first).
+// Experience (DESIGN §7): vertical timeline (owner 2026-11-22) — dates +
+// location + company logo on the left, an open circle on a 1 px rail,
+// "Role · Company" title + bullets on the right. No page lead.
+// Data from content/experience.yaml (newest first).
 import Layout from '../layouts/Layout.astro';
 import Link from '../components/Link.astro';
 import { experience, site, navLabelFor } from '../lib/data';
@@ -13,15 +14,18 @@ const extraLinks = (links: { label: string; href: string }[] | undefined) =>
   <div class="container page-top">
     <header class="page-header">
       <h1>{navLabelFor('/experience')}</h1>
-      {experience.lead && <p class="lead">{experience.lead}</p>}
     </header>
-    <ul class="rows">
+    <ul class="rows xp">
       {
         experience.entries.map((entry) => (
           <li class="row">
-            <p class="row-title">
+            <div class="xp-left">
+              <span class="xp-dates">
+                {entry.dates}
+                {entry.location && <span class="xp-loc">{entry.location}</span>}
+              </span>
               {entry.logoAsset && (
-                <span class="row-logo">
+                <span class="xp-logo">
                   <img
                     src={entry.logoAsset.src}
                     width={entry.logoAsset.width}
@@ -31,7 +35,10 @@ const extraLinks = (links: { label: string; href: string }[] | undefined) =>
                   />
                 </span>
               )}
-              <span class="row-title-text">
+            </div>
+            <span class="xp-node" aria-hidden="true"></span>
+            <div class="xp-main">
+              <p class="row-title">
                 {entry.role}
                 {entry.company && ` · ${entry.company}`}
                 {
@@ -42,20 +49,17 @@ const extraLinks = (links: { label: string; href: string }[] | undefined) =>
                     </span>
                   ))
                 }
-              </span>
-            </p>
-            <p class="row-meta">
-              {[entry.dates, entry.location].filter(Boolean).join(' · ')}
-            </p>
-            {
-              entry.bullets && (
-                <ul class="row-bullets">
-                  {entry.bullets.map((bullet) => (
-                    <li>{bullet}</li>
-                  ))}
-                </ul>
-              )
-            }
+              </p>
+              {
+                entry.bullets && (
+                  <ul class="row-bullets">
+                    {entry.bullets.map((bullet) => (
+                      <li>{bullet}</li>
+                    ))}
+                  </ul>
+                )
+              }
+            </div>
           </li>
         ))
       }

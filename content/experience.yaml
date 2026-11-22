@@ -3,12 +3,11 @@
 # non-SWE entry. The Cornell Researcher and ProjectX 2021 entries were cut
 # per this rule (recoverable from git).
 #
-# Shape (DESIGN §7): small company logo chip + "role · company" title line,
-# meta line = dates (+ location), body = 1–3 concrete bullets. `logo` is a key
-# into the LOGOS map in src/lib/data.ts. Dates are display strings (the
-# builder renders them as-is).
-
-lead: "The roles, newest first — what each one was actually about."
+# Shape (DESIGN §7, timeline per owner 2026-11-22): vertical rail with an open
+# circle per entry; dates + location + company logo on the left, "role ·
+# company" title + 1–3 concrete bullets on the right. `logo` is a key into
+# the LOGOS map in src/lib/data.ts. Dates are display strings (the builder
+# renders them as-is).
 
 entries:
   - role: Software Engineer II

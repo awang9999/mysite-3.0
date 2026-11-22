@@ -1,16 +1,19 @@
 ---
 // Link: plain <a> for internal targets; external http(s) gets the DESIGN §7
-// arrow (↗) plus target/rel. Shared by nav, footer, hero, and rows.
+// arrow (↗) plus target/rel; a newTab flag (owner 2026-11-22: the résumé)
+// also opens in a new tab without the arrow. Shared by nav, footer, hero, and rows.
 interface Props {
   href: string;
   label: string;
   class?: string;
+  newTab?: boolean;
 }
 
-const { href, label, class: cls = '' } = Astro.props;
+const { href, label, class: cls = '', newTab = false } = Astro.props;
 const external = /^https?:\/\//i.test(href);
+const opensNewTab = external || newTab;
 ---
-<a class={cls} href={href} {...external ? { target: '_blank', rel: 'noopener noreferrer' } : {}}>
+<a class={cls} href={href} {...opensNewTab ? { target: '_blank', rel: 'noopener noreferrer' } : {}}>
   {label}
   {
     external && (

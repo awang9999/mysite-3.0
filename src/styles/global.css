@@ -617,35 +617,146 @@ a:focus-visible {
   font-weight: 400;
 }
 
-/* Experience rows (§7): small company-logo chip before the title. Scoped
-   with :has() so the shared .row-title on /projects and /blog is untouched. */
-.row-title:has(.row-logo) {
-  display: flex;
-  align-items: center;
-  gap: var(--space-3); /* 12px chip → text */
+/* Experience timeline (§7, owner 2026-11-22): dates + location + company
+   logo on the left, an open circle on a 1 px vertical rail, role + bullets
+   on the right. Scoped under .xp so the shared .rows on /projects and /blog
+   is untouched. Desktop base first; the mobile collapse follows in a
+   max-width query (the cascade rule, 2026-11-21). */
+.xp {
+  --xp-left: 128px; /* dates + logo column: fits "Jan 2024 — Jul 2025" on one line */
+  --xp-rail: 24px;  /* rail column: 12px of air on each side of the line */
 }
 
-.row-logo {
+.xp > li {
+  position: relative;
+  display: grid;
+  grid-template-columns: var(--xp-left) 1fr;
+  /* The rail is the 24 px column gap — .xp-node is absolutely positioned,
+     so it occupies no grid cell; the line + ring sit in the middle of the
+     gap. (A third grid track would leave the content auto-placed in the
+     24 px rail column — QA 2026-11-22 caught this collapse.) */
+  column-gap: var(--xp-rail);
+}
+
+/* The vertical rail: 1 px line down the middle of the rail column. No stub
+   above the first node, none below the last — the line spans the timeline,
+   not the page. Node center = row padding 16 px + half the 22 px/1.4 title
+   line (15.4 px) ≈ 31 px from the row's top. */
+.xp > li::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: calc(var(--xp-left) + var(--xp-rail) / 2);
+  width: 1px;
+  background: var(--border);
+}
+
+.xp > li:first-child::before {
+  top: 31px;
+}
+
+.xp > li:last-child::before {
+  bottom: auto;
+  height: 31px;
+}
+
+/* Open circle on the rail, centered on the title's first line. The --bg
+   fill masks the rail behind it, so it reads as a ring, not a dot. */
+.xp-node {
+  position: absolute;
+  top: 24px; /* 31 px center − 7.5 px outer radius */
+  left: calc(var(--xp-left) + var(--xp-rail) / 2 - 7.5px);
+  width: 12px;
+  height: 12px;
+  border: 1.5px solid var(--accent);
+  border-radius: 50%;
+  background: var(--bg);
+  z-index: 1;
+}
+
+.xp-left {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end; /* toward the rail */
+  gap: var(--space-2);
+}
+
+.xp-dates {
+  font-size: var(--text-xs);
+  line-height: 1.4;
+  text-align: right;
+  color: var(--fg-muted);
+  white-space: nowrap; /* no mid-phrase wraps ("Jan 2024 — Jul / 2025") */
+}
+
+.xp-loc {
+  display: block;
+}
+
+/* Company logo chip — larger than the 2026-11-21 36 px version (owner
+   2026-11-22), same white-chip treatment so every logo reads on both
+   themes. */
+.xp-logo {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 36px;
-  height: 36px;
+  width: 48px;
+  height: 48px;
   flex-shrink: 0;
-  background: #fff; /* white chip: every logo reads on light AND dark */
+  background: #fff;
   border: 1px solid var(--border);
   border-radius: 8px;
 }
 
-.row-logo img {
+.xp-logo img {
   display: block;
-  width: 28px;
-  height: 28px;
+  width: 40px;
+  height: 40px;
   object-fit: contain;
 }
 
-/* Experience entries (§7): title "Role · Company", dates, bullets.
-   No timeline rail — the date range is text. */
+.xp-main {
+  min-width: 0;
+}
+
+/* The horizontal row hairline yields to the vertical rail. */
+.xp > li + li {
+  border-top: 0;
+}
+
+@media (max-width: 640px) {
+  /* Mobile: drop the rail, stack logo + dates above the text. */
+  .xp > li {
+    display: block;
+  }
+
+  .xp > li::before,
+  .xp-node {
+    display: none;
+  }
+
+  .xp-left {
+    flex-direction: row;
+    align-items: center;
+    gap: var(--space-3);
+  }
+
+  /* Logo leads the row on mobile too (image left of the text). */
+  .xp-logo {
+    order: -1;
+  }
+
+  .xp-dates {
+    text-align: left;
+  }
+
+  .xp-main {
+    margin-top: var(--space-3);
+  }
+}
+
+/* Experience entries (§7): title "Role · Company", bullets. */
 .row-bullets {
   margin: var(--space-2) 0 0;
   padding-left: 1.2em;

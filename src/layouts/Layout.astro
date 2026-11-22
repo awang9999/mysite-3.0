@@ -36,6 +36,9 @@ const canonical = noindex ? null : new URL(Astro.url.pathname, Astro.site).href;
     <meta name="description" content={description} />
     <title>{title}</title>
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <!-- Dark-tab twin: bare monogram in the dark theme accent (favicons can't
+         read the page's JS theme, so this follows the browser/OS scheme). -->
+    <link rel="icon" type="image/svg+xml" href="/favicon-dark.svg" media="(prefers-color-scheme: dark)" />
     <link rel="manifest" href="/manifest.json" />
     {canonical && <link rel="canonical" href={canonical} />}
     <slot name="head" />

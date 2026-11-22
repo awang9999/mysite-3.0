@@ -5,6 +5,7 @@ bio: I work on the platform's infrastructure and the tooling that lets bioinform
 links:
   - label: Résumé
     href: /resume.pdf
+    newTab: true # owner 2026-11-22: PDF opens in a new tab, site stays open
   - label: GitHub
     href: https://github.com/awang9999
     external: true

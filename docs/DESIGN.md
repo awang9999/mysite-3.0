@@ -128,7 +128,7 @@ Rationale: radius only where a recessed surface meets text; no rounded cards any
 
 Rationale: one measure for the whole site = one reading rhythm; 640 px at 18 px font lands at 68–75 ch. `/projects` is the single documented exception (rows carry title + description + link and want the room). No third width exists.
 
-### Page header pattern — identical on /about, /experience, /projects, /blog
+### Page header pattern — /about, /projects, /blog (experience is h1-only, no lead — removed by the owner 2026-11-22)
 
 ```
 h1            --text-xl / 700, --fg
@@ -153,7 +153,7 @@ content
 ### Nav
 
 - Static (not sticky), `--content-width` container, 16 px vertical padding; hairline bottom border (`--border`) — the only chrome rule on the page besides the footer's.
-- Left: monogram (2.0's `monogram.svg`, transferred 2026-11-21; white badge removed 2026-11-21 — bare letterforms in `--accent`, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`). The favicon keeps a small accent disc behind the letterforms so it reads on any tab background.
+- Left: monogram (2.0's `monogram.svg`, transferred 2026-11-21; white badge removed 2026-11-21 — bare letterforms in `--accent`, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`). The favicon is the **bare monogram** (no disc — owner 2026-11-22), tight-cropped to the letterforms' bounds, in the theme accent: ink blue `#1F5FA8` for light tabs, `#7AA5E8` for dark tabs (a `prefers-color-scheme` twin — favicons can't read the page's JS theme).
 - Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**) + **theme toggle** — a 32 px icon button (hairline border, `--radius-md`, icon in `--fg-muted`, hover `--fg`). The icon shows the theme you'd switch TO: moon in light, sun in dark.
 - Mobile (≤ 640 px): **hamburger** (owner, 2026-11-21 — supersedes the v1 zero-JS wrap): one header row — wordmark left, theme toggle + hamburger right. The links open as a centered vertical panel below the row (16 px gap, 16/24 px padding); the icon swaps to a close X while open. The button is a real `<button>` with `aria-expanded`/`aria-controls`; the menu closes on link click, Escape, or outside click. Rationale: the owner asked for it; the a11y surface is small and fully handled in the ~1 KB `ui.ts` module (§10).
 - Not sticky: the pages are short; blog posts are the only long pages and they end with a link back to /blog. Rationale: sticky chrome is a mobile-app habit that boxes the top of every screen.
@@ -267,9 +267,11 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 ### Experience entries
 
 - **Curation rule (owner, 2026-11-21): paid, professional software engineering jobs only** — the Teaching Assistant is the one approved non-SWE entry. (The Cornell Researcher and ProjectX 2021 entries were cut per this rule; recoverable from git.)
-- One row per role: a **small company-logo chip** before the title line — 36 px white rounded chip, 1 px `--border`, 28 px logo inside (2026-11-21; the white chip keeps every logo legible on both themes). Logos are 64 px PNGs (~3 KB each) referenced by key from `experience.yaml` through the `LOGOS` map in `src/lib/data.ts`. The flex layout is scoped with `.row-title:has(.row-logo)` so /projects and /blog rows are untouched.
-- Title line "**Role** · Company" (`--text-md`/500), meta line date range + location (`--text-xs`, `--fg-muted`), body 1–3 short bullets (`--text-base`). *(amended 2026-11-21: owner-approved copy uses bullets)*
-- No timeline rail, dots, or connector line. Rationale: the timeline rail is a résumé-template cliché; date ranges as text are unambiguous, print well, and cost nothing.
+- **Vertical timeline** (owner, 2026-11-22 — supersedes the earlier "no rail" decision): three grid columns per entry — left 92 px (date range, location, logo chip), a 24 px rail column, then the content. The rail is a 1 px `--border` line with an **open circle** (10 px ring, 1.5 px `--accent` border, `--bg` fill so the line doesn't cross through) centered on the title's first line; no line stub above the first node or below the last.
+- Logo chip: 48 px white rounded chip, 1 px `--border`, 40 px logo inside (2026-11-22; up from the 36 px chip of 2026-11-21; the white chip keeps every logo legible on both themes). Logos are 64 px PNGs (~3 KB each) referenced by key from `experience.yaml` through the `LOGOS` map in `src/lib/data.ts`.
+- Right column: title line "**Role** · Company" (`--text-md`/500) + 1–3 short bullets (`--text-base`). Date/location moved from the meta line into the left column.
+- Scoped under `.xp` so the shared `.rows` hairlines on /projects and /blog are untouched (the horizontal row hairline is suppressed inside `.xp` — the vertical rail replaces it).
+- Mobile (≤ 640 px): rail and circle hidden; the left column becomes a row (logo + dates/location) above the full-width text.
 
 ### Blog index
 
@@ -341,8 +343,10 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 4. **Page leads on all four subpages** (visual QA, 2026-11-21): /experience, /projects, /blog now carry a lead line like /about; copy drafted by the orchestrator, pending owner review.
 5. **Budgets measured on the wire** (visual QA, 2026-11-21): §10 totals apply to gzip-compressed transfer sizes; raw KaTeX HTML is exempt per the math-page note.
 6. **Bullets in experience entries; 1–3 line featured descriptions** (visual QA, 2026-11-21): owner-approved content wins over the original pattern wording; §6/§7 amended accordingly.
-7. **Home portrait + 2.0 monogram** (owner, 2026-11-21; layout + badge amended same day): portrait to the **left** of name/role/bio on home — rounded square, 40 px radius, full-res 1000 px source (the one allowed image); 2.0's `monogram.svg` in the nav as **bare letterforms in `--accent`** (white badge removed — it read as a white disc on the light page) and in the favicon on a small accent disc. The nav mark is **inlined SVG, not `<img>`** — an SVG loaded via `<img>` renders in its own document, where `currentColor` is always black (the mark was invisible on the dark theme until inlined).
+7. **Home portrait + 2.0 monogram** (owner, 2026-11-21; layout + badge amended same day): portrait to the **left** of name/role/bio on home — rounded square, 40 px radius, full-res 1000 px source (the one allowed image); 2.0's `monogram.svg` in the nav as **bare letterforms in `--accent`** (white badge removed — it read as a white disc on the light page) and in the favicon as bare letterforms (disc removed 2026-11-22; tight-cropped, accent-colored per tab scheme). The nav mark is **inlined SVG, not `<img>`** — an SVG loaded via `<img>` renders in its own document, where `currentColor` is always black (the mark was invisible on the dark theme until inlined).
 8. **Color scheme: cool paper + ink blue** (owner chose A, 2026-11-21): the warm paper/rust v1 palette was retired as "a little too warm"; §1 tokens swapped (contrast re-verified, all pairs ≥4.5:1). Token-only change — no layout/type impact.
 9. **Theme toggle** (owner, 2026-11-21): manual light/dark in the nav (32 px icon button; icon = the theme you'd switch to). Saved choice beats OS preference; OS preference is the JS-free default; choice persists in `localStorage` and is restored pre-paint (no flash).
 10. **Mobile hamburger** (owner, 2026-11-21): ≤ 640 px the five links collapse behind a hamburger (real `<button>`, `aria-expanded`/`aria-controls`); they open as a centered panel and close on link click, Escape, or outside click. Replaces the v1 zero-JS wrap.
 11. **Owner content/layout pass** (2026-11-21): (a) /about body replaced with the 2.0 "About Me" text **verbatim** (the drafted prose retired); (b) home hero links moved **inside the text column** — aligned with name/bio, not under the portrait; (c) /experience rows gained small company-logo chips (36 px white chip, §7); (d) /experience curated to **paid professional SWE jobs + the TA** — Cornell Researcher and ProjectX 2021 entries cut (git-recoverable).
+12. **Résumé links open in a new tab** (owner, 2026-11-22): all three résumé links (nav, hero, footer) get `target="_blank" rel="noopener noreferrer"` — driven by a content `newTab: true` flag on the link, not hardcoded per renderer (the PDF is a document; the reader keeps the site open).
+13. **Favicon = bare monogram + experience timeline** (owner, 2026-11-22): favicon retired the accent disc — bare AW letterforms, tight-cropped to the letterforms' bounds, in the theme accent (ink blue light tab / `#7AA5E8` dark tab via a `prefers-color-scheme` twin; favicons can't read the page's JS toggle). /experience became the vertical timeline in §7 (dates + logo left, open circle on a rail, text right); its lead line removed.

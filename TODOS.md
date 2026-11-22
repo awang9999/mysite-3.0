@@ -61,6 +61,12 @@
 - [x] **Experience curation** — cut per "paid professional software engineering jobs only + TA": ~~Researcher, Cornell~~ (P STAT paper entry) and ~~Project Lead, ProjectX 2021~~ (the one explicitly named). Kept: SWE II, SWE I (both AWS HealthOmics), TAE intern, Amazon Music intern, TA CS 4780, AWS Connect intern. Both cut entries are git-recoverable.
 - [x] Build green; DESIGN.md amended (§4 hero, §7 experience, §8.6, §9.13, §9.1 inventory, resolved #11).
 
+### 3.14 — Owner pass 2 (2026-11-22)
+- [x] **Favicon = bare monogram** — the accent disc is retired: bare AW letterforms, tight-cropped to the letterforms' actual bounds (the old `viewBox` was silently clipping ~10% off the top and bottom), ink blue `#1F5FA8` for light tabs + a `prefers-color-scheme: dark` twin in `#7AA5E8` (`public/favicon-dark.svg`). Favicons can't read the page's JS toggle, so the twin follows the browser/OS scheme. (Pitfall hit: SVG comments must not contain `--` — XML rejects them.)
+- [x] **Résumé links open in a new tab** — all three (nav, hero, footer) get `target="_blank" rel="noopener noreferrer"` via a content `newTab: true` flag on the link (schema + `SiteLink` + renderers), not hardcoded per page. QA caught two renderers not forwarding the flag (footer, hero) — fixed.
+- [x] **/experience = vertical timeline** — owner: "dates and pictures to the left, an open circle along the timeline, text descriptions to the right." 3-zone row: left 128 px column (date range nowrap + location, 48 px white logo chip — up from 36 px), a 24 px rail (1 px `--border` line, no stub above the first node / below the last), an open circle (12 px ring, 1.5 px `--accent` border, `--bg` fill masks the line), then title + bullets. The page lead ("The roles, newest first…") is removed. Mobile: rail hidden, logo + dates row above full-width text. Scoped under `.xp` — /projects + /blog rows verified untouched.
+- [x] Screenshots verified: desktop light/dark, mobile; /projects + /blog regression. DESIGN.md amended (§6 header, §7 experience, resolved #12–13).
+
 ---
 
 ## Cross-cutting

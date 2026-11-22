@@ -8,6 +8,9 @@ const link = z.object({
   label: z.string(),
   href: z.string(),
   external: z.boolean().optional(),
+  // Open in a new tab (owner 2026-11-22: the résumé is a document — the
+  // reader should keep the site open). Renderers add target/rel.
+  newTab: z.boolean().optional(),
 });
 
 // Blog posts: markdown with KaTeX math, rendered by the markdown pipeline.

@@ -1,7 +1,8 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="8 8 48 48">
-  <!-- Favicon: 2.0 AW monogram letterforms (no badge, owner 2026-11-21) on a
-       --accent blue disc so the mark reads on any browser-tab background.
-       viewBox tightened to the letterforms' bounds. -->
-  <circle cx="32" cy="32" r="28" fill="#1f5fa8"/>
-  <path fill="#fff" d="M31.205 2.352h2.517l12.587 30.293h-3.157l-4.608-11.819H26.256l-4.523 11.819h-3.2zm7.339 18.475L32.442 5.851l-6.187 14.976zM30.203 44.02l1.895-4.645 1.774 4.645h0l5.803 13.696L50.64 30.878h3.243L41.04 61.172h-2.645l-6.357-14.976-6.4 14.976h-2.603l-12.8-30.293h3.2l11.008 26.837z"/>
+<svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="9.23 1.35 45.65 60.82">
+  <!-- Favicon: the bare AW monogram (2.0 letterforms, owner 2026-11-21) with
+       no disc and no badge. Light-tab variant, ink blue #1F5FA8 (light theme
+       accent). The dark-tab twin is favicon-dark.svg, #7AA5E8.
+       viewBox = letterforms tight bounds (10.235..53.883 x 2.352..61.172)
+       plus 1 unit padding, so the mark fills the tab icon. -->
+  <path fill="#1F5FA8" d="M31.205 2.352h2.517l12.587 30.293h-3.157l-4.608-11.819H26.256l-4.523 11.819h-3.2zm7.339 18.475L32.442 5.851l-6.187 14.976zM30.203 44.02l1.895-4.645 1.774 4.645h0l5.803 13.696L50.64 30.878h3.243L41.04 61.172h-2.645l-6.357-14.976-6.4 14.976h-2.603l-12.8-30.293h3.2l11.008 26.837z"/>
 </svg>

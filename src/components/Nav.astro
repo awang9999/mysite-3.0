@@ -27,7 +27,13 @@ const isActive = (href: string) => path === href || path.startsWith(`${href}/`);
     <nav class="nav-links" id="nav-links" aria-label="Main">
       {
         site.nav.map((item) => (
-          <a href={item.href} {...isActive(item.href) ? { 'aria-current': 'page' } : {}}>{item.label}</a>
+          <a
+            href={item.href}
+            {...item.newTab ? { target: '_blank', rel: 'noopener noreferrer' } : {}}
+            {...isActive(item.href) ? { 'aria-current': 'page' } : {}}
+          >
+            {item.label}
+          </a>
         ))
       }
     </nav>

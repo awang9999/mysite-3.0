@@ -21,7 +21,9 @@ const { name, role, bio, links } = home.data;
         {bio && <p class="hero-bio">{bio}</p>}
         <p class="hero-links">
           {
-            (links ?? []).map((link) => <Link href={link.href} label={link.label} />)
+            (links ?? []).map((link) => (
+              <Link href={link.href} label={link.label} newTab={link.newTab} />
+            ))
           }
         </p>
       </div>

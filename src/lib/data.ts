@@ -18,6 +18,8 @@ export interface SiteLink {
   label: string;
   href: string;
   external?: boolean;
+  /** Open in a new tab (owner 2026-11-22: the résumé link). */
+  newTab?: boolean;
 }
 
 export interface Site {
@@ -44,7 +46,6 @@ export interface ExperienceEntry {
 }
 
 export interface ExperienceFile {
-  lead?: string;
   entries: ExperienceEntry[];
 }
 

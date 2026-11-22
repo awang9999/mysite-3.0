@@ -19,12 +19,14 @@ nav:
     href: /blog
   - label: Résumé
     href: /resume.pdf
+    newTab: true # owner 2026-11-22: PDF opens in a new tab, site stays open
 
 footer:
   copyright: © 2026 Alexander Wang
   links:
     - label: Résumé
       href: /resume.pdf
+      newTab: true
     - label: GitHub
       href: https://github.com/awang9999
       external: true
