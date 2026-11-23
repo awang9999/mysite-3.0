@@ -8,7 +8,7 @@ All site content lives here, as data (markdown + YAML). The editor owns this dir
 content/
 ├── README.md            ← this file
 ├── site.yaml            ← global metadata: title, description, nav, footer, socials
-├── home.md              ← hero (name, role line, links) + the home About section (paragraphs + contact emails — /about retired 2026-11-22)
+├── home.md              ← hero (name, role line, job bio, the merged About paragraph + contact emails, links — /about retired 2026-11-22)
 ├── 404.md               ← the 404 page's one dry sentence
 ├── experience.yaml      ← all work entries, newest first
 ├── projects.yaml        ← featured set + archive

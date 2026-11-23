@@ -600,7 +600,12 @@ a:focus-visible {
   margin-bottom: var(--space-2);
 }
 
-.hero-bio {
+/* Hero body text — the job description (bio) + the merged About
+   paragraph (owner, 2026-11-22) + the contact line, all to the right of
+   the portrait. 20px between blocks; the last block's bottom margin is
+   the gap to the link row. */
+.hero-bio,
+.hero-contact {
   margin: 0 0 var(--space-5);
   font-size: var(--text-base);
   max-width: 46ch;
@@ -619,17 +624,6 @@ a:focus-visible {
   flex-wrap: wrap;
   gap: var(--space-5); /* 24px between links */
   margin: 0;
-}
-
-/* Home About section (owner, 2026-11-22 — /about retired): below the
-   viewport-height hero, so it is below the fold; "About" in the nav
-   anchors here. Prose measure, standard paragraph spacing. */
-.home-about {
-  padding-block: var(--space-9);
-}
-
-.home-about h2 {
-  margin-top: 0; /* the section padding is the top rhythm */
 }
 
 /* ---------- 4. Page header — identical on every subpage (§4) ---------- */

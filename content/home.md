@@ -1,7 +1,15 @@
 ---
+# Hero copy (right of the portrait). Owner, 2026-11-22: the /about page's text
+# is merged here — job description + a short second paragraph (formal
+# education, spelled out; no machine-learning mention). Contact emails
+# render as the last line. No separate About section on the page.
 name: Alexander Wang
 role: Software Engineer II at AWS HealthOmics
-bio: I work on the platform's infrastructure and the tooling that lets bioinformaticians run workflows from their own environments — the MCP server, the VS Code extension, faster starts. Cornell, math + computer science; the math side pulled me into machine learning.
+bio: I work on the platform's infrastructure and the tooling that lets bioinformaticians run workflows from their own environments — the MCP server, the VS Code extension, faster starts.
+about: I graduated from Cornell University in 2022 with a dual degree in mathematics and computer science. A Bay Area native, I'm excited to be back after a couple of years in the cold.
+emails:
+  - alexander.wang2001@gmail.com
+  - aw576@cornell.edu
 links:
   - label: Résumé
     href: /resume.pdf
@@ -12,17 +20,7 @@ links:
   - label: Blog
     href: /blog
 
-# About section below the hero (owner, 2026-11-22 — the /about page is
-# retired; "About" in the nav links to #about). Verbatim 2.0 "About Me"
-# sentences the hero doesn't already cover, plus the contact emails.
-about:
-  paragraphs:
-    - "Despite attending school on the East Coast, I am native to California and the Bay Area having lived there for the past 24 years. I am excited to be back after a couple years spent in the cold!"
-    - "In my free time, I enjoy exploring new places, learning to cook new recipes, building Lego models, and going on scenic hikes, runs, and bike rides. Please don't hesitate to reach out if you'd like to get in touch!"
-  emails:
-    - alexander.wang2001@gmail.com
-    - aw576@cornell.edu
 ---
 
-<!-- Hero: portrait (the site's one image, owner 2026-11-21) + name (h1) + role line + short bio + links. No long prose. DESIGN §4. -->
-<!-- Link set owner-approved 2026-11-21: Résumé · GitHub · Blog. The contact emails moved to the home About section when /about was retired 2026-11-22. -->
+<!-- Hero: portrait (the site's one image, owner 2026-11-21) + name (h1) + role line + job description + the merged About paragraph + contact line + links. No separate About section (owner, 2026-11-22). DESIGN §4. -->
+<!-- Link set owner-approved 2026-11-21: Résumé · GitHub · Blog. -->

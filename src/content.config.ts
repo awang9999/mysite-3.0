@@ -39,13 +39,10 @@ export const sitePages = defineCollection({
       role: z.string().optional(),
       bio: z.string().optional(),
       links: z.array(link).optional(),
-      // Home only (2026-11-22): the About section below the hero.
-      about: z
-        .object({
-          paragraphs: z.array(z.string()),
-          emails: z.array(z.string()),
-        })
-        .optional(),
+      // Home only (2026-11-22): the merged About paragraph + contact
+      // emails, rendered in the hero copy beside the portrait.
+      about: z.string().optional(),
+      emails: z.array(z.string()).optional(),
       // 404.md writes `title: 404` (YAML parses it as a number) — coerce,
       // don't reformat the owner-approved file.
       title: z.coerce.string().optional(),

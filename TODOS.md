@@ -54,6 +54,13 @@
 
 ---
 
+### 3.26 — About text into the hero, no section (2026-11-22, owner correction)
+- [x] **Owner correction**: "I didn't mean an about section on the main page. Merge some of the text into the same text to the right of my profile image. Merge my current job description with what's in the About section into one or two small paragraphs. More formal education, in words. Forego the machine learning."
+- [x] **Hero copy** (content/home.md): `bio` = the job description (unchanged) + new `about` string = one short paragraph — "I graduated from Cornell University in 2022 with a dual degree in mathematics and computer science. A Bay Area native, I'm excited to be back after a couple of years in the cold." (formal, year and degree spelled out; "Cornell, math + computer science" and the ML sentence are gone). `emails` list → compact contact line ("Contact: … or …", mailto).
+- [x] **The `.home-about` section is deleted** (page + CSS); the 2.0 free-time sentence stayed out of the hero (still at `/old/about` + git).
+- [x] **Nav "About" → `/`** (the main page — the About text is the hero itself, visible on load).
+- [x] Docs: DESIGN.md hero/nav/widths/resolved #22 rewritten; content/README + root README updated.
+
 ### 3.25 — Stub blog post "Just Be Brave" (2026-11-22, owner)
 - [x] **Stub created**: `content/blog/just-be-brave.md` — frontmatter (title/date/slug/summary/readingTime) + an empty body with a big EDIT-THIS-FILE comment explaining both parts (frontmatter fields + markdown/KaTeX body). Listed at the top of `content/blog/index.yaml` (the /blog source of truth) with summary "A stub — this post is still being written." — update the summary + readingTime when the draft is real.
 - [x] Owner told: edit the one file, rebuild with `npm run build` (or `npm run dev -- --port 4322` for hot reload while writing).
