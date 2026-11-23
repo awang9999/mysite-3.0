@@ -9,7 +9,6 @@ bio: I work on the platform's infrastructure and the tooling that lets bioinform
 about: I graduated from Cornell University in 2022 with a dual degree in mathematics and computer science. A Bay Area native, I'm excited to be back after a couple of years in the cold.
 emails:
   - alexander.wang2001@gmail.com
-  - aw576@cornell.edu
 links:
   - label: Résumé
     href: /resume.pdf
