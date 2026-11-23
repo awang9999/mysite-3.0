@@ -12,7 +12,7 @@ entries:
   - version: 3.0.0
     date: November 2026
     body: |-
-      I rebuilt the entire website from scratch. The stack switched from a React app to a fully static multi-page site, the design was reworked end to end (a new palette, a light/dark theme toggle, and the experience page is now a vertical timeline), and the matrix calculus blog series migrated over with the math rendered at build time instead of in the browser. [The previous version of the site](/old/) is still reachable for the time being. Hosting stays on AWS S3 and CloudFront, but the CircleCI pipeline was retired in favor of a local deploy script.
+      I rebuilt the entire website from scratch. The stack switched from a React app to a fully static multi-page site, the design was reworked end to end (a new palette, a light/dark theme toggle, and the experience page is now a vertical timeline), and the matrix calculus blog series migrated over with the math rendered at build time instead of in the browser. [The previous version of the site](/old/) is still reachable for the time being.
 
   - version: 2.3.0
     date: December 2025

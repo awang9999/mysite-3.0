@@ -5,62 +5,53 @@
 // carry the year in the meta line.
 // Row format (owner 2026-11-22): Name [GitHub] [Demo] — the name is plain
 // text; every link renders with its explicit label, separated by " · ".
-import Layout from '../layouts/Layout.astro';
-import Link from '../components/Link.astro';
-import { projects, site, navLabelFor } from '../lib/data';
+import Layout from "../layouts/Layout.astro";
+import Link from "../components/Link.astro";
+import { projects, site, navLabelFor } from "../lib/data";
 ---
-<Layout title={`${navLabelFor('/projects')} — ${site.title}`}>
-  <div class="container container--wide page-top">
-    <header class="page-header">
-      <h1>{navLabelFor('/projects')}</h1>
-      {projects.lead && <p class="lead">{projects.lead}</p>}
-    </header>
 
-    <ul class="rows">
-      {
-        projects.featured.map((project) => (
-          <li class="row">
-            <p class="row-title">
-              {project.name}
-              {
-                (project.links ?? []).map((link) => (
-                  <span class="row-alt-links">
-                    {' · '}
-                    <Link href={link.href} label={link.label} />
-                  </span>
-                ))
-              }
-            </p>
-            <p class="row-body">{project.hook}</p>
-            {project.body && <p class="row-body">{project.body}</p>}
-            {
-              project.tags && project.tags.length > 0 && (
-                <p class="row-tags">{project.tags.join(' · ')}</p>
-              )
-            }
-          </li>
-        ))
-      }
+<Layout title={`${navLabelFor("/projects")} — ${site.title}`}>
+    <div class="container container--wide page-top">
+        <header class="page-header">
+            <h1>{navLabelFor("/projects")}</h1>
+            {projects.lead && <p class="lead">{projects.lead}</p>}
+        </header>
 
-      {
-        projects.archive.map((project) => (
-          <li class="row">
-            <p class="row-title">
-              {project.name}
-              {
-                (project.links ?? []).map((link) => (
-                  <span class="row-alt-links">
-                    {' · '}
-                    <Link href={link.href} label={link.label} />
-                  </span>
-                ))
-              }
-            </p>
-            <p class="row-body">{project.line}</p>
-            <p class="row-meta">{project.year}</p>
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+        <ul class="rows">
+            {projects.featured.map((project) => (
+                <li class="row">
+                    <p class="row-title">
+                        {project.name}
+                        {(project.links ?? []).map((link) => (
+                            <span class="row-alt-links">
+                                {" · "}
+                                <Link href={link.href} label={link.label} />
+                            </span>
+                        ))}
+                    </p>
+                    <p class="row-body">{project.hook}</p>
+                    {project.body && <p class="row-body">{project.body}</p>}
+                    {project.tags && project.tags.length > 0 && (
+                        <p class="row-tags">{project.tags.join(" · ")}</p>
+                    )}
+                </li>
+            ))}
+
+            {projects.archive.map((project) => (
+                <li class="row">
+                    <p class="row-title">
+                        {project.name}
+                        {(project.links ?? []).map((link) => (
+                            <span class="row-alt-links">
+                                {" · "}
+                                <Link href={link.href} label={link.label} />
+                            </span>
+                        ))}
+                    </p>
+                    <p class="row-body">{project.line}</p>
+                    <p class="row-meta">{project.year}</p>
+                </li>
+            ))}
+        </ul>
+    </div>
 </Layout>

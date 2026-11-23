@@ -7,47 +7,53 @@
 // from content/home.md.
 // There is no separate About section on the page: the /about text was
 // merged into the hero copy beside the portrait (owner, 2026-11-22).
-import { getCollection } from 'astro:content';
-import Layout from '../layouts/Layout.astro';
-import Link from '../components/Link.astro';
-import { site } from '../lib/data';
-import portrait from '../assets/portrait.jpg';
+import { getCollection } from "astro:content";
+import Layout from "../layouts/Layout.astro";
+import Link from "../components/Link.astro";
+import { site } from "../lib/data";
+import portrait from "../assets/portrait.jpg";
 
-const [home] = await getCollection('sitePages', (entry) => entry.id === 'home');
+const [home] = await getCollection("sitePages", (entry) => entry.id === "home");
 const { name, role, bio, about, emails, links } = home.data;
 ---
+
 <Layout title={site.title} description={site.description}>
-  <section class="container hero">
-    <div class="hero-inner">
-      <img class="hero-portrait" src={portrait.src} width="440" height="440" alt="Portrait of Alexander Wang" />
-      <div class="hero-copy">
-        <h1>{name}</h1>
-        <p class="hero-role">{role}</p>
-        {bio && <p class="hero-bio">{bio}</p>}
-        {about && <p class="hero-bio">{about}</p>}
-        {
-          emails && emails.length > 0 && (
-            <p class="hero-contact">
-              Contact:
-              {
-                emails.map((email, i) => (
-                  <Fragment>
-                    {i > 0 && ' or '}
-                    <a href={`mailto:${email}`}>{email}</a>
-                  </Fragment>
-                ))
-              }.
-            </p>
-          )
-        }
-        <p class="hero-links">
-          {
-            (links ?? []).map((link) => (
-              <Link href={link.href} label={link.label} newTab={link.newTab} />
-            ))
-          }
-        </p>
-      </div>
-    </div>
-  </section>
+    <section class="container hero">
+        <div class="hero-inner">
+            <img
+                class="hero-portrait"
+                src={portrait.src}
+                width="440"
+                height="440"
+                alt="Portrait of Alexander Wang"
+            />
+            <div class="hero-copy">
+                <h1>{name}</h1>
+                <p class="hero-role">{role}</p>
+                {bio && <p class="hero-bio">{bio}</p>}
+                {about && <p class="hero-bio">{about}</p>}
+                {emails && emails.length > 0 && (
+                    <p class="hero-contact">
+                        Contact:
+                        {emails.map((email, i) => (
+                            <Fragment>
+                                {i > 0 && " or "}
+                                <a href={`mailto:${email}`}>{email}</a>
+                            </Fragment>
+                        ))}
+                        .
+                    </p>
+                )}
+                <p class="hero-links">
+                    {(links ?? []).map((link) => (
+                        <Link
+                            href={link.href}
+                            label={link.label}
+                            newTab={link.newTab}
+                        />
+                    ))}
+                </p>
+            </div>
+        </div>
+    </section>
 </Layout>

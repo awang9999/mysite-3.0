@@ -58,9 +58,10 @@ archive:
         href: https://arxiv.org/abs/2406.00061
         external: true
 
-  - name: Personal Website (v2)
-    line: "My first end-to-end CI/CD project — React, CircleCI, AWS S3, CloudFront, Route53."
-    year: 2022
+  - name: Personal Website
+    hook: "You're looking at it right now!"
+    line: "This website undergoes overhauls and updates every once in a while. The full source code and past versions can be found on my GitHub."
+    year: "2022 - present"
     links:
       - label: GitHub
         href: https://github.com/awang9999/mysite-2.0

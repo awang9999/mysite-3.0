@@ -4,9 +4,9 @@
 # education, spelled out; no machine-learning mention). Contact emails
 # render as the last line. No separate About section on the page.
 name: Alexander Wang
-role: Software Engineer II at AWS HealthOmics
-bio: I work on the platform's infrastructure and the tooling that lets bioinformaticians run workflows from their own environments — the MCP server, the VS Code extension, faster starts.
-about: I graduated from Cornell University in 2022 with a dual degree in mathematics and computer science. A Bay Area native, I'm excited to be back after a couple of years in the cold.
+role: Software Engineer II @ Amazon (AWS HealthOmics)
+bio: I develop the backend systems that let bioinformaticians run workflows on AWS. I also build the agentic integrations — an MCP server, a VS Code extension — that simplify and automate AWS HealthOmics for scientists and medical professionals.
+about: I hold a dual-degree from Cornell University in mathematics and computer science. When I'm not building, I like to hike, run, cook, game, and math.
 emails:
   - alexander.wang2001@gmail.com
 links:

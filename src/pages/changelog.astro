@@ -3,34 +3,35 @@
 // One hairline row per version: "Version X · Month Year" title line, entry
 // body as markdown (rendered at build time — inline links included).
 // Footer link only; not in the nav (same as 2.0).
-import Layout from '../layouts/Layout.astro';
-import { changelog, site } from '../lib/data';
-import { renderMarkdown } from '../lib/render-markdown';
+import Layout from "../layouts/Layout.astro";
+import { changelog, site } from "../lib/data";
+import { renderMarkdown } from "../lib/render-markdown";
 
 const entries = await Promise.all(
-  changelog.entries.map(async (entry) => ({
-    ...entry,
-    bodyHtml: await renderMarkdown(entry.body),
-  })),
+    changelog.entries.map(async (entry) => ({
+        ...entry,
+        bodyHtml: await renderMarkdown(entry.body),
+    })),
 );
 ---
-<Layout title={`Website History — ${site.title}`} description="All changes to this website, version by version.">
-  <div class="container page-top">
-    <header class="page-header">
-      <h1>Website History</h1>
-      <p class="lead">This page details all changes to my website.</p>
-    </header>
-    <ul class="rows">
-      {
-        entries.map((entry) => (
-          <li class="row">
-            <p class="row-title">
-              Version {entry.version} · {entry.date}
-            </p>
-            <div class="row-body" set:html={entry.bodyHtml} />
-          </li>
-        ))
-      }
-    </ul>
-  </div>
+
+<Layout
+    title={`Website History — ${site.title}`}
+    description="All changes to this website, version by version."
+>
+    <div class="container page-top">
+        <header class="page-header">
+            <h1>Website History</h1>
+        </header>
+        <ul class="rows">
+            {entries.map((entry) => (
+                <li class="row">
+                    <p class="row-title">
+                        Version {entry.version} · {entry.date}
+                    </p>
+                    <div class="row-body" set:html={entry.bodyHtml} />
+                </li>
+            ))}
+        </ul>
+    </div>
 </Layout>
