@@ -708,6 +708,17 @@ a:focus-visible {
   font-weight: 400;
 }
 
+/* Brackets around the row links (owner, 2026-11-22): [GitHub] [Demo] [arXiv].
+   Generated on the anchor itself so the whole bracketed unit is clickable
+   (and the hover underline spans it). */
+.row-alt-links a::before {
+  content: '[';
+}
+
+.row-alt-links a::after {
+  content: ']';
+}
+
 /* Experience timeline (§7, owner 2026-11-22): dates + location + company
    logo on the left, an open circle on a 1 px vertical rail, role + bullets
    on the right. Scoped under .xp so the shared .rows on /projects and /blog

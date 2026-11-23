@@ -54,6 +54,10 @@
 
 ---
 
+### 3.21 — /projects: literal brackets around the links (2026-11-22, owner)
+- [x] "I wanted the brackets to surround the links like [GitHub] or [arXiv]" — the brackets are now literal on the page: `Name · [GitHub ↗] · [Demo ↗]`.
+- [x] Implemented as `::before`/`::after` content on the anchor (`.row-alt-links a`) — the whole bracketed unit is clickable and the hover underline spans it; no HTML duplication, no change to the shared Link component. Scoped to /projects (the only user of `.row-alt-links`).
+
 ### 3.20 — /projects: explicit link labels (2026-11-22, owner)
 - [x] **Row format `Name [GitHub] [Demo]`** — "be explicit about the name, the demo link and the github": the name is now plain text (no link hiding in it); every link renders beside it with its explicit label, `· `-separated. GitHub first, then Demo (or arXiv).
 - [x] **ProjectX 2021 + NN Sensitivity**: both GitHub and the paper — paper labeled `[arXiv]` (per owner's suggestion).
