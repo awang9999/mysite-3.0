@@ -28,15 +28,24 @@ export const blog = defineCollection({
   }),
 });
 
-// One-off prose pages (hero, about, 404) — frontmatter carries all copy.
+// One-off prose pages (hero, 404) — frontmatter carries all copy.
+// (The about page was retired 2026-11-22; its content lives in home.md's
+// `about` section.)
 export const sitePages = defineCollection({
-  loader: glob({ pattern: '{home,about,404}.md', base: './content' }),
+  loader: glob({ pattern: '{home,404}.md', base: './content' }),
   schema: z
     .object({
       name: z.string().optional(),
       role: z.string().optional(),
       bio: z.string().optional(),
       links: z.array(link).optional(),
+      // Home only (2026-11-22): the About section below the hero.
+      about: z
+        .object({
+          paragraphs: z.array(z.string()),
+          emails: z.array(z.string()),
+        })
+        .optional(),
       // 404.md writes `title: 404` (YAML parses it as a number) — coerce,
       // don't reformat the owner-approved file.
       title: z.coerce.string().optional(),

@@ -621,6 +621,17 @@ a:focus-visible {
   margin: 0;
 }
 
+/* Home About section (owner, 2026-11-22 — /about retired): below the
+   viewport-height hero, so it is below the fold; "About" in the nav
+   anchors here. Prose measure, standard paragraph spacing. */
+.home-about {
+  padding-block: var(--space-9);
+}
+
+.home-about h2 {
+  margin-top: 0; /* the section padding is the top rhythm */
+}
+
 /* ---------- 4. Page header — identical on every subpage (§4) ---------- */
 .page-header {
   margin-bottom: var(--space-8); /* the 64px gap IS the divider */

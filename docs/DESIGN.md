@@ -122,13 +122,13 @@ Rationale: radius only where a recessed surface meets text; no rounded cards any
 
 | Token | Value | Used on |
 |---|---|---|
-| `--content-width` | **40 rem (640 px)** | All prose pages (about, experience, blog index, blog posts) + home hero |
+| `--content-width` | **40 rem (640 px)** | All prose pages (experience, blog index, blog posts, home About section) + home hero |
 | `--wide-width` | **48 rem (768 px)** | `/projects` only |
 | Gutter | 20 px mobile / 32 px desktop | Page padding left/right |
 
 Rationale: one measure for the whole site = one reading rhythm; 640 px at 18 px font lands at 68–75 ch. `/projects` is the single documented exception (rows carry title + description + link and want the room). No third width exists.
 
-### Page header pattern — /about and /changelog (experience, projects, and blog are h1-only, no lead — removed by the owner 2026-11-22)
+### Page header pattern — /changelog (experience, projects, and blog are h1-only with no lead — removed by the owner 2026-11-22; /blog's h1 is "Just Be Brave"; /about retired 2026-11-22)
 
 ```
 h1            --text-xl / 700, --fg
@@ -148,13 +148,14 @@ content
 - Right (`.hero-copy`, measure capped at 46 ch): name as h1 (`--text-xl`), role line (`--text-base`, `--fg-muted`), bio, then the link row (Résumé · GitHub · Blog — exact set is owner's, see §11) as accent links with 24 px gap. **The links live inside the text column, aligned with the name/bio — not under the portrait** (owner, 2026-11-21).
 - Mobile (≤ 640 px): stacks centered — portrait above the text, links centered under it.
 - Mostly text and whitespace: no video, no chevron, no background treatment. Images allowed: the hero portrait, and small company-logo chips on /experience (§7, owner 2026-11-21).
+- **Below the hero: an About section** (owner, 2026-11-22 — /about retired): `#about`, h2 + the 2.0 "About Me" sentences the hero doesn't already cover (California roots, free time) + the contact emails as mailto links, prose measure (`--content-width`), 96 px section padding. The nav's "About" anchors here. The page is therefore: hero (one viewport) → About → footer.
 - Rationale: 2.0's sin was the 100 vh **video** hero + scroll chevron, not the height — a centered profile + bio in a viewport-height section still reads as confident, and the owner wants the footer out of first view (2026-11-22).
 
 ### Nav
 
 - Static (not sticky), `--content-width` container, 16 px vertical padding; hairline bottom border (`--border`) — the only chrome rule on the page besides the footer's.
 - Left: monogram (2.0's `monogram.svg`, transferred 2026-11-21; white badge removed 2026-11-21 — bare letterforms in `--accent`, 24 px) + text wordmark **"Alexander Wang"** (`--text-sm`, 500, `--fg`). The favicon is the **bare monogram** (no disc — owner 2026-11-22), tight-cropped to the letterforms' bounds, in the theme accent: ink blue `#1F5FA8` for light tabs, `#7AA5E8` for dark tabs (a `prefers-color-scheme` twin — favicons can't read the page's JS theme).
-- Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500**) + **theme picker** (owner, 2026-11-22 — replaced the two-state toggle) — a 32 px icon button (hairline border, `--radius-md`, icon in `--fg-muted`, hover `--fg`) that opens a small dropdown: **Automatic / Light / Dark**, each row icon + label, the chosen one in `--accent` with a check. The button icon mirrors the saved choice: half-filled circle (auto), sun (light), moon (dark) — one clean glyph per mode (owner, 2026-11-22 — the original auto glyph read as two stacked symbols), set from `data-choice` on `<html>` pre-paint, so no icon flash. The menu is a hairline `--bg` box (no shadow — §8), right-anchored under the button, closes on select / Escape / outside click.
+- Right: About · Experience · Projects · Blog · Résumé (`--text-sm`, 400, `--fg-muted`; hover → `--fg`; **current page → `--accent`, 500** — "About" points at `/#about`, the home About section, since /about was retired 2026-11-22) + **theme picker** (owner, 2026-11-22 — replaced the two-state toggle) — a 32 px icon button (hairline border, `--radius-md`, icon in `--fg-muted`, hover `--fg`) that opens a small dropdown: **Automatic / Light / Dark**, each row icon + label, the chosen one in `--accent` with a check. The button icon mirrors the saved choice: half-filled circle (auto), sun (light), moon (dark) — one clean glyph per mode (owner, 2026-11-22 — the original auto glyph read as two stacked symbols), set from `data-choice` on `<html>` pre-paint, so no icon flash. The menu is a hairline `--bg` box (no shadow — §8), right-anchored under the button, closes on select / Escape / outside click.
 - Mobile (≤ 640 px): **hamburger** (owner, 2026-11-21 — supersedes the v1 zero-JS wrap): one header row — wordmark left, theme toggle + hamburger right. The links open as a centered vertical panel below the row (16 px gap, 16/24 px padding); the icon swaps to a close X while open. The button is a real `<button>` with `aria-expanded`/`aria-controls`; the menu closes on link click, Escape, or outside click. Rationale: the owner asked for it; the a11y surface is small and fully handled in the ~1 KB `ui.ts` module (§10).
 - Not sticky: the pages are short; blog posts are the only long pages and they end with a link back to /blog. Rationale: sticky chrome is a mobile-app habit that boxes the top of every screen.
 
@@ -349,3 +350,4 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 19. **/projects: explicit link labels** (owner, 2026-11-22): rows use `Name [GitHub] [Demo]` — the name is plain text and every link is explicitly labeled (GitHub first, then Demo / arXiv). ProjectX 2021 and NN Sensitivity link both GitHub and the paper via `[arXiv]`. The brackets are literal, generated on the anchor (2026-11-22 follow-up).
 20. **/blog: "Just Be Brave" heading, no lead** (owner, 2026-11-22): the h1 is "Just Be Brave" (the nav keeps "Blog") and the "Occasional posts on math and machine learning…" lead is removed — /blog is h1-only.
 21. **/projects row-link hover underline** (owner, 2026-11-22): the global text-decoration underline broke around the inline-block ext-arrow (a gap before the closing bracket); the bracketed row links now draw a 1px background underline across the full anchor box on hover/focus instead.
+22. **/about retired, merged into home** (owner, 2026-11-22): the About page is gone; the nav's "About" links to `/#about` — a section below the home hero carrying the 2.0 About Me copy the hero doesn't cover (California roots, free time) plus the contact emails (which used to live only on /about). The hero's first paragraph (name/role/Cornell math+CS) was already the hero bio, so it stayed put. `content/about.md` + `src/pages/about.astro` deleted (git-recoverable).

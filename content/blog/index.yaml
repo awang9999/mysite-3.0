@@ -6,6 +6,12 @@
 # "Just Be Brave" — see src/pages/blog/index.astro.)
 
 posts:
+  - slug: just-be-brave
+    title: Just Be Brave
+    date: 2026-11-22
+    summary: "A stub — this post is still being written."
+    readingTime: 1
+
   - slug: matrix-calculus-preface
     title: Matrix Calculus — Preface
     date: 2023-03-21

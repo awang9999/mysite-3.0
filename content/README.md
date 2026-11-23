@@ -8,8 +8,7 @@ All site content lives here, as data (markdown + YAML). The editor owns this dir
 content/
 ├── README.md            ← this file
 ├── site.yaml            ← global metadata: title, description, nav, footer, socials
-├── home.md              ← hero (name, role line, links) — no body prose
-├── about.md             ← about page (frontmatter title + lead, then prose)
+├── home.md              ← hero (name, role line, links) + the home About section (paragraphs + contact emails — /about retired 2026-11-22)
 ├── 404.md               ← the 404 page's one dry sentence
 ├── experience.yaml      ← all work entries, newest first
 ├── projects.yaml        ← featured set + archive
@@ -29,8 +28,8 @@ Markdown files use a YAML frontmatter block. Blog posts (and `blog/index.yaml`) 
 
 | Field | Where | Required | Notes |
 |---|---|---|---|
-| `title` | about, 404, posts | yes | Display title. For posts: full title, e.g. `Matrix Calculus — Preliminaries`. |
-| `lead` | about, (future prose pages) | no | One sentence, ≤ 90 chars, rendered under the h1 in muted text (DESIGN §4). |
+| `title` | 404, posts | yes | Display title. For posts: full title, e.g. `Matrix Calculus — Preliminaries`. |
+| `lead` | (future prose pages) | no | One sentence, ≤ 90 chars, rendered under the h1 in muted text (DESIGN §4). |
 | `name`, `role`, `links` | home | yes | Hero: `name` is the h1; `role` is the muted line; `links` is a list of `{label, href, external?}` — 2–3 links (owner picks the set, DESIGN §11). |
 | `date` | posts, index.yaml | yes | ISO `YYYY-MM-DD`. The builder chooses the display format. |
 | `slug` | posts, index.yaml | yes | URL path under `/blog/`. Must match the filename stem. |

@@ -54,6 +54,16 @@
 
 ---
 
+### 3.25 — Stub blog post "Just Be Brave" (2026-11-22, owner)
+- [x] **Stub created**: `content/blog/just-be-brave.md` — frontmatter (title/date/slug/summary/readingTime) + an empty body with a big EDIT-THIS-FILE comment explaining both parts (frontmatter fields + markdown/KaTeX body). Listed at the top of `content/blog/index.yaml` (the /blog source of truth) with summary "A stub — this post is still being written." — update the summary + readingTime when the draft is real.
+- [x] Owner told: edit the one file, rebuild with `npm run build` (or `npm run dev -- --port 4322` for hot reload while writing).
+
+### 3.24 — /about retired, merged into home (2026-11-22, owner)
+- [x] **The About page is gone** — `src/pages/about.astro` + `content/about.md` deleted (git-recoverable). `/about` will 404 after cutover — fine: nothing live links it yet (3.0 isn't cut over), and 2.0's About lives on at `/old/about`.
+- [x] **Nav "About" → `/#about`** — links to the main page and scrolls to the About section (owner: "let's just have About link to the main page").
+- [x] **Home About section** (below the hero, `#about`, h2 + prose): the verbatim 2.0 "About Me" sentences the hero bio doesn't already cover — California/Bay Area roots + free time — plus "Contact me at: [email] or [email]" (both mailto, site accent-link style). Data: `about: { paragraphs, emails }` in `content/home.md` (schema in content.config.ts). The hero's first About paragraph (name/role/Cornell math+CS → ML) was dropped — it's already the hero bio.
+- [x] sitePages glob is now `{home,404}.md`; docs updated (DESIGN §4 nav/header/hero + resolved #22, content/README tree + table, root README page list).
+
 ### 3.23 — /projects row-link hover underline (2026-11-22, owner)
 - [x] "I want the hover effects of the links under projects to be nicer. Currently, there is a gap in the underline between the text and the end bracket." Root cause: `text-decoration: underline` breaks around the inline-block `ext-arrow`, leaving a gap before `]`.
 - [x] Fix: the bracketed row links (`.row-alt-links a`) use a 1px `currentColor` background underline at the bottom of the anchor box, drawn in on hover/focus (`background-size: 0% → 100%`, 150 ms) — it spans `[label ↗]` continuously, brackets included. Scoped to /projects; the global link fade is untouched.

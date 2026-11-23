@@ -9,8 +9,10 @@ resume:
   # build output as /resume.pdf. Verify the PDF is current before cutover — last updated Jul 2026.
 
 nav:
+  # About links to the home About section (owner, 2026-11-22 — /about
+  # retired; the nav keeps the label, the target is #about on /).
   - label: About
-    href: /about
+    href: /#about
   - label: Experience
     href: /experience
   - label: Projects

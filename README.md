@@ -4,8 +4,7 @@ The third iteration of my personal website: **clean and straight to the point, w
 
 ## Pages
 
-- **Home** — hero (name, one-line role, links)
-- **About** — who I am
+- **Home** — hero (name, one-line role, links) + About section below the fold (the About page was retired 2026-11-22; nav "About" → `/#about`)
 - **Experience** — work history
 - **Projects** — the curated featured set + the full archive, all in one ordered list
 - **Blog** — index + posts
