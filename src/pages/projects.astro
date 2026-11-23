@@ -34,21 +34,6 @@ import { projects, site, navLabelFor } from "../lib/data";
                     {project.tags && project.tags.length > 0 && (
                         <p class="row-tags">{project.tags.join(" · ")}</p>
                     )}
-                </li>
-            ))}
-
-            {projects.archive.map((project) => (
-                <li class="row">
-                    <p class="row-title">
-                        {project.name}
-                        {(project.links ?? []).map((link) => (
-                            <span class="row-alt-links">
-                                {" · "}
-                                <Link href={link.href} label={link.label} />
-                            </span>
-                        ))}
-                    </p>
-                    <p class="row-body">{project.line}</p>
                     <p class="row-meta">{project.year}</p>
                 </li>
             ))}

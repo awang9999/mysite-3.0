@@ -45,10 +45,8 @@ featured:
         href: https://arxiv.org/abs/2207.01483
         external: true
     year: 2021
-
-archive:
   - name: Neural Network Training Sensitivity
-    line: "A study of how similar fine-tuned neural networks stay, that ended as a pruning algorithm shrinking OPT-1.3B by 20% with little perplexity loss."
+    body: "A study of how similar fine-tuned neural networks stay, that ended as a pruning algorithm shrinking OPT-1.3B by 20% with little perplexity loss."
     year: 2024
     links:
       - label: GitHub
@@ -60,7 +58,7 @@ archive:
 
   - name: Personal Website
     hook: "You're looking at it right now!"
-    line: "This website undergoes overhauls and updates every once in a while. The full source code and past versions can be found on my GitHub."
+    body: "This website undergoes overhauls and updates every once in a while. The full source code and past versions can be found on my GitHub."
     year: "2022 - present"
     links:
       - label: GitHub
