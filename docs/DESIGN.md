@@ -128,7 +128,7 @@ Rationale: radius only where a recessed surface meets text; no rounded cards any
 
 Rationale: one measure for the whole site = one reading rhythm; 640 px at 18 px font lands at 68–75 ch. `/projects` is the single documented exception (rows carry title + description + link and want the room). No third width exists.
 
-### Page header pattern — /about, /blog, and /changelog (experience and projects are h1-only, no lead — removed by the owner 2026-11-22)
+### Page header pattern — /about and /changelog (experience, projects, and blog are h1-only, no lead — removed by the owner 2026-11-22)
 
 ```
 h1            --text-xl / 700, --fg
@@ -264,6 +264,7 @@ This is the signature page. One language: **rows**. No cards, no images, no grid
 
 ### Blog index
 
+- H1 is **"Just Be Brave"** (owner, 2026-11-22) — the page is named for the owner's phrase, not the nav label; the nav keeps "Blog". H1-only, no lead (the "Occasional posts…" lead was removed the same day).
 - One row per post: meta line date (`--text-xs`, `--fg-muted`) · title (`--text-md`/500, accent link) · optional one-line excerpt (`--text-base`, `--fg-muted`). Newest first. No cards, no thumbnails.
 - Rationale: a blog is a list; rows + dates are the honest representation, and it reuses the row pattern from /projects.
 
@@ -345,4 +346,6 @@ Carried forward from the seed, expanded with 2.0's specific sins. If a proposal 
 16. **Theme picker dropdown** (owner, 2026-11-22): the light/dark toggle became a dropdown — **Automatic / Light / Dark** — in the nav. Auto = no `data-theme`, the OS preference decides (JS-free, live-tracked). Button icon mirrors the saved choice (half-filled circle / sun / moon — one glyph per mode, the original monitor glyph read as two stacked symbols) via pre-paint `data-choice`; the menu is a hairline box (no shadow, §8) closing on select / Escape / outside click. Supersedes resolved item 9.
 17. **Experience logo chips: no white edge in dark mode** (owner, 2026-11-22): the TAE/Cornell PNGs carried white backgrounds, which read as a white ring around the logo in dark mode. All three plain logos (AWS, TAE, Cornell) were re-extracted from the 2.0 sources as transparent-background art; the chip background is now `var(--bg)` and the three logos render as light silhouettes in dark mode. The Amazon Music chip keeps its gradient in both themes.
 18. **/projects: everything in order, no expansion** (owner, 2026-11-22): the `Show all N projects` `<details>` is retired — the featured and archive rows render into one ordered list. Hearts gained a demo link (`https://hearts.alexander-wang.net` — the existing distribution, untouched) alongside GitHub.
-19. **/projects: explicit link labels** (owner, 2026-11-22): rows use `Name [GitHub] [Demo]` — the name is plain text and every link is explicitly labeled (GitHub first, then Demo / arXiv). ProjectX 2021 and NN Sensitivity link both GitHub and the paper via `[arXiv]`.
+19. **/projects: explicit link labels** (owner, 2026-11-22): rows use `Name [GitHub] [Demo]` — the name is plain text and every link is explicitly labeled (GitHub first, then Demo / arXiv). ProjectX 2021 and NN Sensitivity link both GitHub and the paper via `[arXiv]`. The brackets are literal, generated on the anchor (2026-11-22 follow-up).
+20. **/blog: "Just Be Brave" heading, no lead** (owner, 2026-11-22): the h1 is "Just Be Brave" (the nav keeps "Blog") and the "Occasional posts on math and machine learning…" lead is removed — /blog is h1-only.
+21. **/projects row-link hover underline** (owner, 2026-11-22): the global text-decoration underline broke around the inline-block ext-arrow (a gap before the closing bracket); the bracketed row links now draw a 1px background underline across the full anchor box on hover/focus instead.

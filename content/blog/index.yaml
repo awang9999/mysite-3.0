@@ -2,8 +2,8 @@
 # Display order: newest date first; posts sharing a date keep reading order within their series.
 # Keep in sync with each post's frontmatter (title, date, summary, readingTime).
 # readingTime is in minutes, recomputed from final word count at ~200 wpm.
-
-lead: "Occasional posts on math and machine learning, starting with the matrix calculus series."
+# (The page lead was removed 2026-11-22 — /blog is h1-only, heading is
+# "Just Be Brave" — see src/pages/blog/index.astro.)
 
 posts:
   - slug: matrix-calculus-preface

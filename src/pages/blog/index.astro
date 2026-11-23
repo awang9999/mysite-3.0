@@ -3,15 +3,19 @@
 // (date · reading time), title (accent link), one-line excerpt. Newest
 // first. The display order
 // comes from content/blog/index.yaml, the source of truth for /blog.
+// Heading: "Just Be Brave" (owner, 2026-11-22) — the page is named for
+// the owner's phrase, not the nav label; the nav keeps "Blog". H1-only,
+// no lead (removed the same day).
 import Layout from '../../layouts/Layout.astro';
-import { blogIndex, site, navLabelFor } from '../../lib/data';
+import { blogIndex, site } from '../../lib/data';
 import { formatDate } from '../../lib/format';
+
+const heading = 'Just Be Brave';
 ---
-<Layout title={`${navLabelFor('/blog')} — ${site.title}`}>
+<Layout title={`${heading} — ${site.title}`}>
   <div class="container page-top">
     <header class="page-header">
-      <h1>{navLabelFor('/blog')}</h1>
-      {blogIndex.lead && <p class="lead">{blogIndex.lead}</p>}
+      <h1>{heading}</h1>
     </header>
     <ul class="rows">
       {

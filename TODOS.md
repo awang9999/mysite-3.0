@@ -54,6 +54,15 @@
 
 ---
 
+### 3.23 — /projects row-link hover underline (2026-11-22, owner)
+- [x] "I want the hover effects of the links under projects to be nicer. Currently, there is a gap in the underline between the text and the end bracket." Root cause: `text-decoration: underline` breaks around the inline-block `ext-arrow`, leaving a gap before `]`.
+- [x] Fix: the bracketed row links (`.row-alt-links a`) use a 1px `currentColor` background underline at the bottom of the anchor box, drawn in on hover/focus (`background-size: 0% → 100%`, 150 ms) — it spans `[label ↗]` continuously, brackets included. Scoped to /projects; the global link fade is untouched.
+
+### 3.22 — /blog: "Just Be Brave" heading, no lead (2026-11-22, owner)
+- [x] Removed the page lead ("Occasional posts on math and machine learning, starting with the matrix calculus series.") — /blog is now h1-only.
+- [x] Replaced the "Blog" heading with **"Just Be Brave"** (h1 + `<title>`). The nav keeps the "Blog" label — the owner pointed at the page, not the nav.
+- [x] `lead` removed from `content/blog/index.yaml` (comment records the change); `navLabelFor` no longer imported by the page.
+
 ### 3.21 — /projects: literal brackets around the links (2026-11-22, owner)
 - [x] "I wanted the brackets to surround the links like [GitHub] or [arXiv]" — the brackets are now literal on the page: `Name · [GitHub ↗] · [Demo ↗]`.
 - [x] Implemented as `::before`/`::after` content on the anchor (`.row-alt-links a`) — the whole bracketed unit is clickable and the hover underline spans it; no HTML duplication, no change to the shared Link component. Scoped to /projects (the only user of `.row-alt-links`).

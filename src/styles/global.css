@@ -719,6 +719,25 @@ a:focus-visible {
   content: ']';
 }
 
+/* Row-link hover (owner, 2026-11-22): nicer underline. The global
+   text-decoration underline breaks around the inline-block ext-arrow —
+   a visible gap between the label and the closing bracket — so these
+   links draw a 1px background underline across the full anchor box
+   (brackets + arrow included) on hover instead. */
+.row-alt-links a {
+  text-decoration: none;
+  background-image: linear-gradient(currentColor, currentColor);
+  background-repeat: no-repeat;
+  background-position: 0 100%;
+  background-size: 0% 1px;
+  transition: background-size 150ms ease-out;
+}
+
+.row-alt-links a:hover,
+.row-alt-links a:focus-visible {
+  background-size: 100% 1px;
+}
+
 /* Experience timeline (§7, owner 2026-11-22): dates + location + company
    logo on the left, an open circle on a 1 px vertical rail, role + bullets
    on the right. Scoped under .xp so the shared .rows on /projects and /blog
