@@ -29,10 +29,9 @@ The point, though, is not to trust agents to produce bug-free software. Before a
 a feature that passed the testing bar was trusted on an implicit assumption: the 
 author understood what they had written. Agents took away the author from the equation. 
 Now, more than ever, we must rely on our testing bar to enforce software quality.
-
-And that is the part I find liberating. If we are uncomfortable trusting features that 
-pass our tests, the problem is not the agents. The problem is how our software is written. 
-Weak tests were always load-bearing. They were just hidden behind an author's reputation.
+If we are uncomfortable trusting features that pass our tests, the problem is not the 
+agents. The problem is how our software is written. 
+Weak tests were always dangerous. They were just hidden behind an author's reputation.
 Agent-produced software that passes your organization's testing bar should be trusted
 in your production environment.
 
