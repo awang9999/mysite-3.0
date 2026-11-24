@@ -34,7 +34,7 @@ const { name, role, bio, about, emails, links } = home.data;
                 {about && <p class="hero-bio">{about}</p>}
                 {emails && emails.length > 0 && (
                     <p class="hero-contact">
-                        Contact:
+                        Contact:&nbsp
                         {emails.map((email, i) => (
                             <Fragment>
                                 {i > 0 && " or "}

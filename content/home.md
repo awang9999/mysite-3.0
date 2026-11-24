@@ -5,7 +5,7 @@
 # render as the last line. No separate About section on the page.
 name: Alexander Wang
 role: Software Engineer II @ Amazon (AWS HealthOmics)
-bio: I develop the backend systems that let bioinformaticians run workflows on AWS. I also build the agentic integrations — an MCP server, a VS Code extension — that simplify and automate AWS HealthOmics for scientists and medical professionals.
+bio: I develop the backend systems that let bioinformaticians run workflows on AWS. I also pioneered the agentic integrations that simplify AWS HealthOmics for scientists and medical professionals.
 about: I hold a dual degree from Cornell University in mathematics and computer science. When I'm not building, I like to hike, run, cook, game, and do math.
 emails:
   - alexander.wang2001@gmail.com
